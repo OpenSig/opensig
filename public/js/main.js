@@ -4,7 +4,8 @@
 
 
 function onLoad() {
-  addEventListeners();
+  initialiseDndBox();
+
   // If metamask is not present then replace wallet connect button
   console.log("Metamask present: ", isMetamaskPresent());
   if (!isMetamaskPresent()) {
@@ -13,7 +14,9 @@ function onLoad() {
 }
 
 
-// Metamask handlers
+//
+// Metamask interface functions
+//
 
 function isMetamaskPresent() {
   return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
@@ -33,9 +36,12 @@ function connectMetamask() {
     })
 }
 
-// Event handlers
 
-function addEventListeners() {
+//
+// Drag and Drop Box functionality
+//
+
+function initialiseDndBox() {
 
   let dndDragCount = 0;
 
@@ -78,7 +84,9 @@ function addEventListeners() {
 }
 
 
-// CSS setters
+//
+// CSS functions
+//
 
 function toggleHidden(...ids) {
   ids.forEach(id => { $(id).toggleClass('hidden') });
