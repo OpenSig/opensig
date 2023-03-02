@@ -1,3 +1,7 @@
+/* Copyright (c) 2023 Bubble Protocol */
+/* Distributed under the MIT software license, see the accompanying */
+/* file LICENSE or http://www.opensource.org/licenses/mit-license.php. */
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -22,7 +26,6 @@ body {
   padding: 0px;
   gap: 16px;
 }
-
 
 /* Header */
 
@@ -98,8 +101,12 @@ body {
   font-size: 16px;
   line-height: 19px;
   color: #FFFFFF;
+  text-decoration: none;
 }
 
+.header-button:hover {
+  cursor: pointer;
+}
 
 /* Content */
 
@@ -227,6 +234,10 @@ body {
   flex-grow: 0;
 }
 
+.small-text-link:hover {
+  cursor: pointer;
+}
+
 .large-text-link {
   font-family: 'Arial';
   font-style: normal;
@@ -236,6 +247,66 @@ body {
   color: #1886C4;
   flex: none;
   flex-grow: 0;
+  text-decoration: none;
+}
+
+.large-text-link:hover {
+  cursor: pointer;
+}
+
+
+/* Connected Content */
+
+.connected-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 64px;
+  gap: 32px;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.dnd-box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 30px;
+  gap: 10px;
+  border: 1px solid #7D7D7D;
+  flex: none;
+  flex-grow: 0;
+}
+
+.dnd-box:hover {
+  cursor: pointer;
+}
+
+.dnd-box-valid-dragover {
+  border: 1px dashed #000000;
+}
+
+.large-hint-text {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+  color: #DEDEDE;  
+}
+
+.small-hint-text {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+  color: #DEDEDE;
 }
 
 
@@ -309,4 +380,17 @@ body {
 .discord-icon {
   background-image: url(assets/icon-discord.png);
 }
+
+
+/* Util classes */
+
+.disabled {
+  pointer-events: none;
+  opacity: 50%;
+}
+
+.hidden {
+  display: none;
+}
+
 
