@@ -14,7 +14,7 @@ contract OpensigRegistry {
     /**
      * @dev emitted each time a new published signature is registered.
      */
-    event Signature(address indexed signer, bytes32 indexed signature, bytes32 data);
+    event Signature(uint256 time, address indexed signer, bytes32 indexed signature, bytes data);
 
     /**
      * @dev registry of published signatures.
@@ -22,12 +22,12 @@ contract OpensigRegistry {
     mapping (bytes32 => bool) private signatures;
     
     /**
-     * @dev Registers the given signature and emits it along with the given data.
+     * @dev Registers the given signature and emits it along with the block timestamp and given data.
      */
-    function registerSignature(bytes32 sig_, bytes32 data_) public {
+    function registerSignature(bytes32 sig_, bytes memory data_) public {
         require(!signatures[sig_], "signature already published");
         signatures[sig_] = true;
-        emit Signature(msg.sender, sig_, data_);
+        emit Signature(block.timestamp, msg.sender, sig_, data_);
     }
 
     /**

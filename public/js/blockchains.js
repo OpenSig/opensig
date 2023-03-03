@@ -9,7 +9,7 @@ const BASE_GOERLI = {
   },
 
   contract: {
-    address: "0xC064a3772F27aBF48696EDF6C157f8B1ac2A6c0A",
+    address: "0x0E06f4d4BC550A28aF7078ad20b3cB97C014973e",
     abi: [ { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes32", "name": "data", "type": "bytes32" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes32", "name": "data_", "type": "bytes32" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ]
   },
 
@@ -21,7 +21,7 @@ const BASE_GOERLI = {
       getSignatures: (signatures) => {
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
-        const topics = signatures.map(s => { return [s, null] });
+        const topics = signatures.map(s => { return [null, null, s, null] });
         return {
           method: 'POST',
           headers: headers,
@@ -29,7 +29,7 @@ const BASE_GOERLI = {
             method: 'eth_getLogs',
             params: [{
               fromBlock: 'earliest',
-              address: "0xC064a3772F27aBF48696EDF6C157f8B1ac2A6c0A",
+              address: "0x0E06f4d4BC550A28aF7078ad20b3cB97C014973e",
               topics: topics 
             }],
             id: 1,
