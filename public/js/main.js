@@ -2,15 +2,25 @@
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
+import {opensig} from "./opensig.js";
 
 function onLoad() {
   initialiseDndBox();
 
   // If metamask is not present then replace wallet connect button
-  console.log("Metamask present: ", isMetamaskPresent());
   if (!isMetamaskPresent()) {
     toggleHidden("#wallet-connect-button", "#metamask-install-button", "#wallet-connect-text", "#metamask-install-text");
   }
+
+}
+window.onLoad = onLoad;
+
+
+function verifyFiles(files) {
+  if (files.length === 0) return;
+  opensig.verify(files[0])
+    .then(console.log)
+    .catch(console.error);
 }
 
 
@@ -35,6 +45,7 @@ function connectMetamask() {
       enable("#wallet-connect-button", "#wallet-connect-text");
     })
 }
+window.connectMetamask = connectMetamask;
 
 
 //
@@ -62,15 +73,14 @@ function initialiseDndBox() {
     event.preventDefault();
     dndDragCount = 0;
     event.currentTarget.classList.remove("dnd-box-valid-dragover");
-    console.log(Array.from(event.dataTransfer.files));
+    verifyFiles(Array.from(event.dataTransfer.files));
   }
   
   function onDndBoxClick() {
     let input = document.createElement('input');
     input.type = 'file';
     input.onchange = _ => {
-        let files =   Array.from(input.files);
-        console.log(files);
+        verifyFiles(Array.from(input.files));
       };
     input.click();
   }
