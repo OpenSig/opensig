@@ -9,7 +9,7 @@ const BASE_GOERLI = {
   },
 
   contract: {
-    address: "0x8451aaeAE21542f2F17668ec54a55870Bf4E7d92",
+    address: "0xC064a3772F27aBF48696EDF6C157f8B1ac2A6c0A",
     abi: [ { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes32", "name": "data", "type": "bytes32" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes32", "name": "data_", "type": "bytes32" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ]
   },
 
@@ -29,7 +29,7 @@ const BASE_GOERLI = {
             method: 'eth_getLogs',
             params: [{
               fromBlock: 'earliest',
-              address: "0x8451aaeAE21542f2F17668ec54a55870Bf4E7d92",
+              address: "0xC064a3772F27aBF48696EDF6C157f8B1ac2A6c0A",
               topics: topics 
             }],
             id: 1,
@@ -38,7 +38,7 @@ const BASE_GOERLI = {
           redirect: "follow"
         }
       }
-      
+
     }
   }
 

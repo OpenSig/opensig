@@ -14,7 +14,7 @@ contract OpensigRegistry {
     /**
      * @dev emitted each time a new published signature is registered.
      */
-    event Signature(bytes32 indexed signature, bytes32 data);
+    event Signature(address indexed signer, bytes32 indexed signature, bytes32 data);
 
     /**
      * @dev registry of published signatures.
@@ -27,7 +27,14 @@ contract OpensigRegistry {
     function registerSignature(bytes32 sig_, bytes32 data_) public {
         require(!signatures[sig_], "signature already published");
         signatures[sig_] = true;
-        emit Signature(sig_, data_);
+        emit Signature(msg.sender, sig_, data_);
+    }
+
+    /**
+     * @dev Returns true if the given signature has already been registered
+     */
+    function isRegistered(bytes32 sig_) public view returns (bool) {
+        return signatures[sig_];
     }
     
 }
