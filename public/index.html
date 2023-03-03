@@ -109,6 +109,39 @@
                 <span class="small-text-link">Learn more</span>
             </div>
         </div>
+
+        <div id="signature-content" class="signature-content hidden">
+            <div id="filename" class="filename"></div>
+            <div class="sign-frame">
+                <div class="sign-data-frame">
+                    <div class="data-label-row">
+                        <label for="signature-data" class="label message-label">Include message</label>
+                        <div class="data-encrypt">
+                            <input id="data-encrypt-checkbox" name="data-encrypt-checkbox" class="checkbox" type="checkbox" checked="true"></input>
+                            <label for="data-encrypt-checkbox" class="label">Encrypt</label>
+                        </div>
+                    </div>
+                    <div class="data-text-box">
+                        <input id="signature-data" name="signature-data" class="text-box" type="text" placeholder="Message or hex"></input>
+                    </div>
+                </div>
+                <div class="sign-button" onclick="sign()">Sign</div>
+            </div>
+            <div class="signatures">
+                <span id="no-signatures-label" class="label hidden">No Signatures</span>
+                <span id="signatures-label" class="label">Signatures</span>
+                <div id="signature-box" class="signature-box">
+                    <div class="signature">
+                        <span class="signature-heading signature-date-field">Date</span>
+                        <span class="signature-heading signature-who-field">Signatory</span>
+                        <span class="signature-heading signature-comment-field">Message</span>
+                    </div>
+                    <span class="h-line"></span>
+                    <div id="signature-list" class="signature-list"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="footer">

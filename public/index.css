@@ -309,6 +309,241 @@ body {
   color: #DEDEDE;
 }
 
+/* Signature Content */
+
+.signature-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 48px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.sign-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 16px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.sign-data-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.data-label-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 1px;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.label {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.message-label {
+  flex-grow: 1;
+}
+
+.data-encrypt {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 8px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.data-encrypt-checkbox {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  background: #FFFFFF;
+  border: 1px solid #737373;
+  flex: none;
+  flex-grow: 0;
+}
+
+.data-text-box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 10px;
+  gap: 10px;
+  width: 500px;
+  height: 32px;  
+  background: #FFFFFF;
+  border: 1px solid #737373;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.text-box {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  border-style: none;
+}
+
+.text-box:focus {
+  outline: none;
+  outline-style: none;
+}
+
+.text-box::placeholder {
+  color: #bababa;
+}
+
+.sign-button {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px 64px;
+  gap: 10px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 8px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.sign-button:hover {
+  cursor: pointer;
+}
+
+.signatures {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.filename {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  color: #7e7e7e;
+  flex: 0;
+}
+
+.signature-box {
+  box-sizing: border-box;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+  border: 1px solid #7D7D7D;
+  flex: none;
+  flex-grow: 0;
+}
+
+.signature-list {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  gap: 8px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.signature {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.signature-date-field {
+  width: 100px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000000;
+  flex: none;
+  flex-grow: 0;
+}
+
+.signature-who-field {
+  width: 315px;
+  color: #000000;
+  font-family: 'Courier';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  flex: none;
+  flex-grow: 0;
+  overflow: scroll;
+}
+
+.signature-comment-field {
+  width: 319px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000000;
+  flex: none;
+  flex-grow: 0;
+  overflow: scroll;
+}
+
+.signature-heading {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000000;
+}
+
+.h-line {
+  align-self: stretch;
+  border: 1px solid #C4C4C4;
+}
 
 /* Footer */
 

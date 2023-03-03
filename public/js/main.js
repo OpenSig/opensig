@@ -19,10 +19,42 @@ window.onLoad = onLoad;
 function verifyFiles(files) {
   if (files.length === 0) return;
   opensig.verify(files[0])
-    .then(console.log)
+    .then(signatures => {
+      setContent("#signature-content");
+      $("#filename").text(files[0].name);
+      if (signatures.length === 0) {
+        hide("#signatures-label", "#signature-box")
+        show("#no-signatures-label");
+      }
+      else {
+        show("#signatures-label", "#signature-box")
+        hide("#no-signatures-label");
+        const sigList = $("#signature-list");
+        sigList.innerHTML = '';
+        signatures.forEach(sig => {
+          const element = createElement('div', 'signature');
+          element.appendChild(createElement('span', 'signature-date-field', "18-Jun-28 08:35"));
+          element.appendChild(createElement('span', 'signature-who-field', sig.topics[0]));
+          element.appendChild(createElement('span', 'signature-comment-field', sig.topics[1]));
+          sigList.append(element);
+        })
+      }
+    })
     .catch(console.error);
 }
 
+
+function setContent(id) {
+  hide("#welcome-content", "#connected-content", "#signature-content")
+  show(id);
+}
+
+function createElement(type, classes, innerHTML) {
+  const element = document.createElement(type);
+  element.className = classes;
+  if (innerHTML) element.innerHTML = innerHTML;
+  return element;
+}
 
 //
 // Metamask interface functions
@@ -40,7 +72,7 @@ function connectMetamask() {
       if (addresses && addresses.length > 0) {
         $("#address-dropdown-button").text(addresses[0].slice(0,6)+'...'+addresses[0].slice(-4));
         toggleHidden("#wallet-connect-button", "#address-dropdown-button");
-        toggleHidden("#welcome-content", "#connected-content");
+        setContent("#connected-content");
       }
       enable("#wallet-connect-button", "#wallet-connect-text");
     })
@@ -97,6 +129,14 @@ function initialiseDndBox() {
 //
 // CSS functions
 //
+
+function hide(...ids) {
+  ids.forEach(id => { $(id).addClass('hidden') });
+}
+
+function show(...ids) {
+  ids.forEach(id => { $(id).removeClass('hidden') });
+}
 
 function toggleHidden(...ids) {
   ids.forEach(id => { $(id).toggleClass('hidden') });

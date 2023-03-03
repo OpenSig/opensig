@@ -26,7 +26,7 @@ async function verify(file) {
   
       return _safeFetch(network.api.endpoint, request)
         .then(events => {
-          signatureEvents.push(events);
+          signatureEvents.concat(events);
           if (events.length !== network.api.maxTopics) return signatureEvents;
           return _discoverNext(network.api.maxTopics);
         })
