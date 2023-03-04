@@ -226,7 +226,7 @@ body {
 .small-text-link {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 800;
   font-size: 16px;
   line-height: 19px;
   color: #737373;
@@ -448,12 +448,22 @@ body {
   flex-grow: 0;
 }
 
+.filename-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  flex: none;
+  flex-grow: 0;
+}
+
 .filename {
   font-family: 'Arial';
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 28px;
+  line-height: 21px;
   color: #7e7e7e;
   flex: 0;
 }
@@ -494,7 +504,7 @@ body {
 }
 
 .signature-date-field {
-  width: 100px;
+  width: 119px;
   font-family: 'Arial';
   font-style: normal;
   font-weight: 400;
@@ -519,7 +529,7 @@ body {
 }
 
 .signature-comment-field {
-  width: 319px;
+  width: 300px;
   font-family: 'Arial';
   font-style: normal;
   font-weight: 400;

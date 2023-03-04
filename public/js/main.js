@@ -16,12 +16,22 @@ function onLoad() {
 window.onLoad = onLoad;
 
 
-function verifyFiles(files) {
-  if (files.length === 0) return;
-  opensig.verify(files[0])
-    .then(signatures => {
+function setContent(id) {
+  hide("#welcome-content", "#connected-content", "#signature-content")
+  show(id);
+}
+window.setContent = setContent;
+
+
+const DATE_FORMAT_OPTIONS = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+
+function verify(file) {
+ opensig.verify(file)
+    .then(result => {
+      const signatures = result.signatures;
+      console.log("found signatures: ", signatures);
       setContent("#signature-content");
-      $("#filename").text(files[0].name);
+      $("#filename").text(file.name);
       if (signatures.length === 0) {
         hide("#signatures-label", "#signature-box")
         show("#no-signatures-label");
@@ -33,9 +43,9 @@ function verifyFiles(files) {
         sigList.innerHTML = '';
         signatures.forEach(sig => {
           const element = createElement('div', 'signature');
-          element.appendChild(createElement('span', 'signature-date-field', "18-Jun-28 08:35"));
-          element.appendChild(createElement('span', 'signature-who-field', sig.topics[0]));
-          element.appendChild(createElement('span', 'signature-comment-field', sig.topics[1]));
+          element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
+          element.appendChild(createElement('span', 'signature-who-field', sig.signatory));
+          element.appendChild(createElement('span', 'signature-comment-field', sig.data.content)); // TODO support different data types
           sigList.append(element);
         })
       }
@@ -43,11 +53,6 @@ function verifyFiles(files) {
     .catch(console.error);
 }
 
-
-function setContent(id) {
-  hide("#welcome-content", "#connected-content", "#signature-content")
-  show(id);
-}
 
 function createElement(type, classes, innerHTML) {
   const element = document.createElement(type);
@@ -105,14 +110,16 @@ function initialiseDndBox() {
     event.preventDefault();
     dndDragCount = 0;
     event.currentTarget.classList.remove("dnd-box-valid-dragover");
-    verifyFiles(Array.from(event.dataTransfer.files));
+    const files =  Array.from(event.dataTransfer.files);
+    if (files.length > 0) verify(files[0]);
   }
   
   function onDndBoxClick() {
     let input = document.createElement('input');
     input.type = 'file';
     input.onchange = _ => {
-        verifyFiles(Array.from(input.files));
+        const files =  Array.from(input.files);
+        if (files.length > 0) verify(files[0]);
       };
     input.click();
   }

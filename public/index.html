@@ -27,6 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.1/web3.min.js" integrity="sha512-GKw4QT/RccGJIwQxY3MhyiQ5pHrhQ8SuKFEafV+WcpOvtz7iYFQuQGFCvmGlHLctJTe8KrWU1FqvF7VOkEAJtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/opensig.js"></script>
@@ -111,7 +112,10 @@
         </div>
 
         <div id="signature-content" class="signature-content hidden">
-            <div id="filename" class="filename"></div>
+            <div class="filename-frame">
+                <div id="filename" class="filename"></div>
+                <span class="small-text-link" onclick="setContent('#connected-content')">(back)</span>
+            </div>
             <div class="sign-frame">
                 <div class="sign-data-frame">
                     <div class="data-label-row">
@@ -125,7 +129,7 @@
                         <input id="signature-data" name="signature-data" class="text-box" type="text" placeholder="Message or hex"></input>
                     </div>
                 </div>
-                <div class="sign-button" onclick="sign()">Sign</div>
+                <div class="sign-button" onclick="">Sign</div>
             </div>
             <div class="signatures">
                 <span id="no-signatures-label" class="label hidden">No Signatures</span>

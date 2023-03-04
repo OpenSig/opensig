@@ -2,6 +2,80 @@
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
+const SIG_DATA_VERSION = '00';
+const SIG_DATA_ENCRYPTED_FLAG = 128;
+const SIG_DATA_TYPE_STRING = 0;
+const SIG_DATA_TYPE_BYTES = 1;
+
+const state = {
+  file: undefined,
+  hashes: undefined,
+  lastSignatureIndex: -1
+}
+
+
+function encodeData(data) {
+  if (data.content === undefined || data.content === '') return '0x';
+  let type = data.encrypted ? SIG_DATA_ENCRYPTED_FLAG : 0;
+  let encData = '';
+
+  switch (data.type) {
+    case 'string':
+      type += SIG_DATA_TYPE_STRING;
+      encData = unicodeStrToHex(data.content);
+      break;
+
+    case 'hex':
+      type += SIG_DATA_TYPE_BYTES;
+      encData = data.slice(0,2) === '0x' ? data.slice(2) : data;
+      break;
+
+    default:
+      throw new Error("encodeData: invalid type '"+data.type+"'");
+  }
+
+  if (data.encrypted) encData = encrypt(encData);
+
+  const typeStr = ('00' + type.toString(16)).slice(-2);
+  return '0x'+SIG_DATA_VERSION + typeStr + encData;
+}
+
+function decodeData(encData) {
+  if (encData === undefined || encData === '') return {type: 'none'}
+  if (encData.length < 6) return {type: "invalid", content: "data is < 6 bytes"}
+  const version = encData.slice(2,4);
+  const typeField = parseInt(encData.slice(4,6), 16);
+  const encrypted = typeField & SIG_DATA_ENCRYPTED_FLAG ? true : false;
+  const type = typeField & ~SIG_DATA_ENCRYPTED_FLAG;
+  const data = {
+    version: version,
+    encrypted: encrypted
+  }
+
+  switch (type) {
+    case SIG_DATA_TYPE_STRING:
+      data.type = 'string';
+      data.content = unicodeHexToStr(encData.slice(6));
+      break;
+    
+    case SIG_DATA_TYPE_BYTES:
+      data.type = 'hex';
+      data.content = '0x'+encData.slice(6)
+      break;
+
+    default:
+      data.type = 'invalid';
+      data.content = "unrecognised type: "+type+" (version="+version+")";
+  }
+
+  return data;
+}
+
+function encrypt(dataStr) {
+  // todo
+  return dataStr;
+}
+
 
 /**
  * Retrieves all signatures on the current blockchain for the given file.
@@ -13,21 +87,40 @@
  */
 async function verify(file) {
 
+  console.log("verifying file", file.name);
+
   function _discoverSignatures(documentHash) {
+    console.log("discovering signatures for document", _buf2hex(documentHash));
     const network = getBlockchain();
     if (network === undefined) throw new BlockchainNotSupportedError();
+
     const signatureEvents = [];
-    const hashes = new HashIterator(documentHash);
+    state.file = file;
+    state.hashes = new HashIterator(documentHash);
+    state.lastSignatureIndex = -1;
   
     async function _discoverNext(n) {
-      const eSigs = await hashes.next(n);
+      const eSigs = await state.hashes.next(n);
       const strEsigs = eSigs.map(s => {return _buf2hex(s)});
+      console.log("querying the blockchain for signatures: ", strEsigs);
       const request = network.api.requests.getSignatures(strEsigs);
   
       return _safeFetch(network.api.endpoint, request)
         .then(events => {
-          signatureEvents.concat(events);
-          if (events.length !== network.api.maxTopics) return signatureEvents;
+          console.log("events found:", events);
+          const parsedEvents = events.map(e => network.api.encoders.decodeSignatureEvent(e, decodeData));
+          signatureEvents.push(...parsedEvents);
+
+          // update state index of most recent signature
+          events.forEach(e => {
+            const sigNumber = state.hashes.indexOf(e.topics[2]);
+            if (sigNumber > state.lastSignatureIndex) state.lastSignatureIndex = sigNumber;
+          });
+          
+          // discover more signatures if necessary
+          if (events.length !== network.api.maxTopics) {
+            return { hash: documentHash, signatures: signatureEvents };
+          }
           return _discoverNext(network.api.maxTopics);
         })
     }
@@ -39,7 +132,6 @@ async function verify(file) {
   return hashFile(file)
     .then(_discoverSignatures);
 }
-
 
 /**
  * Hashes the given data buffer
@@ -102,7 +194,7 @@ class HashIterator {
     for (let i=this.hashes.length; i<=this.hashPtr+n; i++) {
       this.hashes.push(await hash(_concatBuffers(this.documentHash, this.hashes[i-1])));
     }
-    return this.hashes.slice(this.hashPtr+1, this.hashPtr+=n);
+    return this.hashes.slice(this.hashPtr+1, (this.hashPtr+=n)+1);
   }
 
   current() { return this.hashPtr >= 0 ? this.hashes(this.hashPtr) : undefined }
@@ -110,6 +202,8 @@ class HashIterator {
   currentIndex() { return this.hashPtr }
 
   indexAt(i) { return i < this.hashes.length ? this.hashes[i] : undefined }
+
+  indexOf(hash) { return this.hashes.indexOf(hash) }
 
   reset(n=0) { this.hashPtr = n }
 
@@ -150,6 +244,24 @@ function _concatBuffers(buffer1, buffer2) {
   return tmp.buffer;
 }
 
+function unicodeStrToHex(str) {
+  var result = "";
+  for (let i=0; i<str.length; i++) {
+    const hex = str.charCodeAt(i).toString(16);
+    result += ("000"+hex).slice(-4);
+  }
+  return result
+}
+
+function unicodeHexToStr(str) {
+  var hexChars = str.match(/.{1,4}/g) || [];
+  var result = "";
+  for(let j = 0; j<hexChars.length; j++) {
+    result += String.fromCharCode(parseInt(hexChars[j], 16));
+  }
+  return result;
+}
+
 
 // Errors
 
@@ -170,6 +282,7 @@ class BlockchainNotSupportedError extends Error {
 // Module exports
 
 export const opensig = {
+  sign: sign,
   verify: verify,
   hash: hash,
   hashFile: hashFile,
