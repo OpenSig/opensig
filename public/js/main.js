@@ -16,6 +16,22 @@ function onLoad() {
 window.onLoad = onLoad;
 
 
+function sign() {
+  const content = $("#signature-data").val();
+  const dataType = content.slice(0,2) === '0x' ? 'hex' : 'string';
+  const data = {
+    type: dataType,
+    encrypted: $("#data-encrypt-checkbox").is(":checked"),
+    content: content
+  }
+  opensig.sign(data)
+    .then(opensig.reverify)
+    .then(_updateSignatureContent)
+    .catch(console.error)
+}
+window.sign = sign;
+
+
 function setContent(id) {
   hide("#welcome-content", "#connected-content", "#signature-content")
   show(id);
@@ -27,32 +43,34 @@ const DATE_FORMAT_OPTIONS = { day: 'numeric', month: 'short', year: 'numeric', h
 
 function verify(file) {
  opensig.verify(file)
-    .then(result => {
-      const signatures = result.signatures;
-      console.log("found signatures: ", signatures);
-      setContent("#signature-content");
-      $("#filename").text(file.name);
-      if (signatures.length === 0) {
-        hide("#signatures-label", "#signature-box")
-        show("#no-signatures-label");
-      }
-      else {
-        show("#signatures-label", "#signature-box")
-        hide("#no-signatures-label");
-        const sigList = $("#signature-list");
-        sigList.innerHTML = '';
-        signatures.forEach(sig => {
-          const element = createElement('div', 'signature');
-          element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
-          element.appendChild(createElement('span', 'signature-who-field', sig.signatory));
-          element.appendChild(createElement('span', 'signature-comment-field', sig.data.content)); // TODO support different data types
-          sigList.append(element);
-        })
-      }
-    })
+    .then(_updateSignatureContent)
     .catch(console.error);
 }
 
+
+function _updateSignatureContent(verificationResult) {
+  const signatures = verificationResult.signatures;
+  console.log("found signatures: ", signatures);
+  setContent("#signature-content");
+  $("#filename").text(verificationResult.file.name);
+  if (signatures.length === 0) {
+    hide("#signatures-label", "#signature-box")
+    show("#no-signatures-label");
+  }
+  else {
+    show("#signatures-label", "#signature-box")
+    hide("#no-signatures-label");
+    const sigList = $("#signature-list");
+    sigList.empty();
+    signatures.forEach(sig => {
+      const element = createElement('div', 'signature');
+      element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
+      element.appendChild(createElement('span', 'signature-who-field', sig.signatory));
+      element.appendChild(createElement('span', 'signature-comment-field', sig.data.content)); // TODO support different data types
+      sigList.append(element);
+    })
+  }
+}
 
 function createElement(type, classes, innerHTML) {
   const element = document.createElement(type);

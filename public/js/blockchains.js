@@ -15,14 +15,12 @@ const BASE_GOERLI = {
 
   api: {
     endpoint: "https://divine-green-orb.base-goerli.discover.quiknode.pro/f886a37aca7a8de5ac712cafe870639d9efe36e1/",
-    maxTopics: 3,
+    maxTopics: 10,
     requests: {
 
       getSignatures: (signatures) => {
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
-        const topics = [null, null, signatures]; //signatures.map(s => { return [null, null, s] });
-        console.log("topics", topics)
         return {
           method: 'POST',
           headers: headers,
@@ -31,7 +29,7 @@ const BASE_GOERLI = {
             params: [{
               fromBlock: 'earliest',
               address: "0x0E06f4d4BC550A28aF7078ad20b3cB97C014973e",
-              topics: topics 
+              topics: [null, null, signatures] 
             }],
             id: 1,
             jsonrpc: '2.0'

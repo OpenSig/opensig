@@ -13,6 +13,36 @@ const state = {
   lastSignatureIndex: -1
 }
 
+async function sign(data) {
+  if (state.hashes === undefined) throw new Error("Must verify file before signing it");
+
+  const network = getBlockchain();
+  if (network === undefined) throw new BlockchainNotSupportedError();
+  const web3 = new Web3(window.ethereum);
+
+  state.hashes.reset(state.lastSignatureIndex);
+
+  return state.hashes.next()
+    .then(signatures => {
+      const signature = _buf2hex(signatures[0]);
+      const encodedData = encodeData(data);
+
+      console.log("registering signature:", signature, "with data ", encodedData);
+
+      const contract = new web3.eth.Contract(network.contract.abi, network.contract.address);
+
+      const transactionParameters = {
+        to: network.contract.address,
+        from: window.ethereum.selectedAddress,
+        value: 0,
+        data: contract.methods.registerSignature(signature, encodedData).encodeABI(), 
+      };
+      
+      return ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] })
+        .then(txHash => { console.log('tx hash:', txHash) });
+
+    })
+}
 
 function encodeData(data) {
   if (data.content === undefined || data.content === '') return '0x';
@@ -86,52 +116,59 @@ function encrypt(dataStr) {
  * @throws APIError returned by the endpoint if the fetch fails
  */
 async function verify(file) {
-
+  state.file = file;
+  state.hashes = undefined;
+  state.lastSignatureIndex = undefined;
   console.log("verifying file", file.name);
-
-  function _discoverSignatures(documentHash) {
-    console.log("discovering signatures for document", _buf2hex(documentHash));
-    const network = getBlockchain();
-    if (network === undefined) throw new BlockchainNotSupportedError();
-
-    const signatureEvents = [];
-    state.file = file;
-    state.hashes = new HashIterator(documentHash);
-    state.lastSignatureIndex = -1;
-  
-    async function _discoverNext(n) {
-      const eSigs = await state.hashes.next(n);
-      const strEsigs = eSigs.map(s => {return _buf2hex(s)});
-      console.log("querying the blockchain for signatures: ", strEsigs);
-      const request = network.api.requests.getSignatures(strEsigs);
-  
-      return _safeFetch(network.api.endpoint, request)
-        .then(events => {
-          console.log("events found:", events);
-          const parsedEvents = events.map(e => network.api.encoders.decodeSignatureEvent(e, decodeData));
-          signatureEvents.push(...parsedEvents);
-
-          // update state index of most recent signature
-          events.forEach(e => {
-            const sigNumber = state.hashes.indexOf(e.topics[2]);
-            if (sigNumber > state.lastSignatureIndex) state.lastSignatureIndex = sigNumber;
-          });
-          
-          // discover more signatures if necessary
-          if (events.length !== network.api.maxTopics) {
-            return { hash: documentHash, signatures: signatureEvents };
-          }
-          return _discoverNext(network.api.maxTopics);
-        })
-    }
-  
-    return _discoverNext(network.api.maxTopics);
-  
-  }
-  
   return hashFile(file)
     .then(_discoverSignatures);
 }
+
+
+function _discoverSignatures(documentHash) {
+  console.log("discovering signatures for document", _buf2hex(documentHash));
+  const network = getBlockchain();
+  if (network === undefined) throw new BlockchainNotSupportedError();
+
+  const signatureEvents = [];
+  state.hashes = new HashIterator(documentHash);
+  state.lastSignatureIndex = -1;
+
+  async function _discoverNext(n) {
+    const eSigs = await state.hashes.next(n);
+    const strEsigs = eSigs.map(s => {return _buf2hex(s)});
+    console.log("querying the blockchain for signatures: ", strEsigs);
+    const request = network.api.requests.getSignatures(strEsigs);
+
+    return _safeFetch(network.api.endpoint, request)
+      .then(events => {
+        console.log("found events:", events);
+        const parsedEvents = events.map(e => network.api.encoders.decodeSignatureEvent(e, decodeData));
+        signatureEvents.push(...parsedEvents);
+
+        // update state index of most recent signature
+        parsedEvents.forEach(e => {
+          const sigNumber = state.hashes.indexOf(e.signature);
+          if (sigNumber > state.lastSignatureIndex) state.lastSignatureIndex = sigNumber;
+        });
+        
+        // discover more signatures if necessary
+        if (events.length !== network.api.maxTopics) {
+          return { file: state.file, hash: documentHash, signatures: signatureEvents };
+        }
+        return _discoverNext(network.api.maxTopics);
+      })
+  }
+
+  return _discoverNext(network.api.maxTopics);
+
+}
+
+async function reverify() {
+  if (state.hashes === undefined) return Promise.reject("nothing to reverify");
+  return _discoverSignatures(state.hashes.documentHash);
+}
+
 
 /**
  * Hashes the given data buffer
@@ -203,7 +240,7 @@ class HashIterator {
 
   indexAt(i) { return i < this.hashes.length ? this.hashes[i] : undefined }
 
-  indexOf(hash) { return this.hashes.indexOf(hash) }
+  indexOf(hash) { return this.hashes.map(h => { return _buf2hex(h) }).indexOf(hash) }
 
   reset(n=0) { this.hashPtr = n }
 
@@ -284,6 +321,7 @@ class BlockchainNotSupportedError extends Error {
 export const opensig = {
   sign: sign,
   verify: verify,
+  reverify: reverify,
   hash: hash,
   hashFile: hashFile,
   HashIterator: HashIterator,
