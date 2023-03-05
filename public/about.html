@@ -1,0 +1,112 @@
+<!-- Copyright (c) 2023 Bubble Protocol -->
+<!-- Distributed under the MIT software license, see the accompanying -->
+<!-- file LICENSE or http://www.opensource.org/licenses/mit-license.php. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <title>OpenSig</title>
+      <meta name="description" content="Digitally sign and verify documents on the blockchain from the privacy of your computer." />
+      <meta name="keywords" content="digital signatures, blockchain, bubble protocol, web 3.0, e-signatures" />
+      <meta name="author" content="Bubble Protocol" />
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="shortcut icon" href="assets/simple-logo.png" />
+      <link rel="stylesheet" type="text/css" href="index.css" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="header">
+        <div class="content-column">
+            <div class="left-header">
+                <div class="header-logo"></div>
+                <a class="header-logo-text" href="index.html">OpenSig</a>
+            </div>
+            <div class="right-header">
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+      <div class="content-clumn">
+        <div class="post-content">
+
+          <div class="post-section">
+            <h1>What is OpenSig?</h1>
+            <p>
+              OpenSig is a simple yet powerful app for publishing digital signatures of documents to the blockchain.<br/>
+            </p>
+            <p>
+              By connecting the Metamask wallet, users can publish digital signatures of local files to any supported blockchain along with optional text or binary data.
+              Documents are never uploaded and signatures are not traceable without the original document.  The optional signature data can public or can be encrypted so that only users with the original document can read it.
+            </p>
+            <span class="error-message">
+              OpenSig is currently in alpha test and its use is only recommended for experimental purposes.
+            </span>
+          </div>
+          
+          <div class="post-section">
+            <h1>Features</h1>
+            <ul>
+              <li><b>Proof of Existence</b> - signatures notarise the document on the blockchain providing secure proof that the document existed at the time the signature was published.</li>
+              <li><b>Proof of Possession</b> - signatures are linked to the signer's public address proving the signer possessed the document at the time of signing.</li>
+              <li><b>Non-repudiable</b> - the immutability of the blockchain ensures signatures cannot be repudiated.</li>
+              <li><b>Annotating Purpose</b> - a signature's optional data field can be used to annotate the signature with the purpose for signing, such as 'first draft' or 'Approved for release'.</li>
+              <li><b>Linkable</b> - signatures can be linked to external files and urls through the optional signature data.  Link to a Bubble or an IPFS content ID, for example.</li>
+            </ul>
+          </div>
+
+          <div class="post-section">
+            <h1>Uses</h1>
+            <ul>
+              <li>Digitally signing documents and contracts.</li>
+              <li>Protecting your creations against future copyright challenges.</li>
+              <li>Notarising public messages to the blockchain.</li>
+              <li>Publishing public links to files on decentralised storage.</li>
+            </ul>
+          </div>
+
+          <div class="post-section">
+            <h1>How it works</h1>
+            <p>
+              Signatures are SHA-256 hashes derived from the hash of the document and the previous signature, creating a chain of signatures unique to each document.
+              The signature chain is deterministic provided the user is in possession of the original document.  
+              Without the original document signatures published to the blockchain cannot be linked to the document or to each other.
+              With the original document signatures on the blockchain can be read and any encrypted data fields decrypted.
+            </p>
+          </div>
+
+          <div class="post-section">
+            <h1>License</h1>
+            <p>
+              OpenSig is open source software licensed under the <a target="_blank" href="https://opensource.org/license/mit/">MIT License</a>.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+        <div class="content-column">
+            <div class="left-footer">
+                <span class="footer-text">About OpenSig</span>
+            </div>
+            <div class="center-footer">
+              <div class="footer-icons">
+                <a class="footer-icon twitter-icon" target="_blank" href="https://twitter.com/BubbleProtocol"></a>
+                <a class="footer-icon discord-icon" target="_blank" href="https://discord.gg/WyzmB9Qs"></a>
+              </div>
+              <span class="footer-text">©2023 Bubble Protocol</span>
+            </div>
+            <div class="right-footer">
+              <a class="footer-text" target="_blank" href="https://github.com/Bubble-Protocol/opensig">Source Code</a>
+            </div>
+        </div>
+    </div>
+
+  </body>
+</html>
+
