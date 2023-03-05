@@ -5,7 +5,9 @@
 import {opensig} from "./opensig.js";
 
 const TRACE_ON = true;
-console.trace = (...args) => { if (TRACE_ON) console.log(args) };
+const DEBUG_ON = true;
+console.trace = TRACE_ON ? Function.prototype.bind.call(console.info, console, "[trace]") : function() {};
+console.debug = DEBUG_ON ? Function.prototype.bind.call(console.info, console, "[debug]") : function() {};
 
 
 //
@@ -47,7 +49,6 @@ function sign() {
     content: content
   }
   const file = currentFile;
-  console.log("sign")
   file.sign(data)
     .then(result => {
       _appendUnconfirmedSignature(result.signatory, content);
@@ -104,7 +105,7 @@ window.setContent = setContent;
 
 
 function _updateSignatureContent(signatures) {
-  console.log("found signatures: ", signatures);
+  console.trace("found signatures: ", signatures);
   setContent("#signature-content");
   $("#filename").text(currentFile.file.name);
   const sigList = $("#signature-list");
@@ -148,7 +149,7 @@ function createElement(type, classes, innerHTML) {
 }
 
 function displayError(error) {
-  console.trace(error);
+  console.error(error);
   console.log("Error:", error.message || error);
   $(currentContent+"-error-message").text(error.message || error);
 }
