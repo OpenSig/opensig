@@ -25,6 +25,12 @@ function sign() {
     content: content
   }
   opensig.sign(data)
+    .then(result => {
+      _appendUnconfirmedSignature(result.signatory, content);
+      show("#signatures-label", "#signature-box")
+      hide("#no-signatures-label");
+      return result.confirmationInformer;
+     })
     .then(opensig.reverify)
     .then(_updateSignatureContent)
     .catch(console.error)
@@ -53,6 +59,8 @@ function _updateSignatureContent(verificationResult) {
   console.log("found signatures: ", signatures);
   setContent("#signature-content");
   $("#filename").text(verificationResult.file.name);
+  const sigList = $("#signature-list");
+  sigList.empty();
   if (signatures.length === 0) {
     hide("#signatures-label", "#signature-box")
     show("#no-signatures-label");
@@ -60,8 +68,6 @@ function _updateSignatureContent(verificationResult) {
   else {
     show("#signatures-label", "#signature-box")
     hide("#no-signatures-label");
-    const sigList = $("#signature-list");
-    sigList.empty();
     signatures.forEach(sig => {
       const element = createElement('div', 'signature');
       element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
@@ -70,6 +76,20 @@ function _updateSignatureContent(verificationResult) {
       sigList.append(element);
     })
   }
+}
+
+function _appendUnconfirmedSignature(signatory, data) {
+  const element = createElement('div', 'signature');
+  const spinnerFrame = createElement('div', 'signature-spinner-frame');
+  const spinner = createElement('div', "spinner");
+  spinner.appendChild(createElement('div', ''));
+  spinner.appendChild(createElement('div', ''));
+  spinnerFrame.appendChild(spinner);
+  element.appendChild(spinnerFrame);
+  element.appendChild(createElement('span', 'signature-who-field', signatory));
+  element.appendChild(createElement('span', 'signature-comment-field', data)); // TODO support different data types
+  const sigList = $("#signature-list");
+  sigList.append(element);
 }
 
 function createElement(type, classes, innerHTML) {

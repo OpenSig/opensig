@@ -5,7 +5,8 @@ const BASE_GOERLI = {
 
   network: {
     chain: 84531,
-    name: "Base Goerli"
+    name: "Base Goerli",
+    blockTime: 2000
   },
 
   contract: {

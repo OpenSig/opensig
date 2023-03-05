@@ -555,6 +555,20 @@ body {
   border: 1px solid #C4C4C4;
 }
 
+.signature-spinner-frame {
+  width: 119px;
+  height: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  flex: none;
+  flex-grow: 0;
+}
+
+
 /* Footer */
 
 .footer {
@@ -639,3 +653,51 @@ body {
 }
 
 
+/* Spinner */
+
+.spinner {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+.spinner div {
+  position: absolute;
+  border: 1px solid #000;
+  opacity: 1;
+  border-radius: 50%;
+  animation: spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.spinner div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes spinner {
+  0% {
+    top: 7px;
+    left: 7px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 7px;
+    left: 7px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 7px;
+    left: 7px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+  }
+}

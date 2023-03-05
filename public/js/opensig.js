@@ -31,18 +31,47 @@ async function sign(data) {
 
       const contract = new web3.eth.Contract(network.contract.abi, network.contract.address);
 
+      const signatory = window.ethereum.selectedAddress;
+
       const transactionParameters = {
         to: network.contract.address,
-        from: window.ethereum.selectedAddress,
+        from: signatory,
         value: 0,
         data: contract.methods.registerSignature(signature, encodedData).encodeABI(), 
       };
       
       return ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] })
-        .then(txHash => { console.log('tx hash:', txHash) });
+        .then(txHash => { 
+          console.log('tx hash:', txHash);
+          return { 
+            txHash: txHash, 
+            signatory: signatory,
+            signature: signature, 
+            confirmationInformer: _confirmTransaction(network, web3, txHash) };
+        })
 
     })
 }
+
+function _confirmTransaction(network, web3, txHash) {
+  return new Promise( (resolve, reject) => {
+
+    function checkTxReceipt(txHash, interval, resolve, reject) {
+      web3.eth.getTransactionReceipt(txHash)
+        .then(receipt => {
+          if (receipt === null ) setTimeout(() => { checkTxReceipt(txHash, interval, resolve, reject) }, interval);
+          else {
+            if (receipt.status) resolve(receipt);
+            else reject(receipt);
+          }
+        })
+    }
+
+    // initially query for confirmation after the network block time then every second after
+    setTimeout(() => { checkTxReceipt(txHash, 1000, resolve, reject) }, network.network.blockTime); 
+  })
+}
+
 
 function encodeData(data) {
   if (data.content === undefined || data.content === '') return '0x';
