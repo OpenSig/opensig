@@ -284,6 +284,8 @@ body {
 
 .dnd-box {
   box-sizing: border-box;
+  height: 180px;
+  width: 450px;
   display: flex;
   flex-direction: column;
   justify-content: center;

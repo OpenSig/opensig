@@ -32,10 +32,16 @@ window.onLoad = onLoad;
 
 function verify(file) {
   clearError();
+  hide("#dnd-box");
+  show("#dnd-box-spinner");
   currentFile = new opensig.File(file);
   currentFile.verify()
     .then(_updateSignatureContent)
-    .catch(displayError);
+    .catch(displayError)
+    .finally(() => {
+      show("#dnd-box");
+      hide("#dnd-box-spinner");
+    });
 }
 
 
