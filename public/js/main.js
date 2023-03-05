@@ -4,6 +4,9 @@
 
 import {opensig} from "./opensig.js";
 
+const TRACE_ON = true;
+console.trace = (...args) => { if (TRACE_ON) console.log(args) };
+
 
 //
 // Controller functions
@@ -19,19 +22,23 @@ function onLoad() {
     toggleHidden("#wallet-connect-button", "#metamask-install-button", "#wallet-connect-text", "#metamask-install-text");
   }
 
+  setContent("#welcome-content");
+
 }
 window.onLoad = onLoad;
 
 
 function verify(file) {
+  clearError();
   currentFile = new opensig.File(file);
   currentFile.verify()
     .then(_updateSignatureContent)
-    .catch(console.error);
+    .catch(displayError);
 }
 
 
 function sign() {
+  clearError();
   const content = $("#signature-data").val();
   const dataType = content.slice(0,2) === '0x' ? 'hex' : 'string';
   const data = {
@@ -50,7 +57,9 @@ function sign() {
      })
     .then(file.verify)
     .then(_updateSignatureContent)
-    .catch(console.error)
+    .catch(error => {
+      if (error.code !== 4001) displayError(error); // ignore metamask user reject
+    })
 }
 window.sign = sign;
 
@@ -84,11 +93,12 @@ window.connectMetamask = connectMetamask;
 //
 
 const DATE_FORMAT_OPTIONS = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-
+let currentContent = undefined;
 
 function setContent(id) {
   hide("#welcome-content", "#connected-content", "#signature-content")
   show(id);
+  currentContent = id;
 }
 window.setContent = setContent;
 
@@ -135,6 +145,17 @@ function createElement(type, classes, innerHTML) {
   element.className = classes;
   if (innerHTML) element.innerHTML = innerHTML;
   return element;
+}
+
+function displayError(error) {
+  console.trace(error);
+  console.log("Error:", error.message || error);
+  $(currentContent+"-error-message").text(error.message || error);
+}
+
+function clearError() {
+  $("#connected-content-error-message").text('');
+  $("#signature-content-error-message").text('');
 }
 
 
