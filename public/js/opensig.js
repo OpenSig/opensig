@@ -7,6 +7,7 @@ const SIG_DATA_ENCRYPTED_FLAG = 128;
 const SIG_DATA_TYPE_STRING = 0;
 const SIG_DATA_TYPE_BYTES = 1;
 
+
 /**
  * Creates an OpenSig document from a hash, allowing it to be signed and verified.  
  */
@@ -36,6 +37,10 @@ class Document {
     return this.hashes.next()
       .then(signature => { 
         return _publishSignature(signature, data, this.encryptionKey);
+      })
+      .catch(error => {
+        this.hashes.reset(this.hashes.currentIndex()-1);
+        throw error;
       });
   }
 
