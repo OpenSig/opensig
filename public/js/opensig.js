@@ -7,52 +7,131 @@ const SIG_DATA_ENCRYPTED_FLAG = 128;
 const SIG_DATA_TYPE_STRING = 0;
 const SIG_DATA_TYPE_BYTES = 1;
 
-const state = {
-  file: undefined,
-  hashes: undefined,
-  lastSignatureIndex: -1
+/**
+ * Creates an OpenSig document from a hash, allowing it to be signed and verified.  
+ */
+class Document {
+
+  documentHash = undefined;
+  hashes = undefined;
+
+  constructor(hash) {
+    this.documentHash = hash;
+  }
+
+  /**
+   * Signs the document with the next available signature hash and the given data.
+   * @param {*} data 
+   * @returns {Object} containing 
+   *    txHash: blockchain transaction hash
+   *    signatory: signatory of the transaction
+   *    signature: the signature hash published
+   *    confirmationInformer: Promise that resolves when the transaction has been confirmed
+   */
+  async sign(data) {
+    if (this.hashes === undefined) throw new Error("Must verify before signing");
+    console.log("sign()")
+    return this.hashes.next()
+      .then(signature => { 
+        return _publishSignature(signature, data);
+      });
+  }
+
+  /**
+   * Retrieves all signatures on the current blockchain for this document hash.
+   * 
+   * @returns Array of signature events or empty array if none
+   * @throws BlockchainNotSupportedError
+   */
+  async verify() {
+    console.log("verifying hash", this.documentHash);
+    return _discoverSignatures(this.documentHash)
+      .then(result => {
+        this.hashes = result.hashes;
+        return result.signatures;
+      });
+  }
+
 }
 
-async function sign(data) {
-  if (state.hashes === undefined) throw new Error("Must verify file before signing it");
 
+/**
+ * Creates an OpenSig document from a file, allowing it to be signed and verified.
+ */
+class File extends Document {
+
+  file = undefined;
+  document = undefined;
+
+  constructor(file) {
+    super(undefined);
+    this.file = file;
+    this.verify = this.verify.bind(this);
+  }
+
+  /**
+   * Retrieves all signatures on the current blockchain for this file.
+   * 
+   * @param {File} file the file to verify
+   * @returns Array of signature events or empty array if none
+   * @throws BlockchainNotSupportedError
+   */
+  async verify() {
+    console.log("verifying file", this.file.name);
+    return hashFile(this.file)
+      .then(fileHash => {
+        this.documentHash = fileHash;
+        return super.verify()
+      });
+  }
+
+}
+
+
+//
+// Signing functions
+//
+
+/**
+ * Constructs a transaction to publish the given signature transaction to the blockchain's registry contract.
+ * Returns an object containing the transaction hash, signatory, signature, and a Promise to resolve when confirmed.
+ */ 
+function _publishSignature(signatureAsArr, data) {
   const network = getBlockchain();
   if (network === undefined) throw new BlockchainNotSupportedError();
   const web3 = new Web3(window.ethereum);
 
-  state.hashes.reset(state.lastSignatureIndex);
+  const signature = _buf2hex(signatureAsArr[0]);
+  const encodedData = _encodeData(data);
+  console.log("publishing signature:", signature, "with data ", encodedData);
+  
+  const contract = new web3.eth.Contract(network.contract.abi, network.contract.address);
+  const signatory = window.ethereum.selectedAddress;
 
-  return state.hashes.next()
-    .then(signatures => {
-      const signature = _buf2hex(signatures[0]);
-      const encodedData = encodeData(data);
-
-      console.log("registering signature:", signature, "with data ", encodedData);
-
-      const contract = new web3.eth.Contract(network.contract.abi, network.contract.address);
-
-      const signatory = window.ethereum.selectedAddress;
-
-      const transactionParameters = {
-        to: network.contract.address,
-        from: signatory,
-        value: 0,
-        data: contract.methods.registerSignature(signature, encodedData).encodeABI(), 
+  const transactionParameters = {
+    to: network.contract.address,
+    from: signatory,
+    value: 0,
+    data: contract.methods.registerSignature(signature, encodedData).encodeABI(), 
+  };
+  
+  return ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] })
+    .then(txHash => { 
+      console.log('tx hash:', txHash);
+      return { 
+        txHash: txHash, 
+        signatory: signatory,
+        signature: signature,
+        confirmationInformer: _confirmTransaction(network, web3, txHash) 
       };
-      
-      return ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] })
-        .then(txHash => { 
-          console.log('tx hash:', txHash);
-          return { 
-            txHash: txHash, 
-            signatory: signatory,
-            signature: signature, 
-            confirmationInformer: _confirmTransaction(network, web3, txHash) };
-        })
-
-    })
+    });
 }
 
+
+/**
+ * Returns a promise to resolve when the given transaction hash has been confirmed bly the blockchain network.
+ * Rejects if the transaction reverted.
+ */
 function _confirmTransaction(network, web3, txHash) {
   return new Promise( (resolve, reject) => {
 
@@ -67,13 +146,89 @@ function _confirmTransaction(network, web3, txHash) {
         })
     }
 
-    // initially query for confirmation after the network block time then every second after
     setTimeout(() => { checkTxReceipt(txHash, 1000, resolve, reject) }, network.network.blockTime); 
   })
 }
 
 
-function encodeData(data) {
+//
+// Verifying functions
+//
+
+/**
+ * Queries the blockchain for signature events generated by the registry contract for the given document hash.
+ */
+function _discoverSignatures(documentHash) {
+  console.log("discovering signatures for document", _buf2hex(documentHash));
+  const network = getBlockchain();
+  if (network === undefined) throw new BlockchainNotSupportedError();
+  const web3 = new Web3(window.ethereum);
+
+  const signatureEvents = [];
+  const hashes = new HashIterator(documentHash);
+  let lastSignatureIndex = -1;
+
+  const MAX_SIGS_PER_DISCOVERY_ITERATION = 10;
+
+  async function _discoverNext(n) {
+    const eSigs = await hashes.next(n);
+    const strEsigs = eSigs.map(s => {return _buf2hex(s)});
+    console.log("querying the blockchain for signatures: ", strEsigs);
+
+    return web3.eth.getPastLogs({
+        address: network.contract.address,
+        fromBlock: 'earliest',
+        topics: [null, null, strEsigs]
+      })
+      .then(events => {
+        console.log("found events:", events);
+        const parsedEvents = events.map(e => _decodeSignatureEvent(e));
+        signatureEvents.push(...parsedEvents);
+
+        // update state index of most recent signature
+        parsedEvents.forEach(e => {
+          const sigNumber = hashes.indexOf(e.signature);
+          if (sigNumber > lastSignatureIndex) lastSignatureIndex = sigNumber;
+        });
+        
+        // discover more signatures if necessary
+        if (events.length !== MAX_SIGS_PER_DISCOVERY_ITERATION) {
+          hashes.reset(lastSignatureIndex); // leave the iterator at the last publishes signature
+          return { hashes: hashes, signatures: signatureEvents };
+        }
+        return _discoverNext(MAX_SIGS_PER_DISCOVERY_ITERATION);
+      });
+
+  }
+
+  return _discoverNext(MAX_SIGS_PER_DISCOVERY_ITERATION);
+
+}
+
+/**
+ * Transforms a blockchain event into an OpenSig signature object.
+ */
+function _decodeSignatureEvent(event) {
+  const web3 = new Web3(window.ethereum);
+  const decodedEvent = web3.eth.abi.decodeLog(
+    [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ],
+    event.data,
+    event.topics.slice(1)
+  )
+  return {
+    time: decodedEvent.time,
+    signatory: decodedEvent.signer,
+    signature: decodedEvent.signature,
+    data: _decodeData(decodedEvent.data)
+  }
+}
+
+
+//
+// Signature Data encoders - encode and decode signature data in accordance with OpenSig standard v0.1
+//
+
+function _encodeData(data) {
   if (data.content === undefined || data.content === '') return '0x';
   let type = data.encrypted ? SIG_DATA_ENCRYPTED_FLAG : 0;
   let encData = '';
@@ -99,7 +254,7 @@ function encodeData(data) {
   return '0x'+SIG_DATA_VERSION + typeStr + encData;
 }
 
-function decodeData(encData) {
+function _decodeData(encData) {
   if (encData === undefined || encData === '') return {type: 'none'}
   if (encData.length < 6) return {type: "invalid", content: "data is < 6 bytes"}
   const version = encData.slice(2,4);
@@ -136,68 +291,9 @@ function encrypt(dataStr) {
 }
 
 
-/**
- * Retrieves all signatures on the current blockchain for the given file.
- * 
- * @param {File} file the file to verify
- * @returns Array of signature events or empty array if none
- * @throws BlockchainNotSupportedError
- * @throws APIError returned by the endpoint if the fetch fails
- */
-async function verify(file) {
-  state.file = file;
-  state.hashes = undefined;
-  state.lastSignatureIndex = undefined;
-  console.log("verifying file", file.name);
-  return hashFile(file)
-    .then(_discoverSignatures);
-}
-
-
-function _discoverSignatures(documentHash) {
-  console.log("discovering signatures for document", _buf2hex(documentHash));
-  const network = getBlockchain();
-  if (network === undefined) throw new BlockchainNotSupportedError();
-
-  const signatureEvents = [];
-  state.hashes = new HashIterator(documentHash);
-  state.lastSignatureIndex = -1;
-
-  async function _discoverNext(n) {
-    const eSigs = await state.hashes.next(n);
-    const strEsigs = eSigs.map(s => {return _buf2hex(s)});
-    console.log("querying the blockchain for signatures: ", strEsigs);
-    const request = network.api.requests.getSignatures(strEsigs);
-
-    return _safeFetch(network.api.endpoint, request)
-      .then(events => {
-        console.log("found events:", events);
-        const parsedEvents = events.map(e => network.api.encoders.decodeSignatureEvent(e, decodeData));
-        signatureEvents.push(...parsedEvents);
-
-        // update state index of most recent signature
-        parsedEvents.forEach(e => {
-          const sigNumber = state.hashes.indexOf(e.signature);
-          if (sigNumber > state.lastSignatureIndex) state.lastSignatureIndex = sigNumber;
-        });
-        
-        // discover more signatures if necessary
-        if (events.length !== network.api.maxTopics) {
-          return { file: state.file, hash: documentHash, signatures: signatureEvents };
-        }
-        return _discoverNext(network.api.maxTopics);
-      })
-  }
-
-  return _discoverNext(network.api.maxTopics);
-
-}
-
-async function reverify() {
-  if (state.hashes === undefined) return Promise.reject("nothing to reverify");
-  return _discoverSignatures(state.hashes.documentHash);
-}
-
+//
+// Hashing utils
+//
 
 /**
  * Hashes the given data buffer
@@ -207,7 +303,6 @@ async function reverify() {
 function hash(data) {
   return window.crypto.subtle.digest('SHA-256', data);
 }
-
 
 /**
  * Hashes the given File
@@ -221,28 +316,8 @@ async function hashFile(file) {
     })
 }
 
-
-// RESTful utils
-
-async function _safeFetch(uri, request) {
-  return fetch(uri, request)
-    .then(response => {
-      if (!response.ok) {
-        return response.text()
-          .then(message => { 
-            return Promise.reject(new APIError(response.status, message.trim())) 
-          });
-      }
-      return response.text();
-    })
-    .then(responseObj => { return JSON.parse(responseObj).result })
-  }
-
-
-// Hashing utils
-
 /**
- * Generates the sequence of signature hashes for a document hash in accordance with the OpenSig standard.
+ * Generates the deterministic sequence of signature hashes for a document hash in accordance with OpenSig standard v0.1.
  * Use `next` to retrieve the next `n` hashes.  The iterator will only generate hashes when the `next` function is
  * called.
  */
@@ -278,13 +353,10 @@ class HashIterator {
 }
 
 
-// File utils
+//
+// Utility functions
+//
 
-/**
- * Reads the given file and returns the contents as an ArrayBuffer
- * @param {File} file 
- * @returns ArrayBuffer
- */
 function readFile(file) {
   return new Promise( (resolve, reject) => {
     var reader = new FileReader();
@@ -294,8 +366,6 @@ function readFile(file) {
   })
 }
 
-
-// Utility functions
 
 function _buf2hex(buffer) { // buffer is an ArrayBuffer
   return '0x'+[...new Uint8Array(buffer)]
@@ -329,14 +399,9 @@ function unicodeHexToStr(str) {
 }
 
 
+//
 // Errors
-
-class APIError extends Error {
-  constructor(status, error) {
-    super(error);
-    this.status = status;
-  }
-}
+//
 
 class BlockchainNotSupportedError extends Error {
   constructor() {
@@ -345,17 +410,17 @@ class BlockchainNotSupportedError extends Error {
 }
 
 
+//
 // Module exports
+//
 
 export const opensig = {
-  sign: sign,
-  verify: verify,
-  reverify: reverify,
+  File: File,
+  Document: Document,
   hash: hash,
   hashFile: hashFile,
   HashIterator: HashIterator,
   errors: {
-    APIError: APIError,
     BlockchainNotSupportedError: BlockchainNotSupportedError
   }
 }

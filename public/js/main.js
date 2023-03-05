@@ -4,6 +4,13 @@
 
 import {opensig} from "./opensig.js";
 
+
+//
+// Controller functions
+//
+
+let currentFile = undefined;
+
 function onLoad() {
   initialiseDndBox();
 
@@ -16,6 +23,14 @@ function onLoad() {
 window.onLoad = onLoad;
 
 
+function verify(file) {
+  currentFile = new opensig.File(file);
+  currentFile.verify()
+    .then(_updateSignatureContent)
+    .catch(console.error);
+}
+
+
 function sign() {
   const content = $("#signature-data").val();
   const dataType = content.slice(0,2) === '0x' ? 'hex' : 'string';
@@ -24,18 +39,51 @@ function sign() {
     encrypted: $("#data-encrypt-checkbox").is(":checked"),
     content: content
   }
-  opensig.sign(data)
+  const file = currentFile;
+  console.log("sign")
+  file.sign(data)
     .then(result => {
       _appendUnconfirmedSignature(result.signatory, content);
       show("#signatures-label", "#signature-box")
       hide("#no-signatures-label");
       return result.confirmationInformer;
      })
-    .then(opensig.reverify)
+    .then(file.verify)
     .then(_updateSignatureContent)
     .catch(console.error)
 }
 window.sign = sign;
+
+
+//
+// Metamask interface functions
+//
+
+function isMetamaskPresent() {
+  return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+}
+
+function connectMetamask() {
+  if (!isMetamaskPresent()) return Promise.reject("Metamask is not present");
+  disable("#wallet-connect-button", "#wallet-connect-text");
+  return ethereum.request({ method: 'eth_requestAccounts' })
+    .then(addresses => {
+      if (addresses && addresses.length > 0) {
+        $("#address-dropdown-button").text(addresses[0].slice(0,6)+'...'+addresses[0].slice(-4));
+        toggleHidden("#wallet-connect-button", "#address-dropdown-button");
+        setContent("#connected-content");
+      }
+      enable("#wallet-connect-button", "#wallet-connect-text");
+    })
+}
+window.connectMetamask = connectMetamask;
+
+
+//
+// UI update functions
+//
+
+const DATE_FORMAT_OPTIONS = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
 
 
 function setContent(id) {
@@ -45,20 +93,10 @@ function setContent(id) {
 window.setContent = setContent;
 
 
-const DATE_FORMAT_OPTIONS = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-
-function verify(file) {
- opensig.verify(file)
-    .then(_updateSignatureContent)
-    .catch(console.error);
-}
-
-
-function _updateSignatureContent(verificationResult) {
-  const signatures = verificationResult.signatures;
+function _updateSignatureContent(signatures) {
   console.log("found signatures: ", signatures);
   setContent("#signature-content");
-  $("#filename").text(verificationResult.file.name);
+  $("#filename").text(currentFile.file.name);
   const sigList = $("#signature-list");
   sigList.empty();
   if (signatures.length === 0) {
@@ -98,29 +136,6 @@ function createElement(type, classes, innerHTML) {
   if (innerHTML) element.innerHTML = innerHTML;
   return element;
 }
-
-//
-// Metamask interface functions
-//
-
-function isMetamaskPresent() {
-  return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
-}
-
-function connectMetamask() {
-  if (!isMetamaskPresent()) return Promise.reject("Metamask is not present");
-  disable("#wallet-connect-button", "#wallet-connect-text");
-  return ethereum.request({ method: 'eth_requestAccounts' })
-    .then(addresses => {
-      if (addresses && addresses.length > 0) {
-        $("#address-dropdown-button").text(addresses[0].slice(0,6)+'...'+addresses[0].slice(-4));
-        toggleHidden("#wallet-connect-button", "#address-dropdown-button");
-        setContent("#connected-content");
-      }
-      enable("#wallet-connect-button", "#wallet-connect-text");
-    })
-}
-window.connectMetamask = connectMetamask;
 
 
 //
