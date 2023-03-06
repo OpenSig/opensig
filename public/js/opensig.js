@@ -186,7 +186,7 @@ async function _discoverSignatures(documentHash, encryptionKey) {
 
     return web3.eth.getPastLogs({
         address: network.contract.address,
-        fromBlock: 'earliest',
+        fromBlock: network.contract.creationBlock || 'earliest',
         topics: [null, null, strEsigs]
       })
       .then(events => {
