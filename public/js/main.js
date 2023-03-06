@@ -19,10 +19,11 @@ let currentFile = undefined;
 function onLoad() {
   initialiseDndBox();
 
-  // If metamask is not present then replace wallet connect button
-  if (!isMetamaskPresent()) {
-    toggleHidden("#wallet-connect-button", "#metamask-install-button", "#wallet-connect-text", "#metamask-install-text");
-  }
+  // If metamask is present then replace wallet install button
+  isMetamaskPresent()
+    .then(present => {
+      if (present) toggleHidden("#wallet-connect-button", "#metamask-install-button", "#wallet-connect-text", "#metamask-install-text");
+    });
 
   setContent("#welcome-content");
 
@@ -76,7 +77,23 @@ window.sign = sign;
 //
 
 function isMetamaskPresent() {
-  return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+
+  function detectMetamask() {
+    return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+  }
+
+  return new Promise((resolve) => {
+    if (detectMetamask()) resolve(true);
+    else {
+      let eventFired = false;
+      window.addEventListener('ethereum#initialized', () => {eventFired = true; resolve(detectMetamask())}, {
+        once: true,
+      });
+      setTimeout(() => {
+        resolve(detectMetamask())
+      }, 3000);
+    }
+  });
 }
 
 function connectMetamask() {
