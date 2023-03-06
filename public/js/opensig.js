@@ -266,7 +266,7 @@ async function _encodeData(data, encryptionKey) {
 }
 
 async function _decodeData(encData, encryptionKey) {
-  if (encData === undefined || encData === '') return {type: 'none'}
+  if (!encData || encData === '') return {type: 'none'}
   if (encData.length < 6) return {type: "invalid", content: "data is < 6 bytes"}
   const version = encData.slice(2,4);
   const typeField = parseInt(encData.slice(4,6), 16);
