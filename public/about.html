@@ -35,11 +35,16 @@
         <div class="post-section">
           <h1>What is OpenSig?</h1>
           <p>
-            OpenSig is a simple yet powerful app for publishing digital signatures of documents to the blockchain.<br/>
+            OpenSig is a simple yet powerful app for notarising and digitally signing documents on EVM-based blockchains.
+            It's optional data field can be used to annotate each signature with a purpose, message, url or other data.<br/>
           </p>
           <p>
-            By connecting the Metamask wallet, users can publish digital signatures of local files to any supported blockchain along with optional text or binary data.
-            Documents are never uploaded and signatures are not traceable without the original document.  The optional signature data can public or can be encrypted so that only users with the original document can read it.
+            Privacy is paramount.  Documents are never uploaded and signatures are not traceable without the original document.  
+            The optional signature data can be encrypted so that only users with the original document can read it.
+          </p>
+          <p>
+            OpenSig will always be open source.  No account is necessary and <a href="#blockchains">multiple chains are supported</a>.  
+            OpenSig does not charge for publishing signatures, you only pay the blockchain transaction fee.
           </p>
           <span class="error-message">
             OpenSig is currently in alpha test and its use is only recommended for experimental purposes.
@@ -52,7 +57,7 @@
             <li><b>Proof of Existence</b> - signatures notarise the document on the blockchain providing secure proof that the document existed at the time the signature was published.</li>
             <li><b>Proof of Possession</b> - signatures are linked to the signer's public address proving the signer possessed the document at the time of signing.</li>
             <li><b>Non-repudiable</b> - the immutability of the blockchain ensures signatures cannot be repudiated.</li>
-            <li><b>Annotating Purpose</b> - a signature's optional data field can be used to annotate the signature with the purpose for signing, such as 'first draft' or 'Approved for release'.</li>
+            <li><b>Annotations</b> - a signature's optional data field can be used to annotate the signature with the purpose for signing, such as 'first draft' or 'approved for release'.</li>
             <li><b>Linkable</b> - signatures can be linked to external files and urls through the optional signature data.  Link to a Bubble or an IPFS content ID, for example.</li>
           </ul>
         </div>
@@ -68,14 +73,14 @@
         </div>
 
         <div class="post-section">
-          <h1>Supported Chains</h1>
+          <h1 id="blockchains">Supported Chains</h1>
           <ul>
             <li>Ethereum mainnet</li>
             <li>Ethereum Sepolia testnet (<a target="_blank" href="https://chainlist.org/?testnets=true&search=sepolia">add to metamask</a>)</li>
             <li>BASE Goerli testnet (<a target="_blank" href="https://chainlist.org/?testnets=true&search=84531">add to metamask</a>)</li>
           </ul>
           <p>
-            Join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a> to request another network.
+            More chains will be added over time.  Join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a> to request a specific network.
           </p>
         </div>
 
@@ -86,7 +91,16 @@
             The signature chain is deterministic provided the user is in possession of the original document.  
             Without the original document signatures published to the blockchain cannot be linked to the document or to each other.
             With the original document signatures on the blockchain can be read and any encrypted data fields decrypted.
+            To prevent replay attacks the chain of signatures derived from a document is different for each blockchain.
           </p>
+          <p>
+            Signatures are registered with an OpenSig Registry contract on the blockchain. The registry ensures signatures can only be published once.  There is exactly one registry per supported blockchain.
+            Registering a signature generates an event log containing the block time, signatory, signature and user data.  It is these event logs that are read when verifying a document.
+          </p>
+          <p>
+            The user data is optionally AES-GCM encrypted using the document hash as the private key.
+          </p>
+          <img src="assets/cryptography.png" style="max-width: 600px">
         </div>
 
         <div class="post-section">
