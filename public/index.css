@@ -433,13 +433,19 @@ a {
   align-items: center;
   padding: 0px 10px;
   gap: 10px;
-  max-width: 500px;
+  min-width: 500px;
   height: 32px;  
   background: #FFFFFF;
   border: 1px solid #737373;
   flex: none;
   order: 1;
   flex-grow: 0;
+}
+
+@media only screen and (max-width: 490px) {
+  .data-text-box {
+    min-width: 240px;
+  }
 }
 
 .text-box {
