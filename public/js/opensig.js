@@ -33,6 +33,7 @@ class Document {
    *    confirmationInformer: Promise that resolves when the transaction has been confirmed
    */
   async sign(data) {
+    if (!window.crypto || !window.crypto.subtle) throw new Error("Browser not supported: missing crypto capability")
     if (this.hashes === undefined) throw new Error("Must verify before signing");
     return this.hashes.next()
       .then(signature => { 
@@ -51,6 +52,7 @@ class Document {
    * @throws BlockchainNotSupportedError
    */
   async verify() {
+    if (!window.crypto || !window.crypto.subtle) throw new Error("Browser not supported: missing crypto capability");
     console.trace("verifying hash", _buf2hex(this.documentHash));
     return _discoverSignatures(this.documentHash, this.encryptionKey)
       .then(result => {
@@ -88,6 +90,7 @@ class File extends Document {
    * @throws BlockchainNotSupportedError
    */
   async verify() {
+    if (!window.crypto || !window.crypto.subtle) throw new Error("Browser not supported: missing crypto capability");
     if (this.documentHash !== undefined) return super.verify();
     console.trace("verifying file", this.file.name);
     return hashFile(this.file)
