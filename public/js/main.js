@@ -99,17 +99,21 @@ function isMetamaskPresent() {
 function connectMetamask() {
   if (!isMetamaskPresent()) return Promise.reject("Metamask is not present");
   disable("#wallet-connect-button", "#wallet-connect-text");
+  ethereum.on('accountsChanged', setMetamaskAccount);
   return ethereum.request({ method: 'eth_requestAccounts' })
-    .then(addresses => {
-      if (addresses && addresses.length > 0) {
-        $("#address-dropdown-button").text(addresses[0].slice(0,6)+'...'+addresses[0].slice(-4));
-        toggleHidden("#wallet-connect-button", "#address-dropdown-button");
-        setContent("#connected-content");
-      }
-      enable("#wallet-connect-button", "#wallet-connect-text");
-    })
+    .then(setMetamaskAccount);
 }
 window.connectMetamask = connectMetamask;
+
+function setMetamaskAccount(accounts) {
+  if (accounts && accounts.length > 0) {
+    $("#address-dropdown-button").text(accounts[0].slice(0,6)+'...'+accounts[0].slice(-4));
+    hide("#wallet-connect-button");
+    show("#address-dropdown-button");
+    if (currentContent === '#welcome-content') setContent("#connected-content");
+  }
+  enable("#wallet-connect-button", "#wallet-connect-text");
+}
 
 
 //
