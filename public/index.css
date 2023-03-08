@@ -496,6 +496,28 @@ a {
   flex-grow: 0;
 }
 
+.signatures-label-frame {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  flex: none;
+  flex-grow: 0;
+}
+
+.signature-refresh-button {
+  width: 16px;
+  height: 16px;
+  background-size: cover;
+  flex: none;
+  flex-grow: 0;
+}
+
+.signature-refresh-button:hover {
+  cursor: pointer;
+}
+
 .filename-frame {
   display: flex;
   flex-direction: column;
@@ -759,6 +781,10 @@ li {
 
 .email-icon {
   background-image: url(assets/icon-mail.svg);
+}
+
+.refresh-icon {
+  background-image: url(assets/icon-refresh.svg);
 }
 
 

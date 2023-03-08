@@ -46,6 +46,17 @@ function verify(file) {
 }
 
 
+function reverify() {
+  if (!currentFile) return;
+  clearError();
+  clearSignatureContent();
+  currentFile.verify()
+    .then(_updateSignatureContent)
+    .catch(displayError);
+}
+window.reverify = reverify;
+
+
 function sign() {
   clearError();
   const content = $("#signature-data").val();
@@ -130,6 +141,9 @@ function setContent(id) {
 }
 window.setContent = setContent;
 
+function clearSignatureContent() {
+  $("#signature-list").empty();
+}
 
 function _updateSignatureContent(signatures) {
   console.trace("found signatures: ", signatures);

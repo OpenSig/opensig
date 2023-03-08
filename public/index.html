@@ -138,7 +138,10 @@
             </div>
             <div class="signatures">
                 <span id="no-signatures-label" class="label hidden">No Signatures</span>
-                <span id="signatures-label" class="label">Signatures</span>
+                <div id="signatures-label" class="signatures-label-frame">
+                    <span class="label">Signatures</span>
+                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
+                </div>
                 <div id="signature-box" class="signature-box">
                     <div class="signature">
                         <span class="signature-heading signature-date-field">Date</span>
