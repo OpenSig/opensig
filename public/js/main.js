@@ -31,11 +31,19 @@ function onLoad() {
 window.onLoad = onLoad;
 
 
-function verify(file) {
+function verifyUrl(url) {
+  fetch(url)
+    .then(result => result.blob())
+    .then(blob => { blob.name = url; return blob })
+    .then(verify)
+    .catch(displayError);
+}
+
+function verify(fileOrBlob) {
   clearError();
   hide("#dnd-box");
   show("#dnd-box-spinner");
-  currentFile = new opensig.File(file);
+  currentFile = new opensig.File(fileOrBlob);
   currentFile.verify()
     .then(_updateSignatureContent)
     .catch(displayError)
@@ -44,7 +52,6 @@ function verify(file) {
       hide("#dnd-box-spinner");
     });
 }
-
 
 function reverify() {
   if (!currentFile) return;
@@ -121,11 +128,15 @@ function setMetamaskAccount(accounts) {
     $("#address-dropdown-button").text(accounts[0].slice(0,6)+'...'+accounts[0].slice(-4));
     hide("#wallet-connect-button");
     show("#address-dropdown-button");
-    if (currentContent === '#welcome-content') setContent("#connected-content");
+    if (currentContent === '#welcome-content') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlFile = urlParams.get('verify');
+      if (urlFile) verifyUrl(urlFile);
+      setContent("#connected-content");
+    }
   }
   enable("#wallet-connect-button", "#wallet-connect-text");
 }
-
 
 //
 // UI update functions
