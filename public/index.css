@@ -209,6 +209,22 @@ a {
   flex-grow: 0;
 }
 
+table {
+  border-collapse: collapse;
+  border: 1px solid #7D7D7D;
+}
+
+tr {
+  border-bottom: 1px solid #7D7D7D;
+}
+
+td, th {
+  padding: 8px 10px;
+  border-right: 1px solid #7D7D7D;
+  text-align: left;
+}
+
+
 .h-table {
   display: flex;
   flex-direction: row;
@@ -797,6 +813,10 @@ li {
 
 .hidden {
   display: none;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 
