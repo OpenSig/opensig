@@ -20,6 +20,11 @@ body {
 
 a {
   text-decoration: none;
+  color: #1886C4;
+}
+
+a:visited {
+  text-decoration: none;
 }
 
 .error-message {
