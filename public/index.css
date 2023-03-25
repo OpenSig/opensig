@@ -233,7 +233,7 @@ td, th {
 .h-table {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   flex: none;
   flex-grow: 0;
@@ -306,6 +306,36 @@ td, th {
   cursor: pointer;
 }
 
+.new-to-web3-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  gap: 10px;
+  background: #FAFAFA;
+  border: 1px solid #737373;
+  flex: none;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.small-text {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #363636;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.join-waitlist-button {
+  background-color: #E7AC16;
+}
 
 /* Connected Content */
 
@@ -478,6 +508,7 @@ td, th {
   border-style: none;
   flex: none;
   flex-grow: 1;
+  min-width: 240px;
 }
 
 .text-box:focus {

@@ -28,6 +28,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.1/web3.min.js" integrity="sha512-GKw4QT/RccGJIwQxY3MhyiQ5pHrhQ8SuKFEafV+WcpOvtz7iYFQuQGFCvmGlHLctJTe8KrWU1FqvF7VOkEAJtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws"></script>
     <script type="application/javascript">fetch('https://vault.bubbleprotocol.com:8125/anonymousCount?page=opensig-index')</script>
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/opensig.js"></script>
@@ -81,6 +82,19 @@
             </div>
             <div id="wallet-connect-text" class="large-text-link hidden" onclick="connectMetamask()">Connect Your Wallet To Begin</div>
             <a id="metamask-install-text" class="large-text-link" target="_blank" href="https://metamask.io/">You need Metamask to use this service</a>
+            <br/>
+            <div class="new-to-web3-content">
+                <span class="subtitle">New to Web3?</span>
+                <span class="small-text">
+                    Don’t worry!  We are working on a version of OpenSig for ALL users.<br/>
+                    Join the waiting list below to be informed as soon as it is released.
+                </span>
+                <div class="h-table">
+                    <input id="email" name="email" class="text-box" type="text" placeholder="Email" onkeyup="validateWaitlistEmail(event)"></input>
+                    <div id="join-waitlist-button" class="header-button join-waitlist-button disabled" onclick="joinWaitlist()">Join Waitlist</div>
+                    <span id="thankyou-for-joining-text" class="small-text hidden">Thank you!  We'll be in touch soon.</span>
+                </div>
+            </div>
         </div>
 
         <div id="connected-content" class="connected-content hidden">

@@ -9,6 +9,8 @@ const DEBUG_ON = true;
 console.trace = TRACE_ON ? Function.prototype.bind.call(console.info, console, "[trace]") : function() {};
 console.debug = DEBUG_ON ? Function.prototype.bind.call(console.info, console, "[debug]") : function() {};
 
+const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
 
 //
 // Controller functions
@@ -88,6 +90,39 @@ function sign() {
     })
 }
 window.sign = sign;
+
+
+//
+// Waitlist control functions
+//
+
+function joinWaitlist() {
+  grecaptcha.ready(function() {
+    grecaptcha.execute('6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws', {action: 'submit'})
+      .then(function(token) {
+        const email = $("#email").val();
+        console.trace("registering email", email);
+        return fetch("https://vault.bubbleprotocol.com:8125/opensig-join-waitlist?email="+email+"&token="+token);
+      })
+      .then(() => {
+        $("#email").text('');
+        toggleHidden("#email", "#join-waitlist-button", "#thankyou-for-joining-text");
+      })
+      .catch(console.error);
+  });
+}
+window.joinWaitlist = joinWaitlist;
+
+
+function validateWaitlistEmail(event) {
+  const email = $("#email").val();
+  if (EMAIL_REGEX.test(email)) {
+    enable("#join-waitlist-button")
+    if (event.key === 'Enter') joinWaitlist();
+  }
+  else disable("#join-waitlist-button");
+}
+window.validateWaitlistEmail = validateWaitlistEmail;
 
 
 //
