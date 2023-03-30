@@ -5,7 +5,10 @@ const ETHEREUM_MAINNET = {
   network: {
     chain: 1,
     name: "Ethereum",
-    blockTime: 12000
+    blockTime: 12000,
+    providers: {
+      http: ""
+    }
   },
   contract: {
     address: "0x73eF7A3643aCbC3D616Bd5f7Ee5153Aa5f14DB30",
@@ -13,22 +16,6 @@ const ETHEREUM_MAINNET = {
     creationBlock: 16764681
   }
 }
-
-//
-// Cannot support Polygon at this time.  APIs only permit retrieving past events up to a 3500 block history (a few hours).
-//
-// const POLYGON_MAINNET = {
-//   network: {
-//     chain: 137,
-//     name: "Polygon",
-//     blockTime: 2000
-//   },
-//   contract: {
-//     address: "0x4037E81D79aD0E917De012dE009ff41c740BB453",
-//     abi: [ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" } ], "name": "isRegistered", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes", "name": "data_", "type": "bytes" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ],
-//     creationBlock: 40031474
-//   }
-// }
 
 const BASE_GOERLI = {
   network: {
@@ -56,22 +43,25 @@ const ETHEREUM_SEPOLIA = {
   }
 }
 
-const BINANCE_SMART_CHAIN = {
+const POLYGON_MAINNET = {
   network: {
-    chain: 56,
-    name: "Binance Smart Chain",
-    blockTime: 3000
+    chain: 137,
+    name: "Polygon",
+    blockTime: 2000
   },
   contract: {
-    address: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
-    abi: [ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" } ], "name": "isRegistered", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes", "name": "data_", "type": "bytes" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ]
+    address: "0x4037E81D79aD0E917De012dE009ff41c740BB453",
+    abi: [ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" } ], "name": "isRegistered", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes", "name": "data_", "type": "bytes" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ],
+    creationBlock: 40031474
+  },
+  endpoint: {
+    url: "https://polygon-mainnet.g.alchemy.com/v2/aLocFMVna57a6wIozAAwjggKEFvLfMcf"
   }
 }
 
-
 const BLOCKCHAINS = [
   ETHEREUM_MAINNET,
-  BINANCE_SMART_CHAIN,
+  POLYGON_MAINNET,
   BASE_GOERLI,
   ETHEREUM_SEPOLIA
 ]

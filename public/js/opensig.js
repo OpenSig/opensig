@@ -112,7 +112,7 @@ class File extends Document {
 function _publishSignature(signatureAsArr, data, encryptionKey) {
   const network = getBlockchain();
   if (network === undefined) throw new BlockchainNotSupportedError();
-  const web3 = new Web3(window.ethereum);
+  const web3 = network.endpoint ? new Web3(new Web3.providers.HttpProvider(network.endpoint.url)) : new Web3(window.ethereum);
 
   const contract = new web3.eth.Contract(network.contract.abi, network.contract.address);
   const signatory = window.ethereum.selectedAddress;
@@ -173,7 +173,7 @@ function _confirmTransaction(network, web3, txHash) {
 async function _discoverSignatures(documentHash, encryptionKey) {
   const network = getBlockchain();
   if (network === undefined) throw new BlockchainNotSupportedError();
-  const web3 = new Web3(window.ethereum);
+  const web3 = network.endpoint ? new Web3(new Web3.providers.HttpProvider(network.endpoint.url)) : new Web3(window.ethereum);
 
   const signatureEvents = [];
   const chainSpecificDocumentHash = await hash(_concatBuffers(Uint8Array.from(''+network.network.chain), documentHash))
