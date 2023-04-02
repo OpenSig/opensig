@@ -188,7 +188,6 @@ const POLYGON_MAINNET = {
   })
 }
 
-
 const BINANCE_SMART_CHAIN = {
   chain: 56,
   name: "Binance Smart Chain",
@@ -199,29 +198,30 @@ const BINANCE_SMART_CHAIN = {
     abi: [ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" } ], "name": "isRegistered", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes", "name": "data_", "type": "bytes" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ],
     creationBlock: 26229027,
     blockTime: 3000,
-    networkLatency: 5000  // 2s is too short to guarantee published signature is transmitted across the network.  Set to 5s to be sure.
+    networkLatency: 5000
   })
 }
 
-
-//
-// Cannot support Avalanche at this time.  APIs only permit retrieving past events up to a 2048 block history (a few hours).
-//
-// const AVALANCHE = {
-//   chain: 43114,
-//   name: "Avalanche",
-//   blockTime: 2000,
-//   contract: {
-//     address: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
-//     abi: [ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" } ], "name": "isRegistered", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes", "name": "data_", "type": "bytes" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ]
-//   }
-// }
+const AVALANCHE = {
+  chain: 43114,
+  name: "Avalanche",
+  provider: new AnkrProvider({
+    endpoint: "https://rpc.ankr.com/multichain",
+    blockchain: 'avalanche',
+    contract: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
+    abi: [ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "signer", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "signature", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" } ], "name": "Signature", "type": "event" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" } ], "name": "isRegistered", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "bytes32", "name": "sig_", "type": "bytes32" }, { "internalType": "bytes", "name": "data_", "type": "bytes" } ], "name": "registerSignature", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ],
+    creationBlock: 27645459,
+    blockTime: 2000,
+    networkLatency: 5000
+  })
+}
 
 
 const BLOCKCHAINS = [
   ETHEREUM_MAINNET,
   POLYGON_MAINNET,
   BINANCE_SMART_CHAIN,
+  AVALANCHE,
   BASE_GOERLI,
   ETHEREUM_SEPOLIA
 ]
