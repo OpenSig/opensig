@@ -36,15 +36,20 @@
         <div class="post-section">
           <h1>What is OpenSig?</h1>
           <p>
-            OpenSig is a simple yet powerful app for notarising and digitally signing documents on EVM-based blockchains.
-            It's optional data field can be used to annotate each signature with a purpose, message, url or other data.<br/>
+            OpenSig is a simple yet powerful standalone e-signature app for digitally signing documents on the blockchain.  
           </p>
           <p>
-            Privacy is paramount.  Documents are never uploaded and signatures are not traceable without the original document.  
-            The optional signature data can be encrypted so that only users with the original document can read it.
+            Privacy is paramount.  Documents are never uploaded and signatures published to the blockchain cannot be identified or decrypted without the original document.
+            This means confidential documents can be signed with confidence and without having to trust a third party.
+            The signature's optional annotation field is encrypted by default so that only users with the original document can read it.  
           </p>
           <p>
-            OpenSig will always be open source.  No account is necessary and <a href="#blockchains">multiple chains are supported</a>.  
+            OpenSig's notarisation feature can be used to annotate signatures with a purpose, message, url or other data.  
+            If encrypted, the annotation can only be read by someone in possession of the document.  
+            If unencrypted it can be used to write public messages to the blockchain (see <a href="#notice-boards">Public Notice Boards</a>).<br/>
+          </p>
+          <p>
+            OpenSig will always be open source.  No account is necessary and <a href="#blockchains">multiple chains</a> are supported.  
             OpenSig does not charge for publishing signatures, you only pay the blockchain transaction fee.
           </p>
         </div>
@@ -52,11 +57,11 @@
         <div class="post-section">
           <h1>Features</h1>
           <ul>
-            <li><b>Proof of Existence</b> - signatures notarise the document on the blockchain providing secure proof that the document existed at the time the signature was published.</li>
-            <li><b>Proof of Possession</b> - signatures are linked to the signer's public address proving the signer possessed the document at the time of signing.</li>
-            <li><b>Non-repudiable</b> - the immutability of the blockchain ensures signatures cannot be repudiated.</li>
-            <li><b>Annotations</b> - a signature's optional data field can be used to annotate the signature with the purpose for signing, such as 'first draft' or 'approved for release'.</li>
-            <li><b>Linkable</b> - signatures can be linked to external files and urls through the optional signature data.  Link to a Bubble or an IPFS content ID, for example.</li>
+            <li><b>Proof of Existence</b> - A signature notarises a unique fingerprint of the document on the blockchain providing secure proof that the document existed at the time the signature was published.</li>
+            <li><b>Proof of Possession</b> - A signature is cryptographically linked to the signer's public id (blockchain address) proving the signer possessed the document at the time of signing.</li>
+            <li><b>Non-repudiable</b> - The immutability of the blockchain ensures signatures cannot be repudiated.</li>
+            <li><b>Annotations</b> - OpenSig's notarisation feature lets signers include a short message, url or other data with their signature.  This message is then visible to anyone who passes the document to OpenSig for verification.  It can be used, for example, to record the purpose for the signature.</li>
+            <li><b>Linkable</b> - Annotations can be used to link to external files or urls, for example to point to a previous version of the document, a backup of the document, a Bubble or an IPFS content ID.</li>
           </ul>
         </div>
 
@@ -71,6 +76,23 @@
         </div>
 
         <div class="post-section">
+          <h1>Sharing Documents For Signing</h1>
+          <p>
+            OpenSig, in it's current form, does not support the sharing of documents for signing.  
+            However, this means you are free to share your document using whatever method suits you, whether that's by email, a messaging app, a cloud file server or a secure private CMS.
+          </p>
+          <p>
+            For files in the public domain you can create a shareable OpenSig link using the <code>verify</code> parameter, e.g.:
+          </p>
+          <p>
+            &nbsp; <a target="_blank" href="https://opensig.net?verify=https://bitcoinwhitepaper.co/bitcoin.pdf"><code>https://opensig.net?verify=https://bitcoinwhitepaper.co/bitcoin.pdf</code></a>
+          </code>
+          <p>
+            Let us know if you would benefit from OpenSig having secure document sharing built in.  Contact us by <a href="mailto:chains@opensig.net">email</a> or join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a> and help direct the future of the app.
+          </p>
+        </div>
+
+        <div class="post-section">
           <h1 id="blockchains">Supported Chains</h1>
           <ul>
             <li>Ethereum mainnet</li>
@@ -81,34 +103,51 @@
             <li>BASE Goerli testnet (<a target="_blank" href="https://chainlist.org/?testnets=true&search=84531">add to metamask</a>)</li>
           </ul>
           <p>
-            More chains will be added over time.  Join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a> to request a specific network.
+            More chains will be added over time.  <a href="mailto:chains@opensig.net">Email us</a> or join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a> to request a different network.
           </p>
         </div>
 
         <div class="post-section">
-          <h1 id="blockchains">Known Public Notary Files</h1>
+          <h1 id="notice-boards">Public Notice Boards</h1>
           <p>
-            The following publicly available files are known to be used to notarise public messages to the blockchain.  Join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a> or <a href="mailto:request@opensig.net">email us</a> to add another.
+            Public notice boards can be used to notarise public messages to the blockchain.  
+            They are publicly available files that anyone can sign to publish their message in the signature's data field.
+            Since the files are public, anyone can open them in OpenSig for verification allowing all signatures and their messages to be seen.
           </p>
+          <p>
+            Any publicly available file can, in principle, be used as a public notice board.  The following is a list of known files.  Click on a file name to open it in OpenSig.
+          </p>
+          <br/>
           <table>
             <tr>
-              <th>File Description or URL</th>
-              <th>Purpose</th>
+              <th>Notice Board</th>
+              <th>Public File</th>
+              <th>Description</th>
             </tr>
             <tr>
-              <td><a href="index.html?verify=https://opensig.net/assets/empty.txt">Empty file</a></td>
               <td>Public message board</td>
+              <td><a href="index.html?verify=https://opensig.net/assets/empty.txt">Empty file</a></td>
+              <td>For any purpose, no restrictions</td>
             </tr>
           </table>
+          <br/>
+          <p>
+            If you would like to list your notice board here or have an idea for one, <a href="mailto:chains@opensig.net">Email us</a> or join the <a target="_blank" href="https://discord.gg/WyzmB9Qs">discord server</a>.
+          </p>
         </div>
 
         <div class="post-section">
           <h1>How it works</h1>
           <p>
-            Signatures are SHA-256 hashes derived from the hash of the document and the previous signature, creating a chain of signatures unique to each document.
+            Signatures are generated locally on the user's machine and then published to the blockchain.  
+            The only data that leaves the user's computer is the signature and any message included with it.  The document remains local and secure.
+            If the message is encrypted then it can only be decrypted by those in possession of the original document.
+          </p>
+          <p>
+            Signatures are SHA-256 hashes derived from the hash of the document combined with the previous signature, creating a chain of signatures unique to each document.
             The signature chain is deterministic provided the user is in possession of the original document.  
-            Without the original document signatures published to the blockchain cannot be linked to the document or to each other.
-            With the original document signatures on the blockchain can be read and any encrypted data fields decrypted.
+            Without the original document, signatures published to the blockchain cannot be traced to the document or to each other.
+            With the original document, signatures on the blockchain can be read and any encrypted data fields decrypted.
             To prevent replay attacks the chain of signatures derived from a document is different for each blockchain.
           </p>
           <p>
@@ -119,6 +158,9 @@
             The user data is optionally AES-GCM encrypted using the document hash as the private key.
           </p>
           <img src="assets/cryptography.png" style="max-width: 600px">
+          <p>
+            The source code is open source and available on GitHub <a target="_blank" href="https://github.com/Bubble-Protocol/opensig">here</a>.
+          </p>
         </div>
 
         <div class="post-section">

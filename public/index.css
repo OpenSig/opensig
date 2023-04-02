@@ -20,11 +20,15 @@ body {
 
 a {
   text-decoration: none;
-  color: #1886C4;
+  color: #0d77b5;
 }
 
 a:visited {
   text-decoration: none;
+}
+
+code {
+  font-size: 16px;
 }
 
 .error-message {
@@ -730,7 +734,8 @@ p {
 
 li {
   font-size: 14x;
-  line-height: 28px;
+ line-height: 24px;
+  margin-bottom: 16px;
 }
 
 
