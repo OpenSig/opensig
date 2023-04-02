@@ -112,28 +112,20 @@ class File extends Document {
 function _publishSignature(signatureAsArr, data, encryptionKey) {
   const network = getBlockchain();
   if (network === undefined) throw new BlockchainNotSupportedError();
-  const web3 = network.endpoint ? new Web3(new Web3.providers.HttpProvider(network.endpoint.url)) : new Web3(window.ethereum);
 
-  const contract = new web3.eth.Contract(network.contract.abi, network.contract.address);
-  const signatory = window.ethereum.selectedAddress;
+  const signatory = network.provider.getSelectedAddress();
   const signature = _buf2hex(signatureAsArr[0]);  
 
   return _encodeData(data, encryptionKey)
     .then(encodedData => {
       console.trace("publishing signature:", signature, "with data", encodedData);
-      const transactionParameters = {
-        to: network.contract.address,
-        from: signatory,
-        value: 0,
-        data: contract.methods.registerSignature(signature, encodedData).encodeABI(), 
-      };
-      return ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] })
+      return network.provider.publishSignature(signatory, signature, encodedData)
         .then(txHash => { 
           return { 
             txHash: txHash, 
             signatory: signatory,
             signature: signature,
-            confirmationInformer: _confirmTransaction(network, web3, txHash) 
+            confirmationInformer: _confirmTransaction(network, txHash) 
           };
         });
     });
@@ -144,11 +136,11 @@ function _publishSignature(signatureAsArr, data, encryptionKey) {
  * Returns a promise to resolve when the given transaction hash has been confirmed bly the blockchain network.
  * Rejects if the transaction reverted.
  */
-function _confirmTransaction(network, web3, txHash) {
+function _confirmTransaction(network, txHash) {
   return new Promise( (resolve, reject) => {
 
     function checkTxReceipt(txHash, interval, resolve, reject) {
-      web3.eth.getTransactionReceipt(txHash)
+      network.provider.queryTransactionReceipt(txHash)
         .then(receipt => {
           if (receipt === null ) setTimeout(() => { checkTxReceipt(txHash, interval, resolve, reject) }, interval);
           else {
@@ -158,7 +150,7 @@ function _confirmTransaction(network, web3, txHash) {
         })
     }
 
-    setTimeout(() => { checkTxReceipt(txHash, 1000, resolve, reject) }, network.network.blockTime); 
+    setTimeout(() => { checkTxReceipt(txHash, 1000, resolve, reject) }, network.blockTime); 
   })
 }
 
@@ -173,10 +165,9 @@ function _confirmTransaction(network, web3, txHash) {
 async function _discoverSignatures(documentHash, encryptionKey) {
   const network = getBlockchain();
   if (network === undefined) throw new BlockchainNotSupportedError();
-  const web3 = network.endpoint ? new Web3(new Web3.providers.HttpProvider(network.endpoint.url)) : new Web3(window.ethereum);
 
   const signatureEvents = [];
-  const chainSpecificDocumentHash = await hash(_concatBuffers(Uint8Array.from(''+network.network.chain), documentHash))
+  const chainSpecificDocumentHash = await hash(_concatBuffers(Uint8Array.from(''+network.chain), documentHash))
   const hashes = new HashIterator(chainSpecificDocumentHash);
   let lastSignatureIndex = -1;
 
@@ -187,11 +178,7 @@ async function _discoverSignatures(documentHash, encryptionKey) {
     const strEsigs = eSigs.map(s => {return _buf2hex(s)});
     console.trace("querying the blockchain for signatures: ", strEsigs);
 
-    return web3.eth.getPastLogs({
-        address: network.contract.address,
-        fromBlock: network.contract.creationBlock || 'earliest',
-        topics: [null, null, strEsigs]
-      })
+    return network.provider.querySignatures(strEsigs)
       .then(events => {
         console.trace("found events:", events);
         return Promise.all(events.map(e => _decodeSignatureEvent(e, encryptionKey)));
