@@ -119,39 +119,8 @@ function _publishSignature(signatureAsArr, data, encryptionKey) {
   return _encodeData(data, encryptionKey)
     .then(encodedData => {
       console.trace("publishing signature:", signature, "with data", encodedData);
-      return network.provider.publishSignature(signatory, signature, encodedData)
-        .then(txHash => { 
-          return { 
-            txHash: txHash, 
-            signatory: signatory,
-            signature: signature,
-            confirmationInformer: _confirmTransaction(network, txHash) 
-          };
-        });
+      return network.provider.publishSignature(signatory, signature, encodedData);
     });
-}
-
-
-/**
- * Returns a promise to resolve when the given transaction hash has been confirmed bly the blockchain network.
- * Rejects if the transaction reverted.
- */
-function _confirmTransaction(network, txHash) {
-  return new Promise( (resolve, reject) => {
-
-    function checkTxReceipt(txHash, interval, resolve, reject) {
-      network.provider.queryTransactionReceipt(txHash)
-        .then(receipt => {
-          if (receipt === null ) setTimeout(() => { checkTxReceipt(txHash, interval, resolve, reject) }, interval);
-          else {
-            if (receipt.status) resolve(receipt);
-            else reject(receipt);
-          }
-        })
-    }
-
-    setTimeout(() => { checkTxReceipt(txHash, 1000, resolve, reject) }, network.blockTime); 
-  })
 }
 
 
