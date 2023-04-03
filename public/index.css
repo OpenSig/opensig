@@ -221,6 +221,7 @@ code {
 table {
   border-collapse: collapse;
   border: 1px solid #7D7D7D;
+  margin: 16px 0;
 }
 
 tr {
