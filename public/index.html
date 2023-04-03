@@ -151,7 +151,10 @@
                 <span id="signature-content-error-message" class="error-message"></span>
             </div>
             <div class="signatures">
-                <span id="no-signatures-label" class="label hidden">No Signatures</span>
+                <div id="no-signatures-label" class="signatures-label-frame hidden">
+                    <span class="label">No Signatures</span>
+                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
+                </div>
                 <div id="signatures-label" class="signatures-label-frame">
                     <span class="label">Signatures</span>
                     <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
