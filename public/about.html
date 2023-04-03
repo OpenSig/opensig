@@ -41,12 +41,11 @@
           <p>
             Privacy is paramount.  Documents are never uploaded and signatures published to the blockchain cannot be identified or decrypted without the original document.
             This means confidential documents can be signed with confidence and without having to trust a third party.
-            The signature's optional annotation field is encrypted by default so that only users with the original document can read it.  
           </p>
           <p>
-            OpenSig's notarisation feature can be used to annotate signatures with a purpose, message, url or other data.  
-            If encrypted, the annotation can only be read by someone in possession of the document.  
-            If unencrypted it can be used to write public messages to the blockchain (see <a href="#notice-boards">Public Notice Boards</a>).<br/>
+            OpenSig's annotation feature can be used to annotate signatures with a purpose, message, url or other data.  
+            Annotations are written to the blockchain alongside the signature and are encrypted by default so that only users with the original document can read them.  
+            If unencrypted, annotations are publicly readable and can be used to notarise public messages to the blockchain (see <a href="#notice-boards">Public Notice Boards</a>).<br/>
           </p>
           <p>
             OpenSig will always be open source.  No account is necessary and <a href="#blockchains">multiple chains</a> are supported.  
@@ -60,7 +59,7 @@
             <li><b>Proof of Existence</b> - A signature notarises a unique fingerprint of the document on the blockchain providing secure proof that the document existed at the time the signature was published.</li>
             <li><b>Proof of Possession</b> - A signature is cryptographically linked to the signer's public id (blockchain address) proving the signer possessed the document at the time of signing.</li>
             <li><b>Non-repudiable</b> - The immutability of the blockchain ensures signatures cannot be repudiated.</li>
-            <li><b>Annotations</b> - OpenSig's notarisation feature lets signers include a short message, url or other data with their signature.  This message is then visible to anyone who passes the document to OpenSig for verification.  It can be used, for example, to record the purpose for the signature.</li>
+            <li><b>Annotations</b> - OpenSig's annotation feature lets signers include a short message, url or other data with their signature.  This message is then visible to anyone who passes the document to OpenSig for verification.  It can be used, for example, to record the purpose for the signature.</li>
             <li><b>Linkable</b> - Annotations can be used to link to external files or urls, for example to point to a previous version of the document, a backup of the document, a Bubble or an IPFS content ID.</li>
           </ul>
         </div>
