@@ -733,10 +733,13 @@ p {
   margin: 4px 0;
 }
 
-li {
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   font-size: 14x;
- line-height: 24px;
-  margin-bottom: 16px;
+  line-height: 22px;
+  margin: 4px 0;
 }
 
 
