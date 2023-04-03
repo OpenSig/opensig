@@ -153,6 +153,7 @@ function connectMetamask() {
   if (!isMetamaskPresent()) return Promise.reject("Metamask is not present");
   disable("#wallet-connect-button", "#wallet-connect-text");
   ethereum.on('accountsChanged', setMetamaskAccount);
+  ethereum.on('chainChanged', () => { setContent("#connected-content") });
   return ethereum.request({ method: 'eth_requestAccounts' })
     .then(setMetamaskAccount);
 }
