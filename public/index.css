@@ -788,6 +788,11 @@ ul {
   text-decoration: none;
 }
 
+.footer-text a, .footer-text a:visited {
+  color: #737373;
+  text-decoration: none;
+}
+
 @media only screen and (max-width: 400px) {
   .content-row-responsive {
     flex-direction: column;
