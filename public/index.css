@@ -342,6 +342,23 @@ td, th {
   background-color: #E7AC16;
 }
 
+.recaptcha-notice {
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: #C4C4C4;
+}
+
+.recaptcha-notice a, .recaptcha-notice a:visited {
+  color: #939393;
+  text-decoration: none;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+
 /* Connected Content */
 
 .connected-content {
