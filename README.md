@@ -8,3 +8,6 @@ Files are hashed on the local machine and notarised to the blockchain alongside 
 
 See https://opensig.net/about.html for more information.
 
+## Credits
+
+Powered by [opensig-js](https://github.com/opensig/opensig-js).

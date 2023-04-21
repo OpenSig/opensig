@@ -2,7 +2,6 @@
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
-import {opensig} from "./opensig.js";
 
 const TRACE_ON = true;
 const DEBUG_ON = true;
@@ -43,16 +42,20 @@ function verifyUrl(url) {
 
 function verify(fileOrBlob) {
   clearError();
-  hide("#dnd-box");
-  show("#dnd-box-spinner");
-  currentFile = new opensig.File(fileOrBlob);
-  currentFile.verify()
-    .then(_updateSignatureContent)
-    .catch(displayError)
-    .finally(() => {
-      show("#dnd-box");
-      hide("#dnd-box-spinner");
-    });
+  const network = getBlockchain();
+  if (!network) displayError("Blockchain not supported")
+  else {
+    hide("#dnd-box");
+    show("#dnd-box-spinner");
+    currentFile = new opensig.File(network, fileOrBlob);
+    currentFile.verify()
+      .then(_updateSignatureContent)
+      .catch(displayError)
+      .finally(() => {
+        show("#dnd-box");
+        hide("#dnd-box-spinner");
+      });
+  }
 }
 
 function reverify() {
@@ -237,7 +240,6 @@ function createElement(type, classes, innerHTML) {
 }
 
 function displayError(error) {
-  console.error(error);
   console.log("Error:", error.message || error);
   $(currentContent+"-error-message").text(error.message || error);
 }
