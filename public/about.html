@@ -141,7 +141,7 @@
             If the message is encrypted then it can only be decrypted by those in possession of the original document.
           </p>
           <p>
-            Signatures are SHA-256 hashes derived from the hash of the document combined with the previous signature, creating a chain of signatures unique to each document.
+            Signatures are SHA-256 hashes derived from the hash of the document combined with the previous signature, creating a chain of signatures unique to each document (see Figure 1).
             The signature chain is deterministic provided the user is in possession of the original document.  
             Without the original document, signatures published to the blockchain cannot be traced to the document or to each other.
             With the original document, signatures on the blockchain can be read and any encrypted data fields decrypted.
@@ -154,10 +154,15 @@
           <p>
             The user data is optionally AES-GCM encrypted using the document hash as the private key.
           </p>
-          <img src="assets/cryptography.png" style="max-width: 600px">
-          <p>
-            The source code is open source and available on GitHub <a target="_blank" href="https://github.com/opensig/opensig">here</a>.
-          </p>
+          <figure>
+            <img src="assets/cryptography.png" style="max-width: 600px">
+            <figcaption>
+              <p>Figure 1: cryptography overview.</p>
+              Signatures are hashes derived deterministically from the document and the blockchain ID, each hash chained to the last. 
+              The chain of hashes guarantees that, in the absence of the original document, published signatures cannot be traced to the document or to each other.
+              Neither the document nor it's original hash ever leave the user's device ensuring complete privacy and security, suitable even for top-secret documents.
+            </figcaption>
+          </figure>
         </div>
 
         <div class="post-section">
