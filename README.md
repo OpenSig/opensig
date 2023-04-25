@@ -1,6 +1,6 @@
 # OpenSig
 
-A web app for digitally signing and verifying files on EVM-based blockchains.  
+A standalone e-signature web app for digitally signing and verifying files on EVM-based blockchains.  
 
 The app can be found online at https://opensig.net
 
