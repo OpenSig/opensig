@@ -3,3 +3,4 @@ build-info
 .deps
 remixd.sh
 scratchpad
+.DS_Store
