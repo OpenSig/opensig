@@ -317,6 +317,15 @@ td, th {
   cursor: pointer;
 }
 
+.blockchains-image {
+  width: 300px;
+  height: 54px;
+  background-image: url(assets/blockchains.png);
+  background-size: cover;
+  flex: none;
+  flex-grow: 0;
+}
+
 .new-to-web3-content {
   box-sizing: border-box;
   display: flex;
