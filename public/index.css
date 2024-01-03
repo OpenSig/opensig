@@ -250,9 +250,23 @@ td, th {
   flex-grow: 0;
 }
 
-@media only screen and (max-width: 600px) {
+img {
+  max-width: 600px;
+}
+
+@media only screen and (max-width: 632px) {
   .h-table {
     flex-direction: column;
+  }
+  img, figure, table, p, td, .post-section {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  table {
+    table-layout: fixed;
+    width: 100%;
   }
 }
 
@@ -530,7 +544,7 @@ td, th {
   flex-grow: 0;
 }
 
-@media only screen and (max-width: 490px) {
+@media only screen and (max-width: 522px) {
   .data-text-box {
     min-width: 240px;
   }
@@ -729,6 +743,37 @@ td, th {
   gap: 10px;
   flex: none;
   flex-grow: 0;
+}
+
+@media only screen and (max-width: 832px) {
+  .signature-content, .signature-box, .signature-list, .signature {
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .signature-date-field {
+    flex: 2 1 0;
+  }
+  .signature-who-field {
+    flex: 5 1 0;
+  }
+  .signature-comment-field {
+    flex: 3 1 0;
+  }
+  .signature, .signature-date-field, .signature-who-field, .signature-comment-field {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .signature {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .signature, .signature-date-field, .signature-who-field, .signature-comment-field {
+    width: 100%;
+  }
 }
 
 /* Post content */

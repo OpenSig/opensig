@@ -212,7 +212,7 @@ function _updateSignatureContent(signatures) {
       const element = createElement('div', 'signature');
       element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
       const signatory = createElement('span', 'signature-who-field', sig.signatory);
-      const txLink = createElement('a', '');
+      const txLink = createElement('a', 'signature-who-field');
       txLink.appendChild(signatory);
       txLink.title = "Click to view this signature's blockchain transaction";
       txLink.href = currentFile.network.params.explorerUrl + sig.event.transactionHash;
