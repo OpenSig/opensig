@@ -211,7 +211,13 @@ function _updateSignatureContent(signatures) {
     signatures.forEach(sig => {
       const element = createElement('div', 'signature');
       element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
-      element.appendChild(createElement('span', 'signature-who-field', sig.signatory));
+      const signatory = createElement('span', 'signature-who-field', sig.signatory);
+      const txLink = createElement('a', '');
+      txLink.appendChild(signatory);
+      txLink.title = "Click to view this signature's blockchain transaction";
+      txLink.href = currentFile.network.params.explorerUrl + sig.event.transactionHash;
+      txLink.target = "_blank";
+      element.appendChild(txLink);
       element.appendChild(createElement('span', 'signature-comment-field', sig.data.content)); // TODO support different data types
       sigList.append(element);
     })

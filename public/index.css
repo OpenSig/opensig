@@ -687,6 +687,10 @@ td, th {
   overflow: auto;
 }
 
+.signature-who-field a {
+  color: inherit;
+}
+
 .signature-comment-field {
   width: 300px;
   font-family: 'Arial';
