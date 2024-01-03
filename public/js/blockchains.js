@@ -70,13 +70,16 @@ const BASE_GOERLI = new opensig.providers.MetamaskProvider({
   explorerUrl: "https://goerli.basescan.org.io/tx/"
 })
 
-const ETHEREUM_SEPOLIA = new opensig.providers.MetamaskProvider({
+const ETHEREUM_SEPOLIA = new opensig.providers.AnkrProvider({
   chainId: 11155111,
   name: "Sepolia",
+  endpoint: "https://rpc.ankr.com/multichain",
+  blockchain: 'eth_sepolia',
   contract: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
   blockTime: 12000,
   creationBlock: 3030122,
-  explorerUrl: "https://sepolia.etherscan.io/tx/"
+  explorerUrl: "https://sepolia.etherscan.io/tx/",
+  networkLatency: 5000
 })
 
 
