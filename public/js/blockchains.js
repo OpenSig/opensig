@@ -40,7 +40,7 @@ const POLYGON_MAINNET = new opensig.providers.HTTPProvider({
 const BINANCE_SMART_CHAIN = new opensig.providers.AnkrProvider({
   chainId: 56,
   name: "Binance Smart Chain",
-  endpoint: "https://rpc.ankr.com/multichain",
+  endpoint: "https://rpc.ankr.com/multichain/dc0a9a8ba24082d31cbd793eb170eb9260148e6c8cd62ed7434b358608891eee",
   blockchain: 'bsc',
   contract: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
   creationBlock: 26229027,
@@ -52,7 +52,7 @@ const BINANCE_SMART_CHAIN = new opensig.providers.AnkrProvider({
 const AVALANCHE = new opensig.providers.AnkrProvider({
   chainId: 43114,
   name: "Avalanche",
-  endpoint: "https://rpc.ankr.com/multichain",
+  endpoint: "https://rpc.ankr.com/multichain/dc0a9a8ba24082d31cbd793eb170eb9260148e6c8cd62ed7434b358608891eee",
   blockchain: 'avalanche',
   contract: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
   creationBlock: 27645459,
@@ -61,25 +61,35 @@ const AVALANCHE = new opensig.providers.AnkrProvider({
   explorerUrl: "https://snowtrace.io/tx/"
 })
 
-const BASE_GOERLI = new opensig.providers.MetamaskProvider({
-  chainId: 84531,
-  name: "Base Goerli",
-  contract: "0x0E06f4d4BC550A28aF7078ad20b3cB97C014973e",
+const BASE = new opensig.providers.AnkrProvider({
+  chainId: 8453,
+  name: "Base Mainnet",
+  endpoint: "https://rpc.ankr.com/multichain/dc0a9a8ba24082d31cbd793eb170eb9260148e6c8cd62ed7434b358608891eee",
+  contract: "0xC9bf7c7242EA0fc13698Adf585f06A8F441C9155",
   blockTime: 2000,
-  creationBlock: 1339864,
-  explorerUrl: "https://goerli.basescan.org.io/tx/"
+  creationBlock: 27537843,
+  explorerUrl: "https://basescan.org/tx/"
 })
 
 const ETHEREUM_SEPOLIA = new opensig.providers.AnkrProvider({
   chainId: 11155111,
   name: "Sepolia",
-  endpoint: "https://rpc.ankr.com/multichain",
+  endpoint: "https://rpc.ankr.com/multichain/dc0a9a8ba24082d31cbd793eb170eb9260148e6c8cd62ed7434b358608891eee",
   blockchain: 'eth_sepolia',
   contract: "0xF6656646ECf7bD4100ec0014163F6CaD44eA1715",
   blockTime: 12000,
   creationBlock: 3030122,
   explorerUrl: "https://sepolia.etherscan.io/tx/",
   networkLatency: 5000
+})
+
+const XRPL_EVM_DEVNET = new opensig.providers.MetamaskProvider({
+  chainId: 1440002,
+  name: "XRPL EVM Devnet",
+  contract: "0xB6FCE33A84253037A7Fac6291929D2488973Ff38",
+  blockTime: 3500,
+  creationBlock: 15078501,
+  explorerUrl: "https://explorer.xrplevm.org/tx/"
 })
 
 
@@ -92,7 +102,8 @@ const BLOCKCHAINS = [
   POLYGON_MAINNET,
   BINANCE_SMART_CHAIN,
   AVALANCHE,
-  BASE_GOERLI,
+  BASE,
+  XRPL_EVM_DEVNET,
   ETHEREUM_SEPOLIA
 ]
 
