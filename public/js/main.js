@@ -210,7 +210,8 @@ function _updateSignatureContent(signatures) {
     hide("#no-signatures-label");
     signatures.forEach(sig => {
       const element = createElement('div', 'signature');
-      element.appendChild(createElement('span', 'signature-date-field', new Date(sig.time*1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
+      const signatureDate = typeof sig.time === 'bigint' ? Number(sig.time) : sig.time;
+      element.appendChild(createElement('span', 'signature-date-field', new Date(signatureDate * 1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
       const signatory = createElement('span', 'signature-who-field', sig.signatory);
       const txLink = createElement('a', 'signature-who-field');
       txLink.appendChild(signatory);

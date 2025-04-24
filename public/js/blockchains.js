@@ -112,9 +112,14 @@ const BLOCKCHAINS = [
  * Returns the BLOCKCHAINS element that represents the given chainId.  If chainId is not given
  * then it retrieves the chainId from Metamask.  Returns undefined if the chain is not supported.
  */
-function getBlockchain(chainId=window.ethereum.networkVersion) {
-  for (i=0; i<BLOCKCHAINS.length; i++) {
-    if (BLOCKCHAINS[i].chainId == chainId) return BLOCKCHAINS[i];
+function getBlockchain(chainId = window.ethereum.chainId) {
+  if (typeof chainId === 'string' && chainId.startsWith('0x')) {
+    chainId = parseInt(chainId, 16);
+  } else if (typeof chainId === 'string') {
+    chainId = parseInt(chainId, 10);
+  }
+  for (let i = 0; i < BLOCKCHAINS.length; i++) {
+    if (BLOCKCHAINS[i].chainId === chainId) return BLOCKCHAINS[i];
   }
   return undefined;
 }
