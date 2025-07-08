@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OpenSig Alpha</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f8f9fa;
+      color: #212529;
+      line-height: 1.6;
+    }
+    header, section, footer {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    header {
+      background-color: #fff;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    header h1 {
+      font-size: 2em;
+      margin-bottom: 0.2em;
+    }
+    header h2 {
+      margin-top: 0;
+      font-size: 1.3em;
+      font-weight: normal;
+      color: #4d4a86;
+      margin-bottom: 1.2em;
+    }
+    .accent {
+      color: #251f9b;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #4F46E5;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 1em;
+    }
+    .cta-button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    ul li {
+      margin-bottom: 10px;
+    }
+    .screenshot-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    .screenshot-container img {
+      max-width: 200px;
+    }
+    .callout {
+      background-color: #eef4ff;
+      border-left: 5px solid #4F46E5;
+      padding: 40px;
+      max-width: 720px;
+      margin-top: 40px;
+      /* margin: 20px 0; */
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+      border-top: 1px solid #ddd;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5em;
+      }
+      .screenshot-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><span class='accent'>Sign Documents</span> with your <span class='accent'>Digital Identity</span></h1>
+  <h2>No accounts. &nbsp;&nbsp;No uploads. &nbsp;&nbsp;No middlemen.</h1>
+  <p>A self-custody e-signature app powered by blockchain — built for humans, not crypto experts.</p>
+  <a href="#" class="cta-button">Try the MVP</a>
+</header>
+
+<section>
+  <h2>Why OpenSig?</h2>
+  <ul>
+    <li>✅ Fully private and secure with the latest cryptography</li>
+    <li>✅ No signups or accounts — just verify your email and your digital identity will be created</li>
+    <li>✅ Nothing gets uploaded — everything stays local</li>
+    <li>✅ No middlemen — sign directly with your personal digital identity</li>
+    <li>✅ Signatures are cryptographically verifiable</li>
+    <li>✅ No hidden fees or crypto required — we cover gas fees on Polygon</li>
+    <li>✅ Email-based wallet recovery by default, with other options coming</li>
+  </ul>
+</section>
+
+<section>
+  <h2>How it Works</h2>
+  <ol>
+    <li>Verify your email to create your digital identity (smart wallet)</li>
+    <li>Sign documents without uploading them</li>
+    <li>Buy signature credits with your credit card, Apple Pay, or Google Pay — no crypto needed.</li>
+    <li>Verify onchain, forever</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Screenshots</h2>
+  <div class="screenshot-container">
+    <img src="screenshot1.png" alt="Wallet creation" />
+    <img src="screenshot2.png" alt="Stripe top-up" />
+    <img src="screenshot3.png" alt="Document signing" />
+  </div>
+</section>
+
+<section class="callout">
+  <h2>Help Us Test It!</h2>
+  <p>We’re looking for feedback on:</p>
+  <ul>
+    <li>Is the experience simple for non-technical users?</li>
+    <li>Would you actually use this app?</li>
+    <li>What’s confusing, what’s delightful?</li>
+    <li>Any critical features missing?</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Open Source & Onchain</h2>
+  <p>
+    Built on Polygon using ERC-4337 smart wallets.  
+    Gasless transactions via OpenSig paymaster.  
+    <br>
+    🔗 <a href="https://polygonscan.com/address/4037E81D79aD0E917De012dE009ff41c740BB453" target="_blank">View registry contract on Polygonscan</a><br>
+    🛠️ <a href="https://github.com/opensig" target="_blank">OpenSig GitHub</a>
+  </p>
+</section>
+
+<footer>
+  <p>© 2025 OpenSig · <a href="mailto:info@opensig.net">Contact Us</a></p>
+</footer>
+
+</body>
+</html>
