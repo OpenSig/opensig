@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSig Deregistration</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 600px; margin: auto; }
+        h1 { color: #333; }
+        input[type="email"] { width: 100%; padding: 8px; margin: 10px 0; box-sizing: border-box; }
+        button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #004999; }
+        .footer { margin-top: 40px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<h1>Deregister Your Identity</h1>
+
+<p>
+  Deregistering your OpenSig identity will remove you from the email recovery service and communication preferences.
+</p>
+
+<p style="text-align: center;">
+  <strong>This action is permanent and cannot be undone.</strong>
+</p>
+
+<p>
+    Your on-chain digital identity (DID) will remain intact, but:
+</p>
+
+<p style="text-align: center;">
+  <strong>You will no longer be able to recover your account<br/>using your email address.</strong>
+</p>
+
+<p>To deregister your OpenSig identity and have your associated data (email recovery and communication preferences) deleted, please send an email to the following address using the email address you signed up with:</p>
+
+<!-- <form id="deleteForm">
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" name="email" required placeholder="you@example.com">
+    <button type="submit">Request Deletion</button>
+</form> -->
+
+<!-- <p id="responseMessage"></p> -->
+
+<p style="text-align: center;">
+  <a href="mailto:deregister@opensig.net">deregister@opensig.net</a>
+</p>
+
+<div class="footer">
+    <p>If you have questions or concerns, please contact us at <a href="mailto:info@opensig.net">support@opensig.net</a>.</p>
+</div>
+
+<script>
+    // document.getElementById('deleteForm').addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     const email = document.getElementById('email').value;
+
+    //     // Simulate sending deletion request (replace with actual API call)
+    //     document.getElementById('responseMessage').textContent = 'If this email is associated with an account, you will shortly receive a confirmation email with further instructions.';
+    //     document.getElementById('deleteForm').reset();
+
+    //     // Example fetch request (commented)
+    //     /*
+    //     fetch('/api/request-deletion', {
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify({ email })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         document.getElementById('responseMessage').textContent = data.message;
+    //     })
+    //     .catch(error => {
+    //         document.getElementById('responseMessage').textContent = 'An error occurred. Please try again later.';
+    //     });
+    //     */
+    // });
+</script>
+
+</body>
+</html>
