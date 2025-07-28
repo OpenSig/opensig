@@ -30,7 +30,7 @@ const ETHEREUM_MAINNET = new opensig.providers.MetamaskProvider({
 const POLYGON_MAINNET = new opensig.providers.HTTPProvider({
   chainId: 137,
   name: "Polygon",
-  url: "https://polygon-mainnet.g.alchemy.com/v2/aLocFMVna57a6wIozAAwjggKEFvLfMcf",
+  url: "https://polygon-mainnet.infura.io/v3/def9d47e2d744b90b2b68cf690db503a",
   contract: "0x4037E81D79aD0E917De012dE009ff41c740BB453",
   blockTime: 2000,
   creationBlock: 40031474,
