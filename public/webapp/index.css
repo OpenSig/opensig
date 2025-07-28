@@ -92,7 +92,7 @@ figcaption {
 .header-logo {
   width: 38px;
   height: 38px;
-  background-image: url(assets/logo-192.png);
+  background-image: url(/assets/logo-192.png);
   background-size: cover;
   flex: none;
   flex-grow: 0;
@@ -283,7 +283,7 @@ img {
 .formal-tick {
   width: 28px;
   height: 28px;
-  background-image: url(assets/formal-tick.png);
+  background-image: url(/assets/formal-tick.png);
   background-size: cover;
   flex: none;
   flex-grow: 0;
@@ -334,7 +334,7 @@ img {
 .blockchains-image {
   width: 353px;
   height: 54px;
-  background-image: url(assets/blockchains.png);
+  background-image: url(/assets/blockchains.png);
   background-size: cover;
   flex: none;
   flex-grow: 0;
@@ -919,19 +919,19 @@ ul {
 }
 
 .twitter-icon {
-  background-image: url(assets/icon-twitter.svg);
+  background-image: url(/assets/icon-twitter.svg);
 }
 
 .discord-icon {
-  background-image: url(assets/icon-discord.svg);
+  background-image: url(/assets/icon-discord.svg);
 }
 
 .email-icon {
-  background-image: url(assets/icon-mail.svg);
+  background-image: url(/assets/icon-mail.svg);
 }
 
 .refresh-icon {
-  background-image: url(assets/icon-refresh.svg);
+  background-image: url(/assets/icon-refresh.svg);
 }
 
 
