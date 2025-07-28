@@ -10,7 +10,7 @@
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background: #fff;
+      background: #f5f5f3;
       color: #212529;
       line-height: 1.6;
     }
@@ -23,6 +23,15 @@
       background: #f9f9f9;
       border-bottom: 1px solid #ddd;
       text-align: center;
+      background-image: url('hero.png');
+      background-size: cover;
+        background-color: rgba(0, 0, 0, 0.3);
+        background-blend-mode: overlay;
+       color: #eeede8;
+      border-radius: 0 0 8px 8px;
+    }
+    header .accent, header a {
+      color: #2D96EA;
     }
     .logo {
       width: 80px;
@@ -40,7 +49,7 @@
     .cta-button {
       display: inline-block;
       padding: 12px 24px;
-      background-color: #4F46E5;
+      background-color: #2f3fec;
       color: #fff;
       text-decoration: none;
       border-radius: 6px;
@@ -49,6 +58,11 @@
     .cta-button:hover {
       background-color: #0056b3;
     }
+    .webapp-link {
+      margin-top: 3em;
+      font-size: 0.9em;
+      font-style: italic;
+    }
     ul, ol {
       padding-left: 20px;
     }
@@ -56,7 +70,7 @@
       margin-bottom: 0.5em;
     }
     .screenshot {
-      max-width: 200px;
+      max-width: 190px;
       margin: 10px;
     }
     .screenshot-cert {
@@ -71,7 +85,7 @@
       gap: 10px;
     }
     .faq {
-      background: #f3f4f6;
+      background: rgb(232, 232, 230);
       padding: 20px;
       border-radius: 8px;
       border: 1px solid #ddd;
@@ -83,8 +97,9 @@
       border-top: 1px solid #ddd;
     }
     a {
-      color: #5e3eff;
+      color: #1175c6;
       text-decoration: none;
+      cursor: pointer;
     }
     a:hover {
       text-decoration: underline;
@@ -94,6 +109,10 @@
         flex-direction: column;
         align-items: center;
       }
+      header {
+        background-color: rgba(0, 0, 0, 0.5);
+        background-blend-mode: overlay;
+      }
     }
   </style>
 </head>
@@ -102,20 +121,22 @@
 <header>
   <h1><span class='accent'>Sign Documents</span> with <span class='accent'>Full Control</span></h1>
   <h2>No accounts. &nbsp;&nbsp;No uploads. &nbsp;&nbsp;No middlemen.</h2>
-  <p>A private, self-custody e-signature app built for real people, not crypto experts.</p>
+  <p>A private, self-custody e-signature app built for humans.</p>
   <a href="#" class="cta-button">Coming Soon</a>
+  <p class="webapp-link">Looking for the OpenSig web app? Click <a href="https://opensig.net/webapp" target="_blank">here.</a></p>
 </header>
 
 <section>
   <h2>Why OpenSig?</h2>
   <ul>
-    <li>✅ Fully private and secure with the latest cryptography</li>
-    <li>✅ No signups or accounts — just verify your email and your digital identity will be created</li>
-    <li>✅ Nothing gets uploaded — everything stays local</li>
-    <li>✅ No middlemen — sign directly with your personal digital identity</li>
-    <li>✅ Signatures are cryptographically verifiable, forever</li>
-    <li>✅ No hidden fees or crypto required</li>
-    <li>✅ Email-based wallet recovery by default, with other options coming</li>
+    <li>✅ Fully private and secure with the latest cryptography.</li>
+    <li>✅ No middlemen — sign directly on your phone using your own digital identity.</li>
+    <li>✅ No signups or accounts — just verify your email and your digital identity will be created.</li>
+    <li>✅ Nothing gets uploaded — everything stays local.</li>
+    <li>✅ No vendor lock-in — your identity is yours, and yours alone.</li>
+    <li>✅ Signatures are cryptographically verifiable, forever.</li>
+    <li>✅ No hidden fees or crypto required.</li>
+    <li>✅ Email-based wallet recovery by default, with other options coming.</li>
   </ul>
 </section>
 
@@ -152,8 +173,9 @@
   <h2>Screenshots</h2>
   <div class="screenshots">
     <img src="screenshot1.png" alt="Sign screen" class="screenshot">
-    <img src="screenshot2.png" alt="Verification screen" class="screenshot">
-    <img src="screenshot3.png" alt="Top-up screen" class="screenshot">
+    <img src="screenshot2.png" alt="Dashboard screen" class="screenshot">
+    <img src="screenshot3.png" alt="Verification screen" class="screenshot">
+    <img src="screenshot4.png" alt="Top-up screen" class="screenshot">
   </div>
 </section>
 
@@ -162,6 +184,7 @@
   <p>
     Built on <a href="https://polygon.technology/" target="_blank">Polygon</a> using ERC-4337 smart wallets from <a href="https://www.biconomy.io/" target="_blank">Biconomy</a>.  
     <ul>
+      <li>Built on the OpenSig open protocol.</li>
       <li>Gasless transactions via OpenSig custom paymaster.</li>
       <li>Email recovery via interchangeable smart wallet module.</li>
     </ul>
@@ -173,9 +196,9 @@
 
 <section class="faq">
   <h2 class="accent">FAQ</h2>
-  <p><strong>Do I need to understand crypto?</strong> Nope. We handle the technical side and cover all blockchain fees. You just verify your email and sign away.</p>
-  <p><strong>Where are the files stored?</strong> Nowhere. Files never leave your device.</p>
-  <p><strong>What does "on-chain" mean?</strong> It means your signature is provably recorded forever on a public blockchain.</p>
+  <p><strong>Do I need to understand crypto?</strong><br/>Nope. We handle the technical side and cover all blockchain fees. You just verify your email and sign away.</p>
+  <p><strong>Where are the files stored?</strong> <br/>Nowhere. Files never leave your device.</p>
+  <p><strong>What does "on-chain" mean?</strong> <br/>It means your signature is provably recorded forever on a public blockchain.</p>
 </section>
 
 <footer>
