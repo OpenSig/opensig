@@ -20,15 +20,15 @@
       margin: auto;
     }
     header {
-      background: #f9f9f9;
+      background: #000;
       border-bottom: 1px solid #ddd;
       text-align: center;
       background-image: url('hero.png');
       background-size: cover;
-        background-color: rgba(0, 0, 0, 0.3);
-        background-blend-mode: overlay;
-       color: #eeede8;
+      color: #eeede8;
       border-radius: 0 0 8px 8px;
+      overflow: hidden;
+      position: relative;
     }
     header .accent, header a {
       color: #2D96EA;
@@ -109,9 +109,16 @@
         flex-direction: column;
         align-items: center;
       }
-      header {
-        background-color: rgba(0, 0, 0, 0.5);
-        background-blend-mode: overlay;
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+      header > * {
+        position: relative;
+        z-index: 2; /* Keep content above overlay */
       }
     }
   </style>
@@ -196,7 +203,7 @@
 
 <section class="faq">
   <h2 class="accent">FAQ</h2>
-  <p><strong>Do I need to understand crypto?</strong><br/>Nope. We handle the technical side and cover all blockchain fees. You just verify your email and sign away.</p>
+  <p><strong>Do I need to understand crypto?</strong><br/>No. We handle the technical side and cover all blockchain fees. You just verify your email and sign away.</p>
   <p><strong>Where are the files stored?</strong> <br/>Nowhere. Files never leave your device.</p>
   <p><strong>What does "on-chain" mean?</strong> <br/>It means your signature is provably recorded forever on a public blockchain.</p>
 </section>
