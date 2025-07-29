@@ -19,6 +19,9 @@ let currentFile = undefined;
 
 function onLoad() {
   initialiseDndBox();
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlFile = urlParams.get('file');
+  if (urlFile) verifyUrl(urlFile);
 }
 window.onLoad = onLoad;
 
@@ -91,7 +94,7 @@ function _updateSignatureContent(signatures) {
   else {
     show("#signatures-label", "#signature-box")
     hide("#no-signatures-label");
-    signatures.forEach(sig => {
+    signatures.sort((a,b) => Number(b.time) - Number(a.time)).forEach(sig => {
       const element = createElement('div', 'signature');
       const signatureDate = typeof sig.time === 'bigint' ? Number(sig.time) : sig.time;
       element.appendChild(createElement('span', 'signature-date-field', new Date(signatureDate * 1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
