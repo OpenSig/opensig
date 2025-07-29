@@ -45,11 +45,6 @@
       display: flex;
       align-items: center;
     }
-    .cta-button.small {
-      padding: 8px 16px;
-      font-size: 0.9em;
-      margin-top: 0; /* override if needed */
-    }
     .logo {
       width: 30px;
       height: 30px;
@@ -65,6 +60,21 @@
       color: #111;
       margin-left: 10px;
       vertical-align: middle;
+    }
+    .cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .social-icon {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+    }
+    .cta-button.small {
+      padding: 8px 16px;
+      font-size: 0.9em;
+      margin-top: 0; /* override if needed */
     }
     header {
       padding: 80px 20px;
@@ -173,6 +183,10 @@
       .header-bar {
         padding: 10px 20px;
       }
+      .social-icon {
+        width: 20px;
+        height: 20px;
+      }
       header {
         border-radius: 0;
       }
@@ -204,7 +218,10 @@
       <img src="assets/new-icon.png" alt="OpenSig Logo" class="logo">
       <span class="logo-text">OpenSig</span>
     </div>
-    <a href="#" class="cta-button small">App Coming Soon</a>
+    <div class="cta-group">
+      <a href="https://x.com/opensiglabs" target="_blank"><img src="assets/icon-x.png" alt="X" class="social-icon"></a>
+      <a href="#" class="cta-button small">App Coming Soon</a>
+    </div>
   </div>
 </div>
 
@@ -294,7 +311,11 @@
 </section>
 
 <footer>
-  <p>©2025 OpenSig · Built with ❤️ for simplicity and privacy · <a href="mailto:info@opensig.net">Contact Us</a></p>
+  <p>
+    ©2025 OpenSig · Built with ❤️ for simplicity and privacy · 
+    <a href="mailto:info@opensig.net">Contact Us</a> · 
+    <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a>
+  </p>
 </footer>
 
 </body>
