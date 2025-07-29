@@ -79,9 +79,9 @@
       background: #000;
       border-bottom: 1px solid #ddd;
       text-align: center;
-      background-image: url('assets/hero.png');
-      background-size: contain;
-      background-position: calc(50% - 100px) 0;
+      background-image: url('assets/hero-pen.png');
+      background-size: auto 100%;
+      background-position: calc(max(50% - 450px, 10%)) 0;
       background-repeat: no-repeat;
       color: #eeede8;
       overflow: hidden;
@@ -166,6 +166,9 @@
       .screenshots {
         flex-direction: column;
         align-items: center;
+      }
+      header-bar {
+        padding: 10px 20px;
       }
       header {
         border-radius: 0;
