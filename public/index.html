@@ -124,9 +124,25 @@
     }
     ul, ol {
       padding-left: 20px;
+      margin-left: 20px;
     }
     ul li, ol li {
       margin-bottom: 0.5em;
+      padding-left: 0.3em;
+    }
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+    .checklist li {
+      position: relative;
+      padding-left: 1.8em;
+    }
+    .checklist li::before {
+      content: '✅';
+      position: absolute;
+      left: 0;
+      top: 0;
     }
     .screenshot {
       max-width: 190px;
@@ -194,6 +210,9 @@
       header, section, footer {
         padding: 40px 20px;
       }
+      ul, ol {
+        margin-left: 0;
+      }
       .faq-content {
         padding: 0;
       }
@@ -226,25 +245,25 @@
 
 <section>
   <h2>Why OpenSig?</h2>
-  <ul>
-    <li>✅ Fully private and secure with the latest cryptography.</li>
-    <li>✅ No middlemen — sign directly on your phone using your own digital identity.</li>
-    <li>✅ No signups or accounts — just verify your email and your digital identity will be created.</li>
-    <li>✅ Nothing gets uploaded — everything stays local.</li>
-    <li>✅ No vendor lock-in — your identity is yours, and yours alone.</li>
-    <li>✅ Signatures are cryptographically verifiable, forever.</li>
-    <li>✅ No hidden fees or crypto required.</li>
-    <li>✅ Email-based wallet recovery by default, with other options coming.</li>
+  <ul class="checklist">
+    <li>Fully private and secure with the latest cryptography.</li>
+    <li>No middlemen — sign directly on your phone using your own digital identity.</li>
+    <li>No signups or accounts — just verify your email and your digital identity will be created.</li>
+    <li>Nothing gets uploaded — everything stays local.</li>
+    <li>No vendor lock-in — your identity is yours, and yours alone.</li>
+    <li>Signatures are cryptographically verifiable, forever.</li>
+    <li>No hidden fees or crypto required.</li>
+    <li>Email-based wallet recovery by default, with other options coming.</li>
   </ul>
 </section>
 
 <section>
   <h2>Use Cases</h2>
   <ul>
-    <li><strong>💡 IP Protection:</strong> Timestamp your documents, designs, videos, or inventions to prove authorship.</li>
-    <li><strong>✍️ E-Signatures:</strong> Sign contracts, proposals, or agreements with a verifiable digital signature.</li>
-    <li><strong>🧑‍💼 Business Workflow:</strong> Digitally sign any file with confidence, no matter the format.</li>
-    <li><strong>📢 Notarize a public message:</strong> Declare something publicly; verifiable onchain forever.</li>
+    <li><strong>IP Protection:</strong> Timestamp your documents, designs, videos, or inventions to prove authorship.</li>
+    <li><strong>E-Signatures:</strong> Sign contracts, proposals, or agreements with a verifiable digital signature.</li>
+    <li><strong>Business Workflow:</strong> Digitally sign any file with confidence, no matter the format.</li>
+    <li><strong>Notarize a public message:</strong> Declare something publicly; verifiable onchain forever.</li>
   </ul>
 </section>
 
