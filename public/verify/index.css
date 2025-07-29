@@ -593,7 +593,7 @@ img {
 
 .signatures-label-frame {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   padding: 0px;
   gap: 10px;
