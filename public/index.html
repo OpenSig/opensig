@@ -80,7 +80,7 @@
       padding: 80px 20px;
     }
     section, footer {
-      padding: 40px 20px;
+      padding: 40px 40px;
       max-width: 900px;
       margin: auto;
     }
@@ -146,8 +146,6 @@
     .faq {
       background: rgb(232, 232, 230);
       padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
       margin-top: 40px;
     }
     .faq-content {
@@ -167,12 +165,17 @@
     a:hover {
       text-decoration: underline;
     }
-    @media (max-width: 900px) {
-      header {
-        border-radius: 0 0 12px 12px;
+    @media (max-width: 940px) {
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
       }
-      header, section, footer {
-        padding: 40px 40px;
+      header > * {
+        position: relative;
+        z-index: 2; /* Keep content above overlay */
       }
     }
     @media (max-width: 600px) {
@@ -186,20 +189,6 @@
       .social-icon {
         width: 20px;
         height: 20px;
-      }
-      header {
-        border-radius: 0;
-      }
-      header::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1;
-      }
-      header > * {
-        position: relative;
-        z-index: 2; /* Keep content above overlay */
       }
       header, section, footer {
         padding: 40px 20px;
