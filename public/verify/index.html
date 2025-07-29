@@ -1,0 +1,113 @@
+<!-- Copyright (c) 2023 Bubble Protocol -->
+<!-- Distributed under the MIT software license, see the accompanying -->
+<!-- file LICENSE or http://www.opensource.org/licenses/mit-license.php. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OpenSig</title>
+    <meta name="description" content="Simply signatures. Privately sign any file without a monthly contract.  A blockchain-based digital signature and notary service for web3 users." />
+    <meta name="keywords" content="digital signature, web3, metamask, e-signature, DocuSign alternative, blockchain notary service, privacy" />
+    <meta name="author" content="Bubble Protocol" />
+    <meta property="og:title" content="OpenSig - Simply Signatures">
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Digitally sign and verify documents on the blockchain from the privacy of your computer.">
+    <meta property="og:image" content="https://opensig.net/assets/opensig-web-image.png">
+    <meta property="og:url" content="https://opensig.net">
+    <meta property="og:site_name" content="OpenSig">
+    <meta name="twitter:title" content="OpenSig - Simply Signatures">
+    <meta name="twitter:description" content="Digitally sign and verify documents on the blockchain from the privacy of your computer.">
+    <meta name="twitter:image" content="https://opensig.net/assets/opensig-web-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="OpenSig - Simply Signatures">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/assets/simple-logo.png" />
+    <link rel="stylesheet" type="text/css" href="index.css?v=2.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.16.0/web3.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opensig-js@0.1.4/dist/opensig-js.js"></script>
+    <script type="application/javascript">fetch('https://vault.bubbleprotocol.com:8125/anonymousCount?page=opensig-index')</script>
+    <script src="js/blockchains.js?v=2.1"></script>
+    <script src="js/main.js?v=2.1"></script>
+</head>
+  <body onload="onLoad()">
+
+    <div class="header">
+        <div class="content-row">
+            <div class="left-header">
+                <div class="header-logo"></div>
+                <span class="header-logo-text">OpenSig</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="title-frame">
+            <span class="title">OPENSIG</span>
+            <span class="subtitle">Verify</span>
+        </div>
+
+        <div id="connected-content" class="connected-content">
+            <div class="about-text">Use the box below to verify your document against the blockchain.</div>
+            <span class="about-text">
+                Your file will be processed by your local browser and verified against the blockchain.<br/>
+                Your file will not be uploaded to any server.<br/>
+            </span>
+            <div id="dnd-box" class="dnd-box">
+                <span class="large-hint-text">Drag and drop your document here or click to select a file</span>
+           </div>
+            <div id="dnd-box-spinner" class="dnd-box hidden">
+                <div class="spinner"><div></div><div></div></div>
+            </div>
+            <span id="connected-content-error-message" class="error-message"></span>
+            <div class="about-content">
+            </div>
+        </div>
+
+        <div id="signature-content" class="signature-content hidden">
+            <div class="filename-frame">
+                <div id="filename" class="filename"></div>
+                <span class="small-text-link" onclick="setContent('#connected-content')">(back)</span>
+            </div>
+            <div class="signatures">
+                <div id="no-signatures-label" class="signatures-label-frame hidden">
+                    <span class="label">No Signatures</span>
+                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
+                </div>
+                <div id="signatures-label" class="signatures-label-frame">
+                    <span class="label">Signatures</span>
+                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
+                </div>
+                <div id="signature-box" class="signature-box">
+                    <div class="signature">
+                        <span class="signature-heading signature-date-field">Date</span>
+                        <span class="signature-heading signature-who-field">Signatory</span>
+                        <span class="signature-heading signature-comment-field">Message</span>
+                    </div>
+                    <span class="h-line"></span>
+                    <div id="signature-list" class="signature-list"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div class="content-row-responsive">
+            <div class="center-footer">
+                <div class="footer-icons">
+                    <a class="footer-icon twitter-icon" target="_blank" href="https://x.com/opensiglabs"></a>
+                    <a class="footer-icon email-icon" target="_blank" href="mailto:info@opensig.net"></a>
+                </div>
+                <span class="footer-text">©2025 <a target="_blank" href="https://opensig.net">OpenSig</a></span>
+            </div>
+        </div>
+    </div>
+
+  </body>
+</html>
+
