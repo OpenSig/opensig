@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSig Recovery</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        background: #f8f9fa;
+        color: #212529;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .header-bar {
+        display: block;
+        padding: 10px 70px;
+        background: #fff;
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo-group {
+        display: flex;
+        align-items: center;
+      }
+      .logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .logo-text {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 100;
+        font-size: 1.3em;
+        line-height: 1.3em;
+        color: #111;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+      .cta-group {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .social-icon {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+      }
+      .cta-button.small {
+        padding: 8px 16px;
+        font-size: 0.9em;
+        margin-top: 0; /* override if needed */
+      }
+      header {
+        padding: 80px 20px;
+      }
+      content {
+        flex: 1;
+      }
+      section, footer {
+        padding: 40px 40px;
+        max-width: 900px;
+        margin: auto;
+      }
+      header {
+        background: #000;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        background-image: url('assets/hero-pen.png');
+        background-size: auto 100%;
+        background-position: calc(max(50% - 450px, 10%)) 0;
+        background-repeat: no-repeat;
+        color: #eeede8;
+        overflow: hidden;
+        position: relative;
+      }
+      header .accent, header a {
+        color: #2D96EA;
+      }
+      header h1 {
+        font-size: 2.2em;
+      }
+      .accent {
+        color: #251f9b;
+      }
+      .cta-button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #2f3fec;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        margin-top: 1em;
+      }
+      .cta-button:hover {
+        background-color: #0056b3;
+      }
+      .webapp-link {
+        margin-top: 4em;
+        font-size: 0.9em;
+        font-style: italic;
+      }
+      ul, ol {
+        padding-left: 20px;
+        margin-left: 20px;
+      }
+      ul li, ol li {
+        margin-bottom: 0.5em;
+        padding-left: 0.3em;
+      }
+      .checklist {
+        list-style: none;
+        padding-left: 0;
+      }
+      .checklist li {
+        position: relative;
+        padding-left: 1.8em;
+      }
+      .checklist li::before {
+        content: '✅';
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .screenshot {
+        max-width: 190px;
+        margin: 10px;
+      }
+      .screenshot-cert {
+        width: 350px;
+        max-width: calc(100% - 20px);
+        margin: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+      .screenshots {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      .faq {
+        background: rgb(232, 232, 230);
+        padding: 20px;
+        margin-top: 40px;
+      }
+      .faq-content {
+        padding: 0 40px;
+      }
+      footer {
+        text-align: center;
+        font-size: 0.9em;
+        color: #555;
+        border-top: 1px solid #ddd;
+      }
+      a {
+        color: #1175c6;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 940px) {
+        header::before {
+          content: "";
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 1;
+        }
+        header > * {
+          position: relative;
+          z-index: 2; /* Keep content above overlay */
+        }
+      }
+      @media (max-width: 600px) {
+        .screenshots {
+          flex-direction: column;
+          align-items: center;
+        }
+        .header-bar {
+          padding: 10px 20px;
+        }
+        .social-icon {
+          width: 20px;
+          height: 20px;
+        }
+        header, section, footer {
+          padding: 40px 20px;
+        }
+        ul, ol {
+          margin-left: 0;
+        }
+        .faq-content {
+          padding: 0;
+        }
+      }
+    </style>
+  </head>
+<body>
+
+<div class="header-bar">
+  <div class="header-container">
+    <div class="logo-group">
+      <img src="../assets/new-icon.png" alt="OpenSig Logo" class="logo">
+      <span class="logo-text">OpenSig</span>
+    </div>
+    <div class="cta-group">
+      <a href="https://x.com/opensiglabs" target="_blank"><img src="../assets/icon-x.png" alt="X" class="social-icon"></a>
+    </div>
+  </div>
+</div>
+
+<content>
+  <section>
+    <h2>Identity Recovery Initiated</h2>
+    <p>Please return to the OpenSig app to complete the recovery process.</p>
+  </section>
+</content>
+
+<footer>
+  <p>
+    ©2025 OpenSig · Built with ❤️ for simplicity and privacy · 
+    <a href="mailto:info@opensig.net">Contact Us</a> · 
+    <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a>
+  </p>
+</footer>
+
+</body>
+</html>
