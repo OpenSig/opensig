@@ -116,6 +116,27 @@
       gap: 14px;
     }
 
+    .menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(27, 33, 77, 0.15);
+      background: rgba(255, 255, 255, 0.75);
+      color: #1b214d;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .menu-toggle:hover {
+      background: rgba(47, 63, 236, 0.12);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
     .cta-button {
       display: inline-block;
       padding: 12px 28px;
@@ -541,17 +562,32 @@
       }
 
       .header-container {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;
+        align-items: center;
       }
 
       .cta-group {
-        width: 100%;
-        justify-content: flex-start;
+        flex: 0 0 auto;
       }
 
       .primary-nav {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
         gap: 12px;
+        width: 100%;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(27, 33, 77, 0.12);
+      }
+
+      .primary-nav.open {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+        margin-left: auto;
       }
 
       header {
@@ -588,7 +624,10 @@
       <img src="assets/new-icon.png" alt="OpenSig Logo" class="logo">
       <span class="logo-text">OpenSig</span>
     </div>
-    <nav class="primary-nav">
+    <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
+      ☰
+    </button>
+    <nav id="primary-nav" class="primary-nav">
       <a href="#product">Product</a>
       <a href="#use-cases">Use Cases</a>
       <a href="#who">Who Uses It</a>
@@ -803,6 +842,39 @@
     ©2025 OpenSig · Built for privacy-first proof · <a href="mailto:info@opensig.net">info@opensig.net</a> · <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a>
   </p>
 </footer>
+
+<script>
+  (function () {
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.primary-nav');
+    if (!toggle || !nav) {
+      return;
+    }
+
+    const toggleMenu = function () {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    const closeMenu = function () {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    toggle.addEventListener('click', toggleMenu);
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        closeMenu();
+      });
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 600) {
+        closeMenu();
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
