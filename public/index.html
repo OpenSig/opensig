@@ -1,73 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>OpenSig — Your Digital Pen for Verifiable Proofs</title>
-  <meta name="description" content="OpenSig is your digital pen. Create permanent proof receipts for signing, copyright and public notices — privately, on your device, with no subscriptions or uploads." />
-  <meta name="keywords" content="proof of signing, digital pen, e-signature, sign PDF privately, public record, DocuSign alternative, no upload, self-custody" />
-  <meta name="author" content="OpenSig" />
-  <meta property="og:title" content="OpenSig — Your Digital Pen for Verifiable Proofs">
-  <meta property="og:type" content="website" />
-  <meta property="og:description" content="Create permanent timestamped proofs — no accounts, no uploads, no vendor lock-in." />
+  <title>OpenSig | Verifiable Agreements for Growing Teams</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="OpenSig gives SMEs verifiable signing receipts and proof-of-record updates without file uploads or crypto complexity. On-device, private, and ready for client-facing agreements.">
+  <meta name="keywords" content="verifiable agreements, digital signing, SME compliance, proof of signing, document evidence, tamper-proof receipts">
+  <meta name="author" content="OpenSig">
+  <meta property="og:title" content="OpenSig | Verifiable Agreements for Growing Teams">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Deliver proof-positive agreements and acknowledgements without changing your workflows. Private by design. Verifiable forever.">
   <meta property="og:image" content="https://opensig.net/assets/opensig-web-image.png">
   <meta property="og:url" content="https://opensig.net">
   <meta property="og:site_name" content="OpenSig">
-  <meta name="twitter:title" content="OpenSig — Your Digital Pen for Verifiable Proofs">
-  <meta name="twitter:description" content="Sign, copyright and publish public notices with permanent timestamped proofs. Private. On-device. Independent." />
+  <meta name="twitter:title" content="OpenSig | Verifiable Agreements for Growing Teams">
+  <meta name="twitter:description" content="Turn every contract, approval, and policy update into a verifiable receipt—without moving your files or learning crypto.">
   <meta name="twitter:image" content="https://opensig.net/assets/opensig-web-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image:alt" content="OpenSig — Your Digital Pen for Verifiable Proofs">
-  <meta charset="UTF-8">
+  <meta name="twitter:image:alt" content="OpenSig product preview">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
-  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 
-    body { font-family: 'Inter', sans-serif; margin: 0; background: #f8f9fa; color: #212529; line-height: 1.6; }
-    .header-bar { display: block; padding: 10px 70px; background: #fff; }
-    .header-container { display: flex; justify-content: space-between; align-items: center; }
-    .logo-group { display: flex; align-items: center; }
-    .logo { width: 30px; height: 30px; border-radius: 50%; display: inline-block; vertical-align: middle; }
-    .logo-text { font-family: 'Roboto', sans-serif; font-weight: 100; font-size: 1.3em; line-height: 1.3em; color: #111; margin-left: 10px; vertical-align: middle; }
-    .cta-group { display: flex; align-items: center; gap: 20px; }
-    .social-icon { width: 24px; height: 24px; vertical-align: middle; }
-    .cta-button.small { padding: 8px 16px; font-size: 0.9em; margin-top: 0; }
-
-    header { padding: 80px 20px; background: #000; border-bottom: 1px solid #ddd; text-align: center; background-image: url('assets/hero-pen.png'); background-size: auto 100%; background-position: calc(max(50% - 450px, 10%)) 0; background-repeat: no-repeat; color: #eeede8; overflow: hidden; position: relative; }
-    header .accent, header a { color: #2D96EA; }
-    header h1 { font-size: 2.2em; }
-    .accent { color: #251f9b; }
-    .cta-button { display: inline-block; padding: 12px 24px; background-color: #2f3fec; color: #fff; text-decoration: none; border-radius: 6px; margin-top: 1em; }
-    .cta-button:hover { background-color: #0056b3; }
-    .webapp-link { margin-top: 4em; font-size: 0.9em; font-style: italic; }
-
-    section, footer { padding: 40px 40px; max-width: 900px; margin: auto; }
-    ul, ol { padding-left: 20px; margin-left: 20px; }
-    ul li, ol li { margin-bottom: 0.5em; padding-left: 0.3em; }
-    .checklist { list-style: none; padding-left: 0; }
-    .checklist li { position: relative; padding-left: 1.8em; }
-    .checklist li::before { content: '✅'; position: absolute; left: 0; top: 0; }
-    .screenshot { max-width: 270px; margin: 10px; }
-    .screenshot-cert { width: 350px; max-width: calc(100% - 20px); margin: 10px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
-    .screenshots { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-    .faq { background: rgb(232, 232, 230); padding: 20px; margin-top: 40px; }
-    .faq-content { padding: 0 40px; }
-    footer { text-align: center; font-size: 0.9em; color: #555; border-top: 1px solid #ddd; }
-    a { color: #1175c6; text-decoration: none; cursor: pointer; }
-    a:hover { text-decoration: underline; }
-
-    @media (max-width: 940px) {
-      header::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1; }
-      header > * { position: relative; z-index: 2; }
+    :root {
+      color-scheme: light;
+      --primary: #2f3fec;
+      --primary-dark: #1f2ab0;
+      --ink: #14173a;
+      --ink-soft: #363c61;
+      --surface: #ffffff;
+      --surface-alt: #f5f6ff;
     }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #f4f5ff 0%, #eef1ff 30%, #f7f8ff 100%);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      color: var(--ink);
+    }
+
+    .header-bar {
+      display: block;
+      padding: 18px 70px;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid #dee3fb;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .logo-text {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 100;
+      font-size: 1.4em;
+      line-height: 1.3em;
+      color: #111;
+      letter-spacing: 0.08em;
+    }
+
+    .primary-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.95em;
+    }
+
+    .primary-nav a {
+      color: #1b214d;
+      text-decoration: none;
+      font-weight: 500;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .primary-nav a:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 12px 28px;
+      background-color: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+      box-shadow: 0 10px 25px rgba(47, 63, 236, 0.28);
+    }
+
+    .cta-button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(31, 42, 176, 0.3);
+    }
+
+    .cta-button.small {
+      padding: 10px 22px;
+      font-size: 0.9em;
+      margin-top: 0;
+      box-shadow: none;
+    }
+
+    .cta-button.secondary {
+      background: transparent;
+      color: #f5f7ff;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      box-shadow: none;
+    }
+
+    .cta-button.secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    header {
+      padding: 110px 20px 100px;
+      background: #050a2a;
+      text-align: center;
+      color: #f4f5ff;
+      position: relative;
+      overflow: hidden;
+      background-image: url('assets/hero-pen.png');
+      background-size: auto 115%;
+      background-position: calc(max(50% - 420px, 8%)) 42%;
+      background-repeat: no-repeat;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(120deg, rgba(5, 10, 42, 0.95) 0%, rgba(18, 24, 69, 0.88) 45%, rgba(5, 10, 42, 0.7) 100%);
+      z-index: 0;
+    }
+
+    header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    header h1 {
+      font-size: 2.6em;
+      max-width: 760px;
+      margin: 18px auto 16px;
+      line-height: 1.25;
+    }
+
+    header .hero-badge {
+      display: inline-block;
+      background: rgba(47, 63, 236, 0.22);
+      color: #c7ceff;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 0.85em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    header .hero-subtitle {
+      max-width: 640px;
+      margin: 0 auto 32px;
+      color: #d9defe;
+      font-size: 1.1em;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin: 28px 0 10px;
+    }
+
+    .hero-footnote {
+      font-size: 0.9em;
+      color: #bfc4f6;
+      margin-top: 24px;
+    }
+
+    section {
+      padding: 60px 40px;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-size: 2em;
+      margin-bottom: 18px;
+    }
+
+    section p {
+      margin: 0 0 18px;
+      color: var(--ink-soft);
+    }
+
+    .panel {
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: 0 18px 55px rgba(20, 28, 82, 0.08);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 32px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #ffffff 0%, #f9faff 100%);
+      border: 1px solid #e6e9ff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 12px 35px rgba(32, 36, 88, 0.08);
+    }
+
+    .card p {
+      margin-bottom: 20px;
+    }
+
+    .card-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .card-list li {
+      margin-bottom: 12px;
+      padding-left: 22px;
+      position: relative;
+      color: var(--ink-soft);
+    }
+
+    .card-list li::before {
+      content: "•";
+      color: var(--primary);
+      font-size: 1.2em;
+      position: absolute;
+      left: 0;
+      top: 0;
+      line-height: 1;
+    }
+
+    .stats {
+      margin-top: 60px;
+      background: radial-gradient(circle at top right, rgba(47, 63, 236, 0.18), rgba(47, 63, 236, 0.05) 45%, rgba(238, 241, 255, 0) 70%);
+      text-align: center;
+    }
+
+    .stats-inner {
+      display: flex;
+      justify-content: space-around;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      flex: 1 1 220px;
+      padding: 22px;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 2.4em;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .stat-label {
+      color: var(--ink-soft);
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 32px;
+    }
+
+    .use-case {
+      background: #f8f9ff;
+      border: 1px solid #e4e7ff;
+      padding: 26px;
+      border-radius: 16px;
+    }
+
+    .use-case ul {
+      margin: 18px 0 0;
+      padding-left: 20px;
+      color: var(--ink-soft);
+    }
+
+    ol {
+      padding-left: 22px;
+      color: var(--ink-soft);
+    }
+
+    ol li {
+      margin-bottom: 14px;
+    }
+
+    .product-preview p {
+      max-width: 660px;
+    }
+
+    .screenshots {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .screenshot {
+      max-width: 260px;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(16, 28, 74, 0.12);
+    }
+
+    .certificate-samples {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .screenshot-cert {
+      width: 360px;
+      max-width: calc(100% - 20px);
+      border-radius: 14px;
+      box-shadow: 0 20px 45px rgba(16, 24, 61, 0.16);
+    }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 24px;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 14px;
+      color: var(--ink-soft);
+    }
+
+    .checklist li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--primary);
+      font-size: 1em;
+    }
+
+    .quote blockquote {
+      font-size: 1.3em;
+      font-style: italic;
+      color: var(--ink);
+      margin: 0;
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .quote blockquote::before {
+      content: "“";
+      font-size: 3.6em;
+      color: rgba(47, 63, 236, 0.25);
+      position: absolute;
+      left: -6px;
+      top: -26px;
+    }
+
+    .quote-caption {
+      margin-top: 20px;
+      color: var(--ink-soft);
+      font-size: 0.95em;
+      font-weight: 500;
+    }
+
+    .faq {
+      background: #eff1ff;
+      border: 1px solid #dce0ff;
+    }
+
+    .faq-content p {
+      margin-bottom: 20px;
+    }
+
+    .final-cta {
+      text-align: center;
+      background: linear-gradient(160deg, rgba(47, 63, 236, 0.12), rgba(47, 63, 236, 0.02));
+    }
+
+    .cta-footnote {
+      font-size: 0.9em;
+      color: var(--ink-soft);
+      margin-top: 16px;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #5a5f88;
+      padding: 50px 20px;
+      border-top: 1px solid #dfe3ff;
+      background: #f3f5ff;
+    }
+
+    @media (max-width: 1024px) {
+      .header-bar {
+        padding: 14px 28px;
+      }
+
+      .header-container {
+        flex-wrap: wrap;
+      }
+
+      .primary-nav {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .cta-group {
+        margin-left: auto;
+      }
+
+      header {
+        padding: 90px 20px 80px;
+        background-position: center;
+        background-size: cover;
+      }
+
+      header h1 {
+        font-size: 2.2em;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .card-grid,
+      .use-case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 50px 24px;
+      }
+    }
+
     @media (max-width: 600px) {
-      .screenshots { flex-direction: column; align-items: center; }
-      .header-bar { padding: 10px 20px; }
-      .social-icon { width: 20px; height: 20px; }
-      header, section, footer { padding: 40px 20px; }
-      ul, ol { margin-left: 0; }
-      .faq-content { padding: 0; }
+      .header-bar {
+        position: static;
+      }
+
+      .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .cta-group {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .primary-nav {
+        gap: 12px;
+      }
+
+      header {
+        padding: 80px 20px 70px;
+      }
+
+      header h1 {
+        font-size: 1.9em;
+      }
+
+      .cta-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .stats-inner {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .screenshots,
+      .certificate-samples {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
@@ -79,108 +560,192 @@
       <img src="assets/new-icon.png" alt="OpenSig Logo" class="logo">
       <span class="logo-text">OpenSig</span>
     </div>
+    <nav class="primary-nav">
+      <a href="#product">Product</a>
+      <a href="#use-cases">Use Cases</a>
+      <a href="#trust">Trust</a>
+      <a href="#faq">FAQ</a>
+    </nav>
     <div class="cta-group">
-      <a href="https://x.com/opensiglabs" target="_blank" aria-label="OpenSig on X">
-        <img src="assets/icon-x.png" alt="X" class="social-icon">
-      </a>
-      <a href="#" class="cta-button small">App Coming Soon</a>
+      <a href="mailto:info@opensig.net?subject=OpenSig%20Early%20Access" class="cta-button small">Book a walkthrough</a>
     </div>
   </div>
 </div>
 
 <header>
-  <h1><span class="accent">Your Digital Pen</span> for <span class="accent">Timeless Signatures</span></h1>
-  <h2>No accounts. &nbsp;&nbsp;No uploads. &nbsp;&nbsp;No vendor lock-in.</h2>
-  <p>Your private way to sign, protect, and timestamp your work forever.</p>
-  <p><a href="https://polygon.technology/" target="_blank"><img src="assets/built-on-polygon.png" alt="Built on Polygon" style="max-width: 200px; margin-top: 20px; opacity: 0.9"></a></p>
-  <a href="#" class="cta-button">Coming Soon</a>
-  <p class="webapp-link">Looking for the OpenSig web app? Click <a href="https://opensig.net/webapp" target="_blank">here</a>.</p>
+  <span class="hero-badge">Proof-grade Signing for SME teams</span>
+  <h1>Bring proof-positive confidence to every agreement</h1>
+  <p class="hero-subtitle">
+    OpenSig turns contracts, approvals, and policy updates into tamper-proof receipts—without moving your files or forcing new workflows.
+  </p>
+  <div class="cta-row">
+    <a href="mailto:info@opensig.net?subject=OpenSig%20Early%20Access" class="cta-button">Request early access</a>
+    <a href="#product" class="cta-button secondary">See product overview</a>
+  </div>
+  <p class="hero-footnote">Launch-ready MVP · Private by design · Backed by open standards</p>
 </header>
 
-<section>
-  <h2>Why OpenSig?</h2>
-  <ul class="checklist">
-    <li><strong>Your files stay private</strong> — all signing happens on your device.</li>
-    <li><strong>No platform dependency</strong> — OpenSig is a digital pen, not a subscription platform.</li>
-    <li><strong>No signups</strong> — verify your email, that’s it.</li>
-    <li><strong>No vendor lock-in</strong> — open standards; your identity and proofs remain yours.</li>
-    <li><strong>Independent proof receipts</strong> — recorded in a permanent public record.</li>
-    <li><strong>Verifiable forever</strong> — anyone with the same file can check your proof independently.</li>
-    <li><strong>No hidden fees</strong> — simple credits; we cover network costs.</li>
-    <li><strong>Easy recovery</strong> — email recovery by default; more options coming.</li>
-    <li>Fully <strong>AES compliant</strong> signatures.</li>
-  </ul>
+<section id="product" class="panel">
+  <h2>Why operations and legal teams choose OpenSig</h2>
+  <p>
+    Give every stakeholder verifiable proof without the overhead of traditional signing platforms. OpenSig acts like a digital pen that delivers permanent evidence the moment you need it.
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <h3>Proof without friction</h3>
+      <p>Capture signatures and approvals in minutes. No accounts, training, or document uploads required.</p>
+      <ul class="card-list">
+        <li>On-device signing with instant receipts</li>
+        <li>Email-based identity verification</li>
+        <li>Reusable templates for every team</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Evidence that holds up</h3>
+      <p>Every action is linked to a permanent, timestamped record your clients can verify independently.</p>
+      <ul class="card-list">
+        <li>Immutable proofs anchored on-chain</li>
+        <li>Detailed audit trail per document</li>
+        <li>Portable records that outlive any vendor</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Built for SME realities</h3>
+      <p>Flexible pricing, shared team access, and workflows designed for lean operations.</p>
+      <ul class="card-list">
+        <li>Credit-based model with predictable costs</li>
+        <li>Role-aware access and recovery controls</li>
+        <li>Integrations roadmap for the tools you already use</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>Use Cases</h2>
-  <ul>
-    <li><strong>Sign agreements:</strong> Create a proof showing who signed a file, why and when.</li>
-    <li><strong>Prove authorship:</strong> Register a file version to timestamp your work.</li>
-    <li><strong>Approvals & handoffs:</strong> Add lightweight, verifiable sign-offs to any file type.</li>
-    <li><strong>Public notices:</strong> Publish a short statement to the permanent record.</li>
-  </ul>
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <span class="stat-number">5 min</span>
+      <span class="stat-label">to generate your first proof</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">0 files</span>
+      <span class="stat-label">leave your devices</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">100%</span>
+      <span class="stat-label">verifiable by any stakeholder</span>
+    </div>
+  </div>
 </section>
 
-<div class="screenshots">
-  <a href="screenshot-certificate.png" target="_blank">
-    <img src="screenshot-certificate.png" alt="OpenSig certificate example" class="screenshot-cert">
-  </a>
-  <a href="screenshot-certificate2.png" target="_blank">
-    <img src="screenshot-certificate2.png" alt="OpenSig receipt example" class="screenshot-cert">
-  </a>
-</div>
+<section id="use-cases" class="panel">
+  <h2>Where OpenSig fits today</h2>
+  <p>Designed alongside SME leaders who need signing receipts and policies to stand up in the real world.</p>
+  <div class="use-case-grid">
+    <article class="use-case">
+      <h3>Client agreements</h3>
+      <p>Deliver signing receipts that stand up in renewals, disputes, and compliance checks.</p>
+      <ul>
+        <li>Service contracts and statements of work</li>
+        <li>Partner and supplier onboarding</li>
+        <li>Change orders and amendments</li>
+      </ul>
+    </article>
+    <article class="use-case">
+      <h3>Intellectual property</h3>
+      <p>Timestamp creative output, product updates, and research to prove ownership at every iteration.</p>
+      <ul>
+        <li>Design files and source code snapshots</li>
+        <li>Product roadmaps and prototypes</li>
+        <li>Marketing assets and campaign plans</li>
+      </ul>
+    </article>
+    <article class="use-case">
+      <h3>Operations &amp; compliance</h3>
+      <p>Issue verifiable acknowledgements for internal policies, training, and regulatory updates.</p>
+      <ul>
+        <li>Employee handbooks and SOPs</li>
+        <li>Policy attestations and audits</li>
+        <li>Incident and inspection reports</li>
+      </ul>
+    </article>
+  </div>
+</section>
 
-<section>
-  <h2>How It Works</h2>
+<section id="workflow" class="panel">
+  <h2>How OpenSig works</h2>
   <ol>
-    <li><strong>Create a fingerprint</strong> — OpenSig generates a unique fingerprint of your file on your device.</li>
-    <li><strong>Check the public record</strong> — we look for any existing proofs for that exact file version.</li>
-    <li><strong>Create your proof receipt</strong> — link your identity, file version, optional message and time into the permanent record.</li>
-    <li><strong>Share the file however you like</strong> — anyone with the same file can verify the proof independently.</li>
+    <li><strong>Fingerprint the file.</strong> We create a cryptographic hash on your device—no uploads, ever.</li>
+    <li><strong>Link the signers.</strong> Verified email identities add signatures, intent, and context in seconds.</li>
+    <li><strong>Publish the proof.</strong> OpenSig anchors the record to the public ledger and covers the network fees.</li>
+    <li><strong>Share with confidence.</strong> Anyone holding the file can confirm authenticity in seconds.</li>
   </ol>
 </section>
 
-<section>
-  <h2>Screenshots</h2>
+<section class="product-preview panel">
+  <h2>Product preview</h2>
+  <p>Take a look at the MVP workflows we’re refining with our early adopter cohort.</p>
   <div class="screenshots">
-    <img src="screenshot1.png" alt="Signing flow" class="screenshot">
-    <img src="screenshot2.png" alt="Dashboard" class="screenshot">
-    <img src="screenshot3.png" alt="Verification results" class="screenshot">
-    <img src="screenshot5.png" alt="PDF view with proofs" class="screenshot">
-    <img src="screenshot4.png" alt="Credits top-up" class="screenshot">
+    <img src="screenshot1.png" alt="Create signing receipt" class="screenshot">
+    <img src="screenshot2.png" alt="Manage agreements" class="screenshot">
+    <img src="screenshot3.png" alt="Verify proof" class="screenshot">
+    <img src="screenshot5.png" alt="Annotate PDFs with OpenSig" class="screenshot">
+    <img src="screenshot4.png" alt="Credit management" class="screenshot">
+  </div>
+  <div class="certificate-samples">
+    <a href="screenshot-certificate.png" target="_blank">
+      <img src="screenshot-certificate.png" alt="Proof receipt example" class="screenshot-cert">
+    </a>
+    <a href="screenshot-certificate2.png" target="_blank">
+      <img src="screenshot-certificate2.png" alt="Timestamped certificate" class="screenshot-cert">
+    </a>
   </div>
 </section>
 
-<section>
-  <h2>Open Source & On-Chain</h2>
-  <p>
-    Built on <a href="https://polygon.technology/" target="_blank">Polygon</a> using ERC-4337 smart wallets from <a href="https://www.biconomy.io/" target="_blank">Biconomy</a>.
-  </p>
-  <ul>
-    <li>Powered by the OpenSig open-source protocol.</li>
-    <li>Gasless transactions via the OpenSig custom paymaster.</li>
-    <li>Modular, email-based recovery — more recovery options coming soon.</li>
+<section id="trust" class="panel">
+  <h2>Trust, security, and independence</h2>
+  <p>OpenSig is engineered for proof longevity and SME pragmatism.</p>
+  <ul class="checklist">
+    <li><strong>Open standards:</strong> Built on Polygon with ERC-4337 smart accounts from Biconomy.</li>
+    <li><strong>Self-custody first:</strong> Your identity and proofs are portable, verifiable, and future-proof.</li>
+    <li><strong>Managed costs:</strong> Our paymaster covers blockchain gas so you never juggle tokens.</li>
+    <li><strong>Recovery ready:</strong> Email recovery today, hardware and enterprise SSO on the roadmap.</li>
+    <li><strong>Transparent roadmap:</strong> Explore the registry contract on Polygonscan and our open-source repos.</li>
   </ul>
-  🔗 <a href="https://polygonscan.com/address/4037E81D79aD0E917De012dE009ff41c740BB453" target="_blank">View registry contract on Polygonscan</a><br>
-  🛠️ <a href="https://github.com/opensig" target="_blank">OpenSig GitHub</a>
+  <p>
+    🔗 <a href="https://polygonscan.com/address/4037E81D79aD0E917De012dE009ff41c740BB453" target="_blank">View the registry on Polygonscan</a><br>
+    🛠️ <a href="https://github.com/opensig" target="_blank">Visit the OpenSig GitHub</a>
+  </p>
 </section>
 
-<section class="faq">
+<section class="quote panel">
+  <blockquote>
+    OpenSig brings the assurance of public ledgers to the everyday documents SMEs run on—without the crypto headache. It’s the fastest path we’ve found to deliver provable agreements to clients.
+  </blockquote>
+  <p class="quote-caption">— OpenSig Early Access Partner</p>
+</section>
+
+<section id="faq" class="faq panel">
   <div class="faq-content">
     <h2>FAQ</h2>
-    <p><strong>Do I need to understand crypto?</strong><br/>No. Think of OpenSig as a <em>digital pen</em>. We handle the technical bits and cover network fees.</p>
-    <p><strong>Where are my files stored?</strong><br/>On your device. OpenSig never uploads your files.</p>
-    <p><strong>What is the “public record”?</strong><br/>A permanent ledger used to store <em>proof receipts</em> (not your files). Anyone with the same file can check these proofs independently.</p>
-    <p><strong>Can I use my proofs elsewhere?</strong><br/>Yes. OpenSig uses open standards, so your identity and proofs remain portable and verifiable even without OpenSig.</p>
+    <p><strong>Do we need to understand blockchain?</strong><br>No. Think of OpenSig as a digital notary. We handle the cryptography and network costs behind the scenes.</p>
+    <p><strong>How are files handled?</strong><br>Files never leave your devices. OpenSig works from fingerprints, not file uploads.</p>
+    <p><strong>What proof do stakeholders receive?</strong><br>Each transaction produces a shareable receipt with signer identity, intent, and a verifiable timestamp.</p>
+    <p><strong>Can we export our proofs?</strong><br>Yes. Proofs follow open formats so you can validate or migrate them anytime.</p>
+    <p><strong>How do we get started?</strong><br>Join the early access program for onboarding support, success playbooks, and tailored SME pricing.</p>
   </div>
+</section>
+
+<section class="final-cta panel">
+  <h2>Let’s bring proof-positive agreements to your organization</h2>
+  <p>Share a use case and we’ll tailor a walkthrough with your documents, workflows, and client expectations in mind.</p>
+  <a href="mailto:info@opensig.net?subject=I%20want%20to%20see%20OpenSig%20in%20action" class="cta-button">Book a walkthrough</a>
+  <p class="cta-footnote">Prefer to start solo? <a href="mailto:info@opensig.net?subject=OpenSig%20Product%20Deck%20Request">Request the product deck</a>.</p>
 </section>
 
 <footer>
   <p>
-    ©2025 OpenSig · Built with ❤️ for simplicity and privacy ·
-    <a href="mailto:info@opensig.net">Contact Us</a> ·
-    <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a>
+    ©2025 OpenSig · Built for privacy-first proof · <a href="mailto:info@opensig.net">info@opensig.net</a> · <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a>
   </p>
 </footer>
 
