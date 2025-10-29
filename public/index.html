@@ -20,6 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
@@ -148,6 +149,8 @@
       letter-spacing: 0.01em;
       transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
       box-shadow: 0 10px 25px rgba(47, 63, 236, 0.28);
+      border: none;
+      cursor: pointer;
     }
 
     .cta-button:hover {
@@ -501,6 +504,137 @@
       margin-top: 16px;
     }
 
+    .lead-form-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 13, 45, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .lead-form-overlay.open {
+      display: flex;
+    }
+
+    .lead-form-modal {
+      background: #ffffff;
+      border-radius: 20px;
+      max-width: 560px;
+      width: min(100%, 520px);
+      padding: 34px;
+      position: relative;
+      box-shadow: 0 35px 85px rgba(17, 22, 61, 0.28);
+      max-height: 90%;
+      overflow-y: auto;
+    }
+
+    .lead-form-title {
+      margin: 0;
+      font-size: 1.9em;
+    }
+
+    .lead-form-subtitle {
+      margin: 6px 0 28px;
+      color: var(--ink-soft);
+    }
+
+    .lead-form-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      border: none;
+      background: rgba(244, 245, 255, 0.9);
+      color: var(--ink-soft);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1em;
+      line-height: 1;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .lead-form-close:hover {
+      background: rgba(47, 63, 236, 0.12);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .lead-form-fields {
+      display: grid;
+      gap: 18px;
+    }
+
+    .lead-form-fields label {
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 0.95em;
+    }
+
+    .lead-form-fields input,
+    .lead-form-fields select,
+    .lead-form-fields textarea {
+      margin-top: 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #d8dcff;
+      background: #ffffff;
+      font: inherit;
+      color: var(--ink);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .lead-form-fields input:focus,
+    .lead-form-fields select:focus,
+    .lead-form-fields textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(47, 63, 236, 0.16);
+    }
+
+    .lead-form-fields textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .lead-form-status {
+      font-size: 0.9em;
+      min-height: 1.2em;
+      margin-top: 12px;
+      color: var(--ink-soft);
+    }
+
+    .lead-form-status.success {
+      color: #1f7a44;
+    }
+
+    .lead-form-status.error {
+      color: #bd2f2f;
+    }
+
+    .lead-form-submit {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .lead-form-submit[disabled] {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .lead-form-footnote {
+      font-size: 0.8em;
+      color: var(--ink-soft);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
     a {
       color: var(--primary);
       text-decoration: none;
@@ -517,6 +651,10 @@
       padding: 50px 20px;
       border-top: 1px solid #dfe3ff;
       background: #f3f5ff;
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
     @media (max-width: 1024px) {
@@ -608,11 +746,27 @@
         align-items: center;
       }
 
-      .screenshots,
-      .certificate-samples {
-        flex-direction: column;
-        align-items: center;
-      }
+    .screenshots,
+    .certificate-samples {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lead-form-modal {
+      padding: 28px 20px;
+      border-radius: 16px;
+      width: 100%;
+      max-height: calc(100vh - 48px);
+    }
+
+    .lead-form-title {
+      font-size: 1.7em;
+    }
+
+    .lead-form-overlay {
+      align-items: flex-start;
+      padding: 24px 12px;
+    }
     }
   </style>
 </head>
@@ -635,7 +789,7 @@
       <a href="#faq">FAQ</a>
     </nav>
     <div class="cta-group">
-      <a href="mailto:info@opensig.net?subject=OpenSig%20Early%20Access" class="cta-button small">Book a walkthrough</a>
+      <button type="button" class="cta-button small lead-form-trigger" data-intent="walkthrough">Book a walkthrough</button>
     </div>
   </div>
 </div>
@@ -647,8 +801,8 @@
     OpenSig gives creators, entrepreneurs, and teams tamper-proof signatures and receipts for files of any kind—no uploads, no complex workflows.
   </p>
   <div class="cta-row">
-    <a href="mailto:info@opensig.net?subject=OpenSig%20Early%20Access" class="cta-button">Request early access</a>
-    <a href="#product-preview" class="cta-button secondary">See the product</a>
+    <button type="button" class="cta-button lead-form-trigger" data-intent="earlyAccess">Request early access</button>
+    <a href="#product" class="cta-button secondary">See the product</a>
   </div>
   <p class="hero-footnote">Protect IP. Close deals. Share verifiable proof that lives forever.</p>
 </header>
@@ -733,7 +887,7 @@
 
 <section id="who" class="panel">
   <h2>Who is already exploring OpenSig</h2>
-  <p>We’re co-designing OpenSig with a diverse early access cohort to make sure it works for solo creators and scaling teams alike.</p>
+  <p>We're co-designing OpenSig with a diverse early access cohort to make sure it works for solo creators and scaling teams alike.</p>
   <div class="audience-grid">
     <div class="audience-card">
       <h3>Content creators &amp; artists</h3>
@@ -766,7 +920,7 @@
 
 <section id="product-preview" class="product-preview panel">
   <h2>Product preview</h2>
-  <p>Take a look at the MVP workflows we’re refining with early adopters—from lightning-fast IP receipts to multi-signer approvals.</p>
+  <p>Take a look at the MVP workflows we're refining with early adopters—from lightning-fast IP receipts to multi-signer approvals.</p>
   <div class="screenshots">
     <img src="screenshot1.png" alt="Create signing receipt" class="screenshot">
     <img src="screenshot2.png" alt="Manage agreements" class="screenshot">
@@ -826,14 +980,54 @@
     OpenSig anchors proofs to a public, tamper-proof blockchain ledger — <a href="https://polygon.technology" target="_blank">Polygon</a> — that anyone can verify independently. No personal data is stored on the ledger—only cryptographic fingerprints of your files signed by your digital identity.</p>
 
     <p><strong>What does early access include?</strong><br>
-    Guided onboarding, tailored playbooks for IP protection and signing, and early pricing aligned with your team’s usage pattern.</p>
+    Guided onboarding, tailored playbooks for IP protection and signing, and early pricing aligned with your team's usage pattern.</p>
   </div>
 </section>
 
+<div class="lead-form-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lead-form-title">
+  <div class="lead-form-modal">
+    <button type="button" class="lead-form-close" aria-label="Close form">&#10005;</button>
+    <h2 class="lead-form-title" id="lead-form-title">Book a walkthrough</h2>
+    <p class="lead-form-subtitle" id="lead-form-subtitle">Tell us how you'd like to use OpenSig and we'll be in touch shortly.</p>
+    <form id="lead-form" class="lead-form" data-endpoint="https://vault.bubbleprotocol.com:8128/leads" novalidate>
+      <input type="hidden" name="intent" id="lead-intent" value="Walkthrough">
+      <input type="hidden" name="recaptchaToken" id="lead-recaptcha-token">
+      <div class="lead-form-fields">
+        <label for="lead-name">Full name
+          <input id="lead-name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" required>
+        </label>
+        <label for="lead-email">Work email
+          <input id="lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+        </label>
+        <label for="lead-company">Company or project
+          <input id="lead-company" name="company" type="text" autocomplete="organization" placeholder="Optional">
+        </label>
+        <label for="lead-use-case">Primary focus
+          <select id="lead-use-case" name="useCase" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="IP Protection">IP protection &amp; authorship proof</option>
+            <option value="Agreements">Agreements &amp; signatures</option>
+            <option value="Both">Both use cases</option>
+            <option value="Other">Something else</option>
+          </select>
+        </label>
+        <label for="lead-details">Anything else we should know?
+          <textarea id="lead-details" name="details" placeholder="Share context, goals, or links."></textarea>
+        </label>
+      </div>
+      <div class="lead-form-status" id="lead-form-status" aria-live="polite"></div>
+      <button type="submit" class="cta-button lead-form-submit">Send request</button>
+      <p class="lead-form-footnote">
+        Protected by reCAPTCHA. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms</a>
+      </p>
+    </form>
+  </div>
+</div>
+
 <section class="final-cta panel">
   <h2>Ready to put proof behind your next release or agreement?</h2>
-  <p>Tell us what you’re protecting or signing, and we’ll tailor a walkthrough around your files, collaborators, and timeline.</p>
-  <a href="mailto:info@opensig.net?subject=I%20want%20to%20see%20OpenSig%20in%20action" class="cta-button">Book a walkthrough</a>
+  <p>Tell us what you're protecting or signing, and we'll tailor a walkthrough around your files, collaborators, and timeline.</p>
+  <button type="button" class="cta-button lead-form-trigger" data-intent="walkthrough">Book a walkthrough</button>
   <p class="cta-footnote">Prefer to explore first? <a href="mailto:info@opensig.net?subject=OpenSig%20Product%20Deck%20Request">Request the product deck</a>.</p>
 </section>
 
@@ -847,32 +1041,272 @@
   (function () {
     const toggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('.primary-nav');
-    if (!toggle || !nav) {
-      return;
-    }
-
-    const toggleMenu = function () {
-      const isOpen = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
-    };
 
     const closeMenu = function () {
+      if (!nav || !toggle) {
+        return;
+      }
       nav.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     };
 
-    toggle.addEventListener('click', toggleMenu);
-    nav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        closeMenu();
-      });
-    });
+    if (toggle && nav) {
+      const toggleMenu = function () {
+        const isOpen = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      };
 
-    window.addEventListener('resize', function () {
-      if (window.innerWidth > 600) {
-        closeMenu();
+      toggle.addEventListener('click', toggleMenu);
+      nav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          closeMenu();
+        });
+      });
+
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 600) {
+          closeMenu();
+        }
+      });
+    }
+
+    const SITE_KEY = '6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws';
+    const overlay = document.querySelector('.lead-form-overlay');
+    const form = document.getElementById('lead-form');
+    const triggers = document.querySelectorAll('.lead-form-trigger');
+    const closeBtn = document.querySelector('.lead-form-close');
+    const titleEl = document.getElementById('lead-form-title');
+    const subtitleEl = document.getElementById('lead-form-subtitle');
+    const intentInput = document.getElementById('lead-intent');
+    const statusEl = document.getElementById('lead-form-status');
+    const submitBtn = form ? form.querySelector('.lead-form-submit') : null;
+    const firstField = document.getElementById('lead-name');
+    const useCaseSelect = document.getElementById('lead-use-case');
+    const recaptchaInput = document.getElementById('lead-recaptcha-token');
+
+    let lastFocusedElement = null;
+    let currentMode = 'walkthrough';
+
+    const copyMap = {
+      walkthrough: {
+        title: 'Book a walkthrough',
+        subtitle: 'Tell us about your workflow and we will tailor a live session.',
+        submit: 'Send request',
+        intent: 'Walkthrough'
+      },
+      earlyAccess: {
+        title: 'Request early access',
+        subtitle: 'Share how you plan to use OpenSig and we will follow up with next steps.',
+        submit: 'Submit request',
+        intent: 'Early Access'
+      }
+    };
+
+    const setFormCopy = function (modeKey) {
+      if (!titleEl || !subtitleEl || !submitBtn || !intentInput) {
+        return;
+      }
+      const copy = copyMap[modeKey] || copyMap.walkthrough;
+      currentMode = copyMap[modeKey] ? modeKey : 'walkthrough';
+      titleEl.textContent = copy.title;
+      subtitleEl.textContent = copy.subtitle;
+      submitBtn.textContent = copy.submit;
+      submitBtn.dataset.defaultText = copy.submit;
+      intentInput.value = copy.intent;
+    };
+
+    const showStatus = function (message, type) {
+      if (!statusEl) {
+        return;
+      }
+      statusEl.textContent = message || '';
+      statusEl.classList.remove('success', 'error');
+      if (type) {
+        statusEl.classList.add(type);
+      }
+    };
+
+    const setSubmitState = function (disabled, temporaryLabel) {
+      if (!submitBtn) {
+        return;
+      }
+      submitBtn.disabled = !!disabled;
+      if (temporaryLabel) {
+        submitBtn.textContent = temporaryLabel;
+      } else if (submitBtn.dataset.defaultText) {
+        submitBtn.textContent = submitBtn.dataset.defaultText;
+      }
+    };
+
+    const openLeadForm = function (modeKey) {
+      if (!overlay) {
+        return;
+      }
+      if (form) {
+        form.reset();
+        if (useCaseSelect) {
+          useCaseSelect.selectedIndex = 0;
+        }
+      }
+      setFormCopy(modeKey);
+      showStatus('');
+      setSubmitState(false);
+      if (recaptchaInput) {
+        recaptchaInput.value = '';
+      }
+      lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      closeMenu();
+      if (firstField) {
+        setTimeout(function () {
+          firstField.focus();
+        }, 100);
+      }
+    };
+
+    const closeLeadForm = function () {
+      if (!overlay) {
+        return;
+      }
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      showStatus('');
+      setSubmitState(false);
+      if (recaptchaInput) {
+        recaptchaInput.value = '';
+      }
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+      lastFocusedElement = null;
+    };
+
+    if (form) {
+      setFormCopy(currentMode);
+    }
+
+    if (triggers && triggers.length) {
+      triggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          const modeKey = trigger.getAttribute('data-intent') || 'walkthrough';
+          openLeadForm(modeKey);
+        });
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        closeLeadForm();
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) {
+          closeLeadForm();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && overlay && overlay.classList.contains('open')) {
+        closeLeadForm();
       }
     });
+
+    const submitForm = function () {
+      if (!form) {
+        return;
+      }
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const endpoint = (typeof window.OPEN_SIG_LEAD_ENDPOINT === 'string' && window.OPEN_SIG_LEAD_ENDPOINT.trim().length > 0)
+        ? window.OPEN_SIG_LEAD_ENDPOINT
+        : form.getAttribute('data-endpoint');
+
+      if (!endpoint) {
+        showStatus('Form endpoint is not configured.', 'error');
+        return;
+      }
+
+      setSubmitState(true, 'Sending...');
+      showStatus('');
+
+      const submitPayload = function () {
+        const formData = new FormData(form);
+        const payload = {};
+        formData.forEach(function (value, key) {
+          payload[key] = value;
+        });
+
+        fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('Request failed');
+            }
+            return response.text().catch(function () {
+              return '';
+            });
+          })
+          .then(function () {
+            showStatus('Thanks! We will be in touch shortly.', 'success');
+            form.reset();
+            if (useCaseSelect) {
+              useCaseSelect.selectedIndex = 0;
+            }
+            setFormCopy(currentMode);
+            setSubmitState(false);
+            if (recaptchaInput) {
+              recaptchaInput.value = '';
+            }
+            setTimeout(function () {
+              closeLeadForm();
+            }, 2400);
+          })
+          .catch(function () {
+            showStatus('Something went wrong. Please try again or email info@opensig.net.', 'error');
+            setSubmitState(false);
+          });
+      };
+
+      const executeRecaptcha = function () {
+        if (!window.grecaptcha || typeof window.grecaptcha.execute !== 'function') {
+          submitPayload();
+          return;
+        }
+        window.grecaptcha.ready(function () {
+          window.grecaptcha.execute(SITE_KEY, { action: 'leadForm' })
+            .then(function (token) {
+              if (recaptchaInput) {
+                recaptchaInput.value = token;
+              }
+              submitPayload();
+            })
+            .catch(function () {
+              submitPayload();
+            });
+        });
+      };
+
+      executeRecaptcha();
+    };
+
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        submitForm();
+      });
+    }
   })();
 </script>
 
