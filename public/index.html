@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>OpenSig | Verifiable Agreements for Growing Teams</title>
+  <title>OpenSig | Timestamped Proofs for Creators and Teams</title>
   <meta charset="UTF-8">
-  <meta name="description" content="OpenSig gives SMEs verifiable signing receipts and proof-of-record updates without file uploads or crypto complexity. On-device, private, and ready for client-facing agreements.">
-  <meta name="keywords" content="verifiable agreements, digital signing, SME compliance, proof of signing, document evidence, tamper-proof receipts">
+  <meta name="description" content="OpenSig lets creators, entrepreneurs, and teams stamp tamper-proof receipts onto originals and agreements without moving files off-device. Protect IP, sign anything, and share verifiable proof instantly.">
+  <meta name="keywords" content="timestamp proof, IP protection, digital signing, content ownership, blockchain timestamp, document signing, creators">
   <meta name="author" content="OpenSig">
-  <meta property="og:title" content="OpenSig | Verifiable Agreements for Growing Teams">
+  <meta property="og:title" content="OpenSig | Timestamped Proofs for Creators and Teams">
   <meta property="og:type" content="website">
-  <meta property="og:description" content="Deliver proof-positive agreements and acknowledgements without changing your workflows. Private by design. Verifiable forever.">
+  <meta property="og:description" content="Protect original work and prove every agreement with on-device, tamper-proof receipts. OpenSig makes proof simple for creators and teams.">
   <meta property="og:image" content="https://opensig.net/assets/opensig-web-image.png">
   <meta property="og:url" content="https://opensig.net">
   <meta property="og:site_name" content="OpenSig">
-  <meta name="twitter:title" content="OpenSig | Verifiable Agreements for Growing Teams">
-  <meta name="twitter:description" content="Turn every contract, approval, and policy update into a verifiable receipt—without moving your files or learning crypto.">
+  <meta name="twitter:title" content="OpenSig | Timestamped Proofs for Creators and Teams">
+  <meta name="twitter:description" content="OpenSig timestamps originals and agreements for creators, entrepreneurs, and SME teams—no uploads, no crypto learning curve.">
   <meta name="twitter:image" content="https://opensig.net/assets/opensig-web-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image:alt" content="OpenSig product preview">
@@ -185,7 +185,7 @@
 
     header h1 {
       font-size: 2.6em;
-      max-width: 760px;
+      max-width: 780px;
       margin: 18px auto 16px;
       line-height: 1.25;
     }
@@ -202,10 +202,18 @@
     }
 
     header .hero-subtitle {
-      max-width: 640px;
+      max-width: 660px;
       margin: 0 auto 32px;
       color: #d9defe;
       font-size: 1.1em;
+    }
+
+    header .hero-title {
+      max-width: 660px;
+      margin: 0 auto 32px;
+      color: #d9defe;
+      /* font-size: 1.1em; */
+      margin-top: 32px;
     }
 
     .cta-row {
@@ -226,6 +234,7 @@
       padding: 60px 40px;
       max-width: 1040px;
       margin: 0 auto;
+      margin-top: 60px;
     }
 
     section h2 {
@@ -246,7 +255,7 @@
 
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 28px;
       margin-top: 32px;
     }
@@ -320,7 +329,7 @@
 
     .use-case-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 28px;
       margin-top: 32px;
     }
@@ -345,6 +354,30 @@
 
     ol li {
       margin-bottom: 14px;
+    }
+
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .audience-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f3f6ff 100%);
+      border: 1px solid #dfe4ff;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 12px 30px rgba(20, 30, 78, 0.08);
+    }
+
+    .audience-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.15em;
+    }
+
+    .audience-card p {
+      margin: 0;
     }
 
     .product-preview p {
@@ -497,11 +530,6 @@
     }
 
     @media (max-width: 900px) {
-      .card-grid,
-      .use-case-grid {
-        grid-template-columns: 1fr;
-      }
-
       section {
         padding: 50px 24px;
       }
@@ -563,6 +591,7 @@
     <nav class="primary-nav">
       <a href="#product">Product</a>
       <a href="#use-cases">Use Cases</a>
+      <a href="#who">Who Uses It</a>
       <a href="#trust">Trust</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -573,49 +602,49 @@
 </div>
 
 <header>
-  <span class="hero-badge">Proof-grade Signing for SME teams</span>
-  <h1>Bring proof-positive confidence to every agreement</h1>
+  <span class="hero-badge">AES compliant signing &amp; IP protection</span>
+  <h1 class="hero-title">Stamp verifiable proof on every original and every agreement</h1>
   <p class="hero-subtitle">
-    OpenSig turns contracts, approvals, and policy updates into tamper-proof receipts—without moving your files or forcing new workflows.
+    OpenSig gives creators, entrepreneurs, and teams tamper-proof signatures and receipts for files of any kind—no uploads, no complex workflows.
   </p>
   <div class="cta-row">
     <a href="mailto:info@opensig.net?subject=OpenSig%20Early%20Access" class="cta-button">Request early access</a>
-    <a href="#product" class="cta-button secondary">See product overview</a>
+    <a href="#product-preview" class="cta-button secondary">See the product</a>
   </div>
-  <p class="hero-footnote">Launch-ready MVP · Private by design · Backed by open standards</p>
+  <p class="hero-footnote">Protect IP. Close deals. Share verifiable proof that lives forever.</p>
 </header>
 
 <section id="product" class="panel">
-  <h2>Why operations and legal teams choose OpenSig</h2>
+  <h2>Why creators and teams choose OpenSig</h2>
   <p>
-    Give every stakeholder verifiable proof without the overhead of traditional signing platforms. OpenSig acts like a digital pen that delivers permanent evidence the moment you need it.
+    Think of OpenSig as your digital pen with a built-in notary. You keep your files, your style of working, and gain proof-positive receipts every time it matters.
   </p>
   <div class="card-grid">
     <div class="card">
-      <h3>Proof without friction</h3>
-      <p>Capture signatures and approvals in minutes. No accounts, training, or document uploads required.</p>
+      <h3>Protect originals on repeat</h3>
+      <p>Timestamp versions of your work the moment inspiration hits, no matter the file type.</p>
       <ul class="card-list">
-        <li>On-device signing with instant receipts</li>
-        <li>Email-based identity verification</li>
-        <li>Reusable templates for every team</li>
+        <li>On-device timestamping in seconds</li>
+        <li>Unlimited revisions showing clear provenance</li>
+        <li>Shareable certificates for clients and collaborators</li>
       </ul>
     </div>
     <div class="card">
-      <h3>Evidence that holds up</h3>
-      <p>Every action is linked to a permanent, timestamped record your clients can verify independently.</p>
+      <h3>Sign anything with confidence</h3>
+      <p>Create AES-compliant signatures for every contract, approval, or handoff without forcing new workflows.</p>
       <ul class="card-list">
-        <li>Immutable proofs anchored on-chain</li>
-        <li>Detailed audit trail per document</li>
-        <li>Portable records that outlive any vendor</li>
+        <li>Works with PDFs, media files, design assets, code, zip files and more</li>
+        <li>Capture signer intent, context, and timestamp in one receipt</li>
+        <li>Portable proofs your partners can verify independently</li>
       </ul>
     </div>
     <div class="card">
-      <h3>Built for SME realities</h3>
-      <p>Flexible pricing, shared team access, and workflows designed for lean operations.</p>
+      <h3>Own your record forever</h3>
+      <p>Keep control of your identity and proofs across tools, clients, and collaborators.</p>
       <ul class="card-list">
-        <li>Credit-based model with predictable costs</li>
-        <li>Role-aware access and recovery controls</li>
-        <li>Integrations roadmap for the tools you already use</li>
+        <li>Open standards with no vendor lock-in</li>
+        <li>Email-based recovery plus upcoming hardware &amp; SSO options</li>
+        <li>Credit-based pricing that scales with your volume</li>
       </ul>
     </div>
   </div>
@@ -625,66 +654,80 @@
   <div class="stats-inner">
     <div class="stat">
       <span class="stat-number">5 min</span>
-      <span class="stat-label">to generate your first proof</span>
+      <span class="stat-label">to create your first proof</span>
     </div>
     <div class="stat">
-      <span class="stat-number">0 files</span>
-      <span class="stat-label">leave your devices</span>
+      <span class="stat-number">0 uploads</span>
+      <span class="stat-label">needed to protect your work</span>
     </div>
     <div class="stat">
       <span class="stat-number">100%</span>
-      <span class="stat-label">verifiable by any stakeholder</span>
+      <span class="stat-label">verifiable by clients &amp; fans</span>
     </div>
   </div>
 </section>
 
 <section id="use-cases" class="panel">
-  <h2>Where OpenSig fits today</h2>
-  <p>Designed alongside SME leaders who need signing receipts and policies to stand up in the real world.</p>
+  <h2>The two ways people rely on OpenSig</h2>
+  <p>Whether you are protecting your next drop or signing a deadline-driven deal, OpenSig delivers lasting proof with the same flow.</p>
   <div class="use-case-grid">
     <article class="use-case">
-      <h3>Client agreements</h3>
-      <p>Deliver signing receipts that stand up in renewals, disputes, and compliance checks.</p>
+      <h3>Protect original work</h3>
+      <p>Lock in authorship for every file you release, share, or pitch.</p>
       <ul>
-        <li>Service contracts and statements of work</li>
-        <li>Partner and supplier onboarding</li>
-        <li>Change orders and amendments</li>
+        <li>Content creators, artists, and designers stamping every version</li>
+        <li>Entrepreneurs documenting product roadmaps, pitch decks and investor updates</li>
+        <li>Journalists timestamping research, drafts, photographs and interview notes</li>
       </ul>
     </article>
     <article class="use-case">
-      <h3>Intellectual property</h3>
-      <p>Timestamp creative output, product updates, and research to prove ownership at every iteration.</p>
+      <h3>Sign &amp; approve anything</h3>
+      <p>Give clients, partners, and teams verifiable receipts that hold up long after the handshake.</p>
       <ul>
-        <li>Design files and source code snapshots</li>
-        <li>Product roadmaps and prototypes</li>
-        <li>Marketing assets and campaign plans</li>
+        <li>Studios and agencies closing retainers, NDAs, and SOWs</li>
+        <li>SME operations teams tracking policy acknowledgements</li>
+        <li>Consultants and lawyers gathering signed exhibits and evidence</li>
       </ul>
     </article>
-    <article class="use-case">
-      <h3>Operations &amp; compliance</h3>
-      <p>Issue verifiable acknowledgements for internal policies, training, and regulatory updates.</p>
-      <ul>
-        <li>Employee handbooks and SOPs</li>
-        <li>Policy attestations and audits</li>
-        <li>Incident and inspection reports</li>
-      </ul>
-    </article>
+  </div>
+</section>
+
+<section id="who" class="panel">
+  <h2>Who is already exploring OpenSig</h2>
+  <p>We’re co-designing OpenSig with a diverse early access cohort to make sure it works for solo creators and scaling teams alike.</p>
+  <div class="audience-grid">
+    <div class="audience-card">
+      <h3>Content creators &amp; artists</h3>
+      <p>Stamp portfolio updates, music drops, and campaign concepts before they ship.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Startups &amp; SMEs</h3>
+      <p>Replace scattered signing tools with a single verifiable receipt per lifecycle milestone.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Studios &amp; agencies</h3>
+      <p>Prove ownership of creative work and lock in approvals with clients worldwide.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Journalists &amp; researchers</h3>
+      <p>Preserve source material, drafts, and data integrity before stories break.</p>
+    </div>
   </div>
 </section>
 
 <section id="workflow" class="panel">
   <h2>How OpenSig works</h2>
   <ol>
-    <li><strong>Fingerprint the file.</strong> We create a cryptographic hash on your device—no uploads, ever.</li>
-    <li><strong>Link the signers.</strong> Verified email identities add signatures, intent, and context in seconds.</li>
-    <li><strong>Publish the proof.</strong> OpenSig anchors the record to the public ledger and covers the network fees.</li>
-    <li><strong>Share with confidence.</strong> Anyone holding the file can confirm authenticity in seconds.</li>
+    <li><strong>Fingerprint the file.</strong> We create a unique digital fingerprint on your device—no uploads, ever.</li>
+    <li><strong>Establish your intent.</strong> Verified email identities add signatures, purpose, and context in seconds.</li>
+    <li><strong>Publish the proof.</strong> OpenSig anchors the record to a permanent public ledger.</li>
+    <li><strong>Share with confidence.</strong> Anyone holding the file can confirm authenticity instantly.</li>
   </ol>
 </section>
 
-<section class="product-preview panel">
+<section id="product-preview" class="product-preview panel">
   <h2>Product preview</h2>
-  <p>Take a look at the MVP workflows we’re refining with our early adopter cohort.</p>
+  <p>Take a look at the MVP workflows we’re refining with early adopters—from lightning-fast IP receipts to multi-signer approvals.</p>
   <div class="screenshots">
     <img src="screenshot1.png" alt="Create signing receipt" class="screenshot">
     <img src="screenshot2.png" alt="Manage agreements" class="screenshot">
@@ -704,43 +747,55 @@
 
 <section id="trust" class="panel">
   <h2>Trust, security, and independence</h2>
-  <p>OpenSig is engineered for proof longevity and SME pragmatism.</p>
+  <p>
+    OpenSig is engineered for long-term proof value, so your records stay verifiable long after projects end or tools change.
+  </p>
   <ul class="checklist">
-    <li><strong>Open standards:</strong> Built on Polygon with ERC-4337 smart accounts from Biconomy.</li>
-    <li><strong>Self-custody first:</strong> Your identity and proofs are portable, verifiable, and future-proof.</li>
-    <li><strong>Managed costs:</strong> Our paymaster covers blockchain gas so you never juggle tokens.</li>
-    <li><strong>Recovery ready:</strong> Email recovery today, hardware and enterprise SSO on the roadmap.</li>
-    <li><strong>Transparent roadmap:</strong> Explore the registry contract on Polygonscan and our open-source repos.</li>
+    <li><strong>Independent proof registry:</strong> Each signature and timestamp is anchored to a public, tamper-proof record that anyone can verify.</li>
+    <li><strong>Private by design:</strong> Files never leave your device — only a fingerprint of the original is used to create your proof.</li>
+    <li><strong>Self-custody first:</strong> Your identity and proofs are yours, not OpenSig's — stay portable across devices, collaborators, and future platforms.</li>
+    <li><strong>Zero maintenance:</strong> OpenSig handles the record costs and verification layer automatically — no tokens or wallets required.</li>
+    <li><strong>Transparent and open:</strong> Every part of the system is documented and open-source, so you can audit, verify, or integrate freely.</li>
   </ul>
   <p>
-    🔗 <a href="https://polygonscan.com/address/4037E81D79aD0E917De012dE009ff41c740BB453" target="_blank">View the registry on Polygonscan</a><br>
-    🛠️ <a href="https://github.com/opensig" target="_blank">Visit the OpenSig GitHub</a>
+    <!-- 🔗 <a href="registry.html" target="_blank">Learn about the OpenSig proof registry</a><br> -->
+    🛠️ <a href="https://github.com/opensig" target="_blank">Explore the OpenSig repositories</a>
   </p>
 </section>
 
 <section class="quote panel">
   <blockquote>
-    OpenSig brings the assurance of public ledgers to the everyday documents SMEs run on—without the crypto headache. It’s the fastest path we’ve found to deliver provable agreements to clients.
+    OpenSig gives us a single source of truth for our originals and our deals. We can prove when something was created and who signed off—without changing how we work.
   </blockquote>
-  <p class="quote-caption">— OpenSig Early Access Partner</p>
+  <p class="quote-caption">— Creative studio &amp; early access partner</p>
 </section>
 
 <section id="faq" class="faq panel">
   <div class="faq-content">
     <h2>FAQ</h2>
-    <p><strong>Do we need to understand blockchain?</strong><br>No. Think of OpenSig as a digital notary. We handle the cryptography and network costs behind the scenes.</p>
-    <p><strong>How are files handled?</strong><br>Files never leave your devices. OpenSig works from fingerprints, not file uploads.</p>
-    <p><strong>What proof do stakeholders receive?</strong><br>Each transaction produces a shareable receipt with signer identity, intent, and a verifiable timestamp.</p>
-    <p><strong>Can we export our proofs?</strong><br>Yes. Proofs follow open formats so you can validate or migrate them anytime.</p>
-    <p><strong>How do we get started?</strong><br>Join the early access program for onboarding support, success playbooks, and tailored SME pricing.</p>
+
+    <p><strong>How are files handled?</strong><br>
+    Files never leave your device. OpenSig works from a cryptographic fingerprint of each file, not from uploads or shared copies.</p>
+
+    <p><strong>What proof do stakeholders receive?</strong><br>
+    Every signing action or timestamp produces a shareable certificate that includes signer identity, intent, and a verifiable record reference. Anyone with the original file can confirm authenticity instantly.</p>
+
+    <p><strong>Can I export or move my proofs?</strong><br>
+    Yes. OpenSig follows open formats and standards, so your records remain portable and verifiable even outside our platform.</p>
+
+    <p><strong>What is the public record?</strong><br>
+    OpenSig anchors proofs to a public, tamper-proof blockchain ledger — <a href="https://polygon.technology" target="_blank">Polygon</a> — that anyone can verify independently. No personal data is stored on the ledger—only cryptographic fingerprints of your files signed by your digital identity.</p>
+
+    <p><strong>What does early access include?</strong><br>
+    Guided onboarding, tailored playbooks for IP protection and signing, and early pricing aligned with your team’s usage pattern.</p>
   </div>
 </section>
 
 <section class="final-cta panel">
-  <h2>Let’s bring proof-positive agreements to your organization</h2>
-  <p>Share a use case and we’ll tailor a walkthrough with your documents, workflows, and client expectations in mind.</p>
+  <h2>Ready to put proof behind your next release or agreement?</h2>
+  <p>Tell us what you’re protecting or signing, and we’ll tailor a walkthrough around your files, collaborators, and timeline.</p>
   <a href="mailto:info@opensig.net?subject=I%20want%20to%20see%20OpenSig%20in%20action" class="cta-button">Book a walkthrough</a>
-  <p class="cta-footnote">Prefer to start solo? <a href="mailto:info@opensig.net?subject=OpenSig%20Product%20Deck%20Request">Request the product deck</a>.</p>
+  <p class="cta-footnote">Prefer to explore first? <a href="mailto:info@opensig.net?subject=OpenSig%20Product%20Deck%20Request">Request the product deck</a>.</p>
 </section>
 
 <footer>
