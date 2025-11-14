@@ -258,6 +258,7 @@
       color: var(--text-muted);
       margin-bottom: 12px;
     }
+    .demo-message__status--error { color: #c2410c; }
     .demo-message textarea {
       width: 100%;
       border-radius: 12px;
@@ -788,6 +789,7 @@
                   <div class="cta-group" style="margin-top:4px;">
                     <button class="btn btn--primary" type="button" id="publishDemoBtn">Publish demo proof</button>
                   </div>
+                  <p class="demo-message__status" id="demoPublishStatus" aria-live="polite" hidden></p>
                 </div>
                 <p class="demo-note">This is a demo. The real app creates a permanent public record.</p>
               </div>
@@ -1229,6 +1231,7 @@
     const demoSelectedFile = document.getElementById('demoSelectedFile');
     const publishDemoBtn = document.getElementById('publishDemoBtn');
     const demoBackBtn = document.getElementById('demoBackBtn');
+    const demoPublishStatus = document.getElementById('demoPublishStatus');
 
     const highlightDrop = (active) => dropZone.classList.toggle('dropzone--active', active);
 
@@ -1285,6 +1288,7 @@
       const parts = file.name.split('.');
       return parts.length > 1 ? `${parts.pop().toUpperCase()} file` : 'Unknown file type';
     };
+    const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
     const toOpenSigDid = (hash) => `did:opensig:${hash.slice(0, 12)}`;
     const buildDemoTxHash = (hash) => `0x${hash.padEnd(64, '0').slice(0, 64)}`;
@@ -1297,6 +1301,25 @@
     let pendingFile = null;
     const defaultTxHash = '0x6ef9b57aaa155e6a42f8ae9ab8a8bc01b82fd3f192feb7955eb651c3bb449396';
     const defaultTxUrl = `https://polygonscan.com/tx/${defaultTxHash}#eventlog`;
+
+    const setDemoStatusMessage = (message, type) => {
+      if (!demoPublishStatus) {
+        return;
+      }
+      if (!message) {
+        demoPublishStatus.textContent = '';
+        demoPublishStatus.setAttribute('hidden', 'true');
+        demoPublishStatus.classList.remove('demo-message__status--error');
+        return;
+      }
+      demoPublishStatus.removeAttribute('hidden');
+      demoPublishStatus.textContent = message;
+      if (type === 'error') {
+        demoPublishStatus.classList.add('demo-message__status--error');
+      } else {
+        demoPublishStatus.classList.remove('demo-message__status--error');
+      }
+    };
 
     const resetCertificateResults = () => {
       setCertificateText('certificateDate', 'Waiting for a file...');
@@ -1328,6 +1351,7 @@
       if (publishDemoBtn) {
         publishDemoBtn.textContent = 'Publish demo proof';
       }
+      setDemoStatusMessage('');
       if (demoSelectedFile) demoSelectedFile.textContent = 'Choose a file to unlock this step.';
       if (demoStepTwo) {
         demoStepTwo.classList.remove('demo-message--active');
@@ -1395,14 +1419,28 @@
         const originalLabel = publishDemoBtn.textContent;
         publishDemoBtn.textContent = 'Publishing...';
         try {
-          await generateDemoProof(publishingFile, message);
+          setDemoStatusMessage('Generating proof... (simulated)', 'info');
+          await Promise.all([
+            generateDemoProof(publishingFile, message),
+            delay(1000)
+          ]);
+          setDemoStatusMessage('Submitting proof to the permanent public record... (simulated)', 'info');
+          await delay(2400);
+          setDemoStatusMessage('Waiting for confirmation...');
+          await delay(2400);
           if (pendingFile === publishingFile) {
             publishDemoBtn.textContent = 'Publish again';
+            setDemoStatusMessage('Proof confirmed. Certificate ready. Use the link in the certificate to view the public record (third party site).', 'success');
+          } else {
+            publishDemoBtn.textContent = originalLabel;
           }
+          demoResults.classList.add('demo-results--visible');
+          demoResults.setAttribute('aria-hidden', 'false');
         } catch (error) {
           console.warn('Demo publish failed', error);
           publishDemoBtn.textContent = 'Try again';
           setTimeout(() => { publishDemoBtn.textContent = originalLabel; }, 2000);
+          setDemoStatusMessage('Demo publish failed. Please try again.', 'error');
         } finally {
           publishDemoBtn.disabled = false;
         }
@@ -1467,9 +1505,6 @@
         img.alt = 'QR code for simulated transaction';
       });
 
-      demoResults.classList.add('demo-results--visible');
-      demoResults.setAttribute('aria-hidden', 'false');
-      logEvent('demo_completed', { recordId, hasMessage: Boolean(message) });
     }
 
     resetDemoBtn.addEventListener('click', () => {
