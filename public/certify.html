@@ -141,6 +141,10 @@
       font-weight: 600;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
+    .btn--small {
+      padding: 8px 20px;
+      font-size: 0.9rem;
+    }
     .btn--primary {
       background: var(--accent);
       color: #fff;
@@ -674,7 +678,7 @@
           <a class="nav__link" href="#how-it-works">How it works</a>
           <a class="nav__link" href="#pricing">Pricing</a>
           <a class="nav__link" href="#faq">FAQ</a>
-          <button type="button" class="nav__link lead-form-trigger" data-intent="earlyAccess">Get updates</button>
+          <button type="button" class="btn btn--primary btn--small lead-form-trigger" data-intent="earlyAccess">Early access</button>
           <div class="variant-control" style="display:none">
             <label for="variantSelect" class="visually-hidden">Headline variant</label>
             <select id="variantSelect" class="variant-select" aria-label="Select headline variant">
@@ -697,7 +701,7 @@
             <p class="hero__subhead">Protect your IP. Record a permanent public timestamp and certificate for any file &mdash; privately, from your device.</p>
             <div class="cta-group">
               <button class="btn btn--primary" data-scroll="#demo" data-cta="try_demo">Try the demo</button>
-              <button type="button" class="btn btn--secondary lead-form-trigger" data-intent="earlyAccess">Get updates</button>
+              <button type="button" class="btn btn--secondary lead-form-trigger" data-intent="earlyAccess">Request early access</button>
             </div>
             <div class="trust-row" aria-label="Trust statements">
               <span><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.6 16.2 5.4 12l-1.4 1.4 5.6 5.6L20 8.6 18.6 7.2z"/></svg>No account required</span>
@@ -758,7 +762,7 @@
       <section class="section" id="demo">
         <div class="container">
           <h2 class="section__heading">Interactive demo</h2>
-          <p class="section__subhead">Drop any file (we never upload). We simulate the fingerprint and receipt locally.</p>
+          <p class="section__subhead">Drop any file (we never upload). We simulate the fingerprint and proof creation locally.</p>
           <div class="demo">
             <div>
               <div id="demoStepOne">
@@ -779,8 +783,8 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
                     Back
                   </button>
-                  <label for="demoMessageInput" style="font-weight:600; display:block; margin-bottom:8px; margin-top:18px;">Message</label>
-                  <textarea id="demoMessageInput" placeholder="Insert an encrypted message in your proof"></textarea>
+                  <label for="demoMessageInput" style="font-weight:600; display:block; margin-bottom:16px; margin-top:18px;">Message (optional)</label>
+                  <textarea id="demoMessageInput" placeholder="Include a message in your proof (will be encrypted)"></textarea>
                   <div class="cta-group" style="margin-top:4px;">
                     <button class="btn btn--primary" type="button" id="publishDemoBtn">Publish demo proof</button>
                   </div>
@@ -835,7 +839,7 @@
                           </p>
                           <p class="certificate__value">
                             <span class="certificate__label">Message:</span>
-                            <span data-field="certificateMessage" class="certificate__message">Drop a file to simulate a signature receipt.</span>
+                            <span data-field="certificateMessage" class="certificate__message">Drop a file to simulate creating a proof.</span>
                           </p>
                           <p class="certificate__value">
                             <span class="certificate__label">Public Record Link:</span>
@@ -1005,11 +1009,9 @@
     <footer>
       <div class="container">
         <div class="footer-links">
-          <a href="mailto:hello@opensig.net">Contact</a>
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
+          <a href="mailto:hello@opensig.net">Contact Us</a>
         </div>
-        <p>&copy; OpenSig. This is a preview for feedback.</p>
+        <p>&copy;2025 OpenSig.</p>
       </div>
     </footer>
   </div>
@@ -1095,7 +1097,7 @@
               </p>
               <p class="certificate__value">
                 <span class="certificate__label">Message:</span>
-                <span data-field="certificateMessage" class="certificate__message">Drop a file to simulate a signature receipt.</span>
+                <span data-field="certificateMessage" class="certificate__message"></span>
               </p>
               <p class="certificate__value">
                 <span class="certificate__label">Public Record Link:</span>
