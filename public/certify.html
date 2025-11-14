@@ -3,20 +3,20 @@
 <head>
   <!--
     QUICK_EDIT VARIABLES
-    BRAND_NAME = "OpenSig Notarize"
+    BRAND_NAME = "OpenSig Certify"
     ACCENT_COLOR = "#4c60ff"
     DEFAULT_VARIANT_INDEX = 0
     PLAN_PRICES = { starter: "5 proofs", pro: "25 proofs", team: "100 proofs" }
   -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenSig Notarize &mdash; Create permanent proofs of your work.</title>
-  <meta name="description" content="OpenSig Notarize lets you create permanent public timestamps and receipts for files without accounts or uploads." />
+  <title>OpenSig Certify &mdash; Create permanent proofs of your work.</title>
+  <meta name="description" content="OpenSig Certify lets you create permanent public timestamps and receipts for files without accounts or uploads." />
   <link href="https://fonts.googleapis.com/css2?family=Manrope" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
-      --brand-name: "OpenSig Notarize";
+      --brand-name: "OpenSig Certify";
       --accent: #4c60ff;
       --accent-dark: #2f3bd6;
       --text-primary: #111827;
@@ -581,9 +581,6 @@
     .footer-links { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
     .footer-links a { color: rgba(255, 255, 255, 0.85); }
 
-    .footer__test-link { opacity: 0; pointer-events: none; transition: opacity 0.2s ease; display: inline-block; }
-    body.show-test-link .footer__test-link { opacity: 1; pointer-events: auto; }
-
     .modal {
       position: fixed;
       inset: 0;
@@ -608,7 +605,7 @@
     .modal__close { border: none; background: none; position: absolute; top: 24px; right: 24px; color: var(--text-muted); }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-    input[type="email"], select, textarea {
+    input[type="email"], input[type="text"], select, textarea {
       border-radius: 12px;
       border: 1px solid var(--border);
       padding: 12px;
@@ -618,10 +615,7 @@
 
     .success-message { display: none; margin-top: 8px; color: var(--accent); font-weight: 600; }
     .success-message--visible { display: block; }
-
-    .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 16px; }
-    .data-table th, .data-table td { border: 1px solid var(--border); padding: 8px; }
-    .data-table th { background: rgba(76, 96, 255, 0.08); text-align: left; }
+    .success-message--error { color: #c2410c; }
 
     .visually-hidden {
       position: absolute;
@@ -672,7 +666,7 @@
   <div class="page">
     <header class="top-bar">
       <div class="container nav" aria-label="Primary">
-        <div class="wordmark" aria-label="OpenSig Notarize wordmark">OpenSig <span>Certify</span></div>
+        <div class="wordmark" aria-label="OpenSig Certify wordmark">OpenSig <span>Certify</span></div>
         <nav class="nav__links" aria-label="Main navigation">
           <a class="nav__link" href="#how-it-works">How it works</a>
           <a class="nav__link" href="#pricing">Pricing</a>
@@ -716,7 +710,7 @@
               <li>Optional message alongside your proof</li>
               <li>Verifiable by anyone with your file</li>
             </ul>
-            <p style="margin-top:16px;">OpenSig Notarize gives you a permanent, public proof of your creative work, research, and agreements &mdash; without exposing your files.</p>
+            <p style="margin-top:16px;">OpenSig Certify gives you a permanent, public proof of your creative work, research, and agreements &mdash; without exposing your files.</p>
           </div>
         </div>
       </section>
@@ -981,7 +975,7 @@
           <h2 class="section__heading">FAQ</h2>
           <div class="faq-list">
             <article class="faq-item" aria-expanded="false">
-              <button class="faq-question" type="button">What do I get when I notarize a file?<span aria-hidden="true">+</span></button>
+              <button class="faq-question" type="button">What do I get when I certify a file?<span aria-hidden="true">+</span></button>
               <div class="faq-answer">A timestamped public record that exists forever and a certificate you can keep and share.</div>
             </article>
             <article class="faq-item" aria-expanded="false">
@@ -1013,7 +1007,6 @@
           <a href="#">Terms</a>
         </div>
         <p>&copy; OpenSig. This is a preview for feedback.</p>
-        <a href="#" class="footer__test-link" data-open-modal="dataModal">View test data</a>
       </div>
     </footer>
   </div>
@@ -1022,15 +1015,20 @@
     <div class="modal__content">
       <button class="modal__close" type="button" data-close-modal><span aria-hidden="true">&times;</span></button>
       <h2 id="updatesTitle">Get updates</h2>
-      <p>We will only use this to contact you about OpenSig Notarize.</p>
-      <form id="updatesForm">
+      <p>We will only use this to contact you about OpenSig Certify.</p>
+      <form id="updatesForm" data-endpoint="https://vault.bubbleprotocol.com:8128/leads">
+        <input type="hidden" name="intent" value="Certify Updates">
+        <div class="form-group">
+          <label for="nameInput">Name</label>
+          <input type="text" id="nameInput" name="name" required />
+        </div>
         <div class="form-group">
           <label for="emailInput">Email</label>
           <input type="email" id="emailInput" name="email" required />
         </div>
         <div class="form-group">
           <label for="roleSelect">Role</label>
-          <select id="roleSelect" name="role">
+          <select id="roleSelect" name="useCase">
             <option value="Creator">Creator</option>
             <option value="Entrepreneur/SME">Entrepreneur/SME</option>
             <option value="Academic/Research">Academic/Research</option>
@@ -1040,12 +1038,11 @@
         </div>
         <div class="form-group">
           <label for="useCaseInput">What would you use this for?</label>
-          <textarea id="useCaseInput" name="useCase" placeholder="Optional"></textarea>
+          <textarea id="useCaseInput" name="details" placeholder="Optional"></textarea>
         </div>
         <button class="btn btn--primary" type="submit" data-cta="email_submit">Get updates</button>
-        <p class="success-message" id="emailSuccess" role="status">Thanks! You're on the list.</p>
+        <p class="success-message" id="emailSuccess" role="status" aria-live="polite">Thanks! You're on the list.</p>
       </form>
-      <!-- TODO: Replace local email capture with backend endpoint. -->
     </div>
   </div>
 
@@ -1136,45 +1133,13 @@
     </div>
   </div>
 
-  <div class="modal" id="dataModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dataTitle">
-    <div class="modal__content">
-      <button class="modal__close" type="button" data-close-modal><span aria-hidden="true">&times;</span></button>
-      <h2 id="dataTitle">Test data</h2>
-      <div>
-        <h3>Events</h3>
-        <table class="data-table" aria-label="Logged events">
-          <thead><tr><th>Event</th><th>Variant</th><th>Timestamp</th><th>Extras</th></tr></thead>
-          <tbody id="eventsTable"></tbody>
-        </table>
-      </div>
-      <div>
-        <h3>Email submissions</h3>
-        <table class="data-table" aria-label="Email submissions">
-          <thead><tr><th>Email</th><th>Role</th><th>Use case</th><th>Timestamp</th></tr></thead>
-          <tbody id="emailsTable"></tbody>
-        </table>
-      </div>
-      <button class="btn btn--secondary" type="button" id="exportDataBtn">Export JSON</button>
-    </div>
-  </div>
   <script>
-
-    const STORAGE_KEYS = {
-      events: 'opensig_notarize_events',
-      emails: 'opensig_notarize_emails'
-    };
-
     const heroHeadline = document.getElementById('heroHeadline');
 
     const logEvent = (event, extras = {}) => {
-      const payload = {
-        event,
-        timestamp: new Date().toISOString(),
-        extras
-      };
-      const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.events) || '[]');
-      existing.push(payload);
-      localStorage.setItem(STORAGE_KEYS.events, JSON.stringify(existing));
+      if (typeof window !== 'undefined' && window.console && typeof window.console.debug === 'function') {
+        window.console.debug('[OpenSig event]', event, extras);
+      }
     };
 
     // TODO: Replace this stub with production analytics endpoint.
@@ -1237,9 +1202,6 @@
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
         document.querySelectorAll('.modal[aria-hidden="false"]').forEach((modal) => closeModal(modal));
-      }
-      if (event.key === 'D' && event.shiftKey) {
-        document.body.classList.toggle('show-test-link');
       }
     });
 
@@ -1503,29 +1465,102 @@
       resetDemoExperience();
     });
     const emailForm = document.getElementById('updatesForm');
-    const emailSuccess = document.getElementById('emailSuccess');
+    const emailStatus = document.getElementById('emailSuccess');
+    const emailSubmitBtn = emailForm ? emailForm.querySelector('button[type="submit"]') : null;
+    let emailStatusTimer = null;
 
-    const saveEmail = (entry) => {
-      const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.emails) || '[]');
-      existing.push(entry);
-      localStorage.setItem(STORAGE_KEYS.emails, JSON.stringify(existing));
+    const resolveLeadEndpoint = (form) => {
+      const override = typeof window.OPEN_SIG_LEAD_ENDPOINT === 'string' ? window.OPEN_SIG_LEAD_ENDPOINT.trim() : '';
+      if (override) return override;
+      if (!form) return '';
+      const attr = form.getAttribute('data-endpoint') || '';
+      return attr.trim();
     };
 
-    emailForm.addEventListener('submit', (event) => {
-      event.preventDefault();
+    const setEmailSubmitState = (isSubmitting) => {
+      if (!emailSubmitBtn) return;
+      if (!emailSubmitBtn.dataset.defaultText) {
+        emailSubmitBtn.dataset.defaultText = emailSubmitBtn.textContent || '';
+      }
+      emailSubmitBtn.disabled = Boolean(isSubmitting);
+      emailSubmitBtn.textContent = isSubmitting
+        ? 'Sending...'
+        : (emailSubmitBtn.dataset.defaultText || 'Submit');
+    };
+
+    const setEmailStatus = (message, type) => {
+      if (!emailStatus) return;
+      if (emailStatusTimer) {
+        clearTimeout(emailStatusTimer);
+        emailStatusTimer = null;
+      }
+      emailStatus.textContent = message || '';
+      emailStatus.classList.remove('success-message--error');
+      if (type === 'error') {
+        emailStatus.classList.add('success-message--error');
+      }
+      emailStatus.classList.toggle('success-message--visible', Boolean(message));
+      if (message && type !== 'error') {
+        emailStatusTimer = window.setTimeout(() => {
+          emailStatus.classList.remove('success-message--visible');
+        }, 4000);
+      }
+    };
+
+    const submitEmailForm = () => {
+      if (!emailForm) return;
+      if (!emailForm.checkValidity()) {
+        emailForm.reportValidity();
+        return;
+      }
+
+      const endpoint = resolveLeadEndpoint(emailForm);
+      if (!endpoint) {
+        setEmailStatus('Form endpoint is not configured.', 'error');
+        return;
+      }
+
+      setEmailSubmitState(true);
+      setEmailStatus('');
+
       const formData = new FormData(emailForm);
-      const entry = {
-        email: formData.get('email'),
-        role: formData.get('role'),
-        useCase: formData.get('useCase'),
-        timestamp: new Date().toISOString()
-      };
-      saveEmail(entry);
-      logEvent('email_submitted', { role: entry.role });
-      emailSuccess.classList.add('success-message--visible');
-      emailForm.reset();
-      setTimeout(() => emailSuccess.classList.remove('success-message--visible'), 4000);
-    });
+      const payload = {};
+      formData.forEach((value, key) => {
+        payload[key] = value;
+      });
+
+      console.log('Submitting lead to', endpoint, payload);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Request failed');
+          }
+          return response.text().catch(() => '');
+        })
+        .then(() => {
+          logEvent('email_submitted', { role: payload.role });
+          setEmailStatus('Thanks! You are on the list.', 'success');
+          emailForm.reset();
+        })
+        .catch(() => {
+          setEmailStatus('Something went wrong. Please try again or email info@opensig.net.', 'error');
+        })
+        .finally(() => {
+          setEmailSubmitState(false);
+        });
+    };
+
+    if (emailForm) {
+      emailForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        submitEmailForm();
+      });
+    }
 
     let pricingLogged = false;
     const pricingSection = document.getElementById('pricing');
@@ -1553,59 +1588,6 @@
       });
     });
 
-    const footerTestLink = document.querySelector('.footer__test-link');
-    const eventsTable = document.getElementById('eventsTable');
-    const emailsTable = document.getElementById('emailsTable');
-
-    const populateTable = (tableBody, data, columns) => {
-      tableBody.innerHTML = '';
-      if (!data.length) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = columns.length;
-        td.textContent = 'No entries yet';
-        tr.appendChild(td);
-        tableBody.appendChild(tr);
-        return;
-      }
-      data.forEach((row) => {
-        const tr = document.createElement('tr');
-        columns.forEach((col) => {
-          const td = document.createElement('td');
-          const value = row[col];
-          td.textContent = typeof value === 'object' ? JSON.stringify(value) : (value || '');
-          tr.appendChild(td);
-        });
-        tableBody.appendChild(tr);
-      });
-    };
-
-    const refreshDataTables = () => {
-      const events = JSON.parse(localStorage.getItem(STORAGE_KEYS.events) || '[]');
-      const emails = JSON.parse(localStorage.getItem(STORAGE_KEYS.emails) || '[]');
-      populateTable(eventsTable, events, ['event', 'variant', 'timestamp', 'extras']);
-      populateTable(emailsTable, emails, ['email', 'role', 'useCase', 'timestamp']);
-    };
-
-    footerTestLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      refreshDataTables();
-      openModal('dataModal');
-    });
-
-    document.getElementById('exportDataBtn').addEventListener('click', () => {
-      const payload = {
-        events: JSON.parse(localStorage.getItem(STORAGE_KEYS.events) || '[]'),
-        emails: JSON.parse(localStorage.getItem(STORAGE_KEYS.emails) || '[]')
-      };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'opensig-notarize-test-data.json';
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    });
   </script>
 </body>
 </html>
