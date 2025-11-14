@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OpenSig Notarize &mdash; Create permanent proofs of your work.</title>
   <meta name="description" content="OpenSig Notarize lets you create permanent public timestamps and receipts for files without accounts or uploads." />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
@@ -126,7 +126,7 @@
     .hero { padding: 64px 0 80px; }
     .hero__grid { display: grid; gap: 32px; }
     h1.hero__headline { font-size: clamp(2rem, 5vw, 3.5rem); font-family: 'Inter', sans-serif; font-weight: 700;line-height: 1.1; margin: 0 0 16px; }
-    h1.hero__headline span { color: var(--accent); font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; font-style: italic; }
+    h1.hero__headline span { color: var(--accent); font-family: 'Manrope', sans-serif; font-weight: 600; }
     h2.hero__headline { font-size: clamp(1.2rem, 3vw, 2.4rem); line-height: 1.1; margin: 0 0 16px; }
     .hero__subhead { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 24px; }
 
@@ -219,9 +219,310 @@
     .dropzone--active { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(76, 96, 255, 0.2); }
     .dropzone__hint { color: var(--text-muted); margin-top: 8px; font-size: 0.95rem; }
 
-    .demo-results { display: flex; flex-direction: column; gap: 12px; }
+    .demo-results {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0;
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
     .demo-results--visible { display: flex; }
     .demo-note { font-size: 0.9rem; color: var(--text-muted); }
+    .demo-step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .demo-message {
+      display: none;
+      margin-top: 16px;
+    }
+    .demo-message--active { display: block; }
+    .demo-message__status {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .demo-message textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      font-size: 1rem;
+      resize: vertical;
+      min-height: 80px;
+      margin-bottom: 12px;
+    }
+    .demo-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .demo-back svg { width: 18px; height: 18px; }
+    .demo-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .demo-back svg { width: 18px; height: 18px; }
+
+    .certificate-preview {
+      position: relative;
+      padding: 18px;
+      border-radius: 28px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.35), rgba(99, 102, 241, 0.15));
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.22);
+      cursor: zoom-in;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+    }
+    .certificate-preview:focus-visible {
+      box-shadow: 0 0 0 3px rgba(76, 96, 255, 0.3);
+    }
+    .certificate-preview:hover { transform: translateY(-2px); }
+    .certificate-preview__hint {
+      position: absolute;
+      bottom: 12px;
+      right: 20px;
+      background: rgba(15, 23, 42, 0.72);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .certificate-preview__hint svg {
+      width: 14px;
+      height: 14px;
+    }
+    .certificate-shell {
+      --certificate-preview-width: 720px;
+      --certificate-aspect: 1.414;
+      --certificate-preview-scale: 0.48;
+      --certificate-preview-height: calc(var(--certificate-preview-width) * var(--certificate-aspect));
+      --certificate-preview-display-height: calc(var(--certificate-preview-height) * var(--certificate-preview-scale));
+      position: relative;
+      width: min(430px, 100%);
+      min-height: calc(var(--certificate-preview-display-height) + 40px);
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(221, 227, 238, 0.9), rgba(249, 250, 255, 0.9));
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.05);
+      overflow: hidden;
+    }
+    .certificate-shell__inner {
+      position: absolute;
+      inset: 20px;
+      height: var(--certificate-preview-display-height);
+      border-radius: 20px;
+      background:
+        repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.04) 1px, transparent 1px, transparent 12px),
+        repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.04) 1px, transparent 1px, transparent 12px);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .certificate {
+      position: relative;
+      background: linear-gradient(180deg, #ffffff 0%, #fdfcf8 100%);
+      border: 2px solid #1d3c92;
+      border-radius: 20px;
+      padding: 32px;
+      overflow: hidden;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+    }
+    .certificate--thumbnail {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: var(--certificate-preview-width);
+      height: var(--certificate-preview-height);
+      padding: 48px;
+      font-size: 0.92rem;
+      transform-origin: top center;
+      transform: translateX(-50%) scale(var(--certificate-preview-scale));
+      box-shadow: 0 35px 85px rgba(15, 23, 42, 0.35);
+    }
+    .certificate--modal {
+      width: min(1600px, 100%);
+      margin: 0 auto;
+      overflow: visible;
+    }
+
+    .certificate__watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-28deg);
+      font-size: clamp(3.5rem, 11vw, 8rem);
+      font-weight: 700;
+      color: rgba(16, 99, 191, 0.08);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .certificate__logo {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: clamp(30px, 12vw, 140px);
+      filter: drop-shadow(0 8px 20px rgba(16, 99, 191, 0.32));
+      z-index: 1;
+    }
+    .certificate__title {
+      text-align: center;
+      font-size: min(1.5rem, 2.5vw);
+      font-weight: 700;
+      color: #1063bf;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+    .certificate__section {
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .certificate__label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .certificate__value {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      color: #303135;
+      line-height: 1.4;
+    }
+    .certificate__id {
+      font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.9rem;
+      color: #111827;
+      margin: 0 0 12px;
+      word-break: break-all;
+    }
+    .certificate__file-info {
+      display: block;
+      font-size: 0.82rem;
+      color: #6b7280;
+    }
+    .certificate__signature {
+      display: flex;
+      gap: 20px;
+      border-top: 1px solid #e5e7eb;
+      padding: 16px 0;
+    }
+    .certificate__signature:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+    .certificate__signature-info p { margin: 0 0 10px; }
+    .certificate__qr {
+      width: 92px;
+      height: 92px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #fff;
+    }
+    .certificate__message { color: #374151; }
+    .certificate__tx {
+      font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+      color: #1063bf;
+      word-break: break-all;
+    }
+    .certificate__list {
+      margin: 0 0 12px 20px;
+      padding-left: 12px;
+      color: #111827;
+    }
+    .certificate__list li { margin-bottom: 6px; }
+    .certificate__rosette { text-align: center; margin: 28px 0 10px; }
+    .certificate__rosette img {
+      width: clamp(50px, 7vw, 85px);
+      filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.18));
+    }
+    .rosette--small img { width: 32px; }
+    .certificate__footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #4b5563;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .certificate__actions {
+      margin-top: 20px;
+      margin-bottom: 0;
+      justify-content: flex-end;
+    }
+    .modal__content--certificate {
+      width: min(1600px, 96vw);
+      height: min(2263px, calc(96vw * 1.414));
+      background: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    .modal__content--certificate > .certificate {
+      margin: 0 auto;
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+    }
+    .modal__content--certificate .modal__close {
+      top: 16px;
+      right: 16px;
+      z-index: 2;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      background: rgba(15, 23, 42, 0.6);
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .certificate-shell { --certificate-preview-scale: 0.4; }
+      .certificate {
+        padding: 24px;
+      }
+      .certificate__signature {
+        flex-direction: column;
+      }
+      .certificate__actions {
+        justify-content: flex-start;
+      }
+    }
+    @media (max-width: 520px) {
+      .certificate-shell { --certificate-preview-scale: 0.34; }
+    }
 
     .pill {
       display: inline-flex;
@@ -298,7 +599,7 @@
       background: var(--card-bg);
       padding: 32px;
       border-radius: var(--radius);
-      width: min(520px, 100%);
+      width: min(1024px, 100%);
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: var(--shadow-soft);
@@ -342,6 +643,9 @@
 
     @media (min-width: 1024px) {
       .card-grid--steps {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .card-grid--steps-4 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
@@ -351,6 +655,16 @@
       .nav__links { justify-content: flex-start; }
       .variant-control { width: 100%; }
       .variant-select { flex: 1; }
+      .modal {
+        padding: 8px;
+      }
+      .modal__content--certificate {
+        padding: 0;
+        border: 2px solid #1d3c92;
+      }
+      .certificate {
+        border: none;
+      }
     }
   </style>
 </head>
@@ -358,13 +672,13 @@
   <div class="page">
     <header class="top-bar">
       <div class="container nav" aria-label="Primary">
-        <div class="wordmark" aria-label="OpenSig Notarize wordmark">OpenSig <span>Notarize</span></div>
+        <div class="wordmark" aria-label="OpenSig Notarize wordmark">OpenSig <span>Certify</span></div>
         <nav class="nav__links" aria-label="Main navigation">
           <a class="nav__link" href="#how-it-works">How it works</a>
           <a class="nav__link" href="#pricing">Pricing</a>
           <a class="nav__link" href="#faq">FAQ</a>
           <button class="nav__link" type="button" data-open-modal="updatesModal" data-cta="nav_get_updates">Get updates</button>
-          <div class="variant-control" style="display:flex">
+          <div class="variant-control" style="display:none">
             <label for="variantSelect" class="visually-hidden">Headline variant</label>
             <select id="variantSelect" class="variant-select" aria-label="Select headline variant">
               <option value="0">Create permanent proofs</option>
@@ -381,7 +695,7 @@
         <div class="container hero__grid">
           <div>
             <p class="pill" aria-live="polite">Secure your creations</p>
-            <h1 id="heroHeadline" class="hero__headline">OpenSig <span>Notarize</span></h1>
+            <h1 id="heroHeadline" class="hero__headline">OpenSig <span>Certify</span></h1>
             <h2 class="hero__headline">Timestamp and protect your creations.</h2>
             <p class="hero__subhead">Protect your IP. Record a permanent public timestamp and certificate for any file &mdash; privately, from your device.</p>
             <div class="cta-group">
@@ -410,31 +724,31 @@
       <section class="section" id="how-it-works">
         <div class="container">
           <h2 class="section__heading">How it works</h2>
-          <p class="section__subhead">Four quick steps to capture proof of existence and possession.</p>
+          <p class="section__subhead">Three quick steps to capture proof of existence and possession.</p>
           <div class="card-grid card-grid--steps">
-            <article class="card steps__item">
+            <!-- <article class="card steps__item">
               <div class="steps__item-number" aria-hidden="true">1</div>
               <h3>Verify your email</h3>
               <p>OpenSig generates your standalone, verified digital identity and links it to your device.</p>
               <p class="info-text">Your identity and proofs are yours, not OpenSig's.</p>
               <span class="step-tag">Your digital ID</span>
-            </article>
+            </article> -->
             <article class="card steps__item">
-              <div class="steps__item-number" aria-hidden="true">2</div>
+              <div class="steps__item-number" aria-hidden="true">1</div>
               <h3>Choose your file</h3>
               <p>We process your file privately on your device to calculate your file's unique fingerprint.</p>
               <p class="info-text">No uploads, ever. Privacy is paramount.</p>
               <span class="step-tag">Proof creation begins here</span>
             </article>
             <article class="card steps__item">
-              <div class="steps__item-number" aria-hidden="true">3</div>
+              <div class="steps__item-number" aria-hidden="true">2</div>
               <h3>Create your proof</h3>
               <p>Add an optional message then publish a permanent public proof, like a digital timestamp, directly from your device.</p>
               <p class="info-text">No middleman. No account.</p>
               <span class="step-tag">Proof of existence</span>
             </article>
             <article class="card steps__item">
-              <div class="steps__item-number" aria-hidden="true">4</div>
+              <div class="steps__item-number" aria-hidden="true">3</div>
               <h3>Share your file</h3>
               <p>Anyone with your file can verify the proof and read your encrypted message.</p>
               <p class="info-text">Without the file, the proof reveals nothing.</p>
@@ -450,23 +764,132 @@
           <p class="section__subhead">Drop any file (we never upload). We simulate the fingerprint and receipt locally.</p>
           <div class="demo">
             <div>
-              <div id="dropZone" class="dropzone" tabindex="0" role="button" aria-label="Drag and drop a file" aria-describedby="dropHint">
-                <svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--accent)" d="M12 2 5 9h4v6h6V9h4z"/><path fill="var(--accent)" d="M5 18h14v2H5z"/></svg>
-                <p style="margin:12px 0 4px; font-weight:600;">Drag & drop or choose a file</p>
-                <p id="dropHint" class="dropzone__hint">We only read it locally to create a fingerprint.</p>
-                <button class="btn btn--secondary" type="button" id="chooseFileBtn">Choose file</button>
-                <input type="file" id="fileInput" style="display:none" />
+              <div id="demoStepOne">
+                <p class="demo-step-label" id="demoStepLabel">Step 1 &middot; Choose a file</p>
+                <div id="dropZone" class="dropzone" tabindex="0" role="button" aria-label="Drag and drop a file" aria-describedby="dropHint">
+                  <svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--accent)" d="M12 2 5 9h4v6h6V9h4z"/><path fill="var(--accent)" d="M5 18h14v2H5z"/></svg>
+                  <p style="margin:12px 0 4px; font-weight:600;">Drag & drop or choose a file</p>
+                  <p id="dropHint" class="dropzone__hint">We only read it locally to create a fingerprint.</p>
+                  <button class="btn btn--secondary" type="button" id="chooseFileBtn">Choose file</button>
+                  <input type="file" id="fileInput" style="display:none" />
+                </div>
+                <p class="demo-note">This is a demo. The real app creates a permanent public record.</p>
               </div>
-              <p class="demo-note">This is a demo. The real app creates a permanent public record.</p>
+              <div id="demoStepTwo" aria-hidden="true" class="demo-message">
+                <p class="demo-step-label">Step 2 &middot; Add a message (Optional)</p>
+                <div id="dropZone" class="dropzone" tabindex="0" role="button" aria-label="Add Message" aria-describedby="dropHint" style="text-align:left">
+                  <button class="demo-back" type="button" id="demoBackBtn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                    Back
+                  </button>
+                  <label for="demoMessageInput" style="font-weight:600; display:block; margin-bottom:8px; margin-top:18px;">Message</label>
+                  <textarea id="demoMessageInput" placeholder="Insert an encrypted message in your proof"></textarea>
+                  <div class="cta-group" style="margin-top:4px;">
+                    <button class="btn btn--primary" type="button" id="publishDemoBtn">Publish demo proof</button>
+                  </div>
+                </div>
+                <p class="demo-note">This is a demo. The real app creates a permanent public record.</p>
+              </div>
             </div>
-            <div class="card demo-results" id="demoResults" aria-live="polite">
-              <h3 style="margin-top:0">Demo proof created</h3>
-              <p id="demoFileName" style="font-weight:600;"></p>
-              <p><strong>Permanent Record ID:</strong> <span id="demoRecordId"></span></p>
-              <p><strong>Timestamp (local):</strong> <span id="demoTimestamp"></span></p>
-              <p><strong>Receipt:</strong> <span id="demoReceipt"></span></p>
-              <div class="cta-group">
-                <button class="btn btn--primary" type="button" id="copyReceiptBtn">Copy receipt</button>
+            <div class="card demo-results" id="demoResults" aria-live="polite" aria-hidden="true">
+              <div
+                class="certificate-preview"
+                id="certificatePreview"
+                role="button"
+                tabindex="0"
+                aria-label="View certificate preview full size"
+              >
+                <div class="certificate-shell">
+                  <div class="certificate-shell__inner">
+                    <div class="certificate certificate--thumbnail" role="group" aria-label="OpenSig certificate preview" data-certificate-context="preview">
+                      <div class="certificate__watermark" aria-hidden="true">OpenSig</div>
+                      <img class="certificate__logo" src="assets/certificate-stamp.png" alt="OpenSig stamp" loading="lazy" style="width: 96px" />
+                      <div class="certificate__title" style="font-size: 16px">OpenSig Signature Certificate</div>
+
+                    <div class="certificate__section">
+                      <p class="certificate__label">Date of certificate</p>
+                      <p class="certificate__value" data-field="certificateDate">Waiting for a file...</p>
+
+                      <p class="certificate__label">Document</p>
+                      <p class="certificate__value">
+                        <span data-field="certificateDocument">—</span>
+                        <span class="certificate__file-info" data-field="certificateFileInfo"></span>
+                      </p>
+
+                      <p class="certificate__label">Public document ID</p>
+                      <p class="certificate__id" data-field="certificateDocumentId">—</p>
+                  </div>
+
+                    <div class="certificate__section">
+                      <p class="certificate__label">Signatures</p>
+                      <div class="certificate__signature">
+                        <div class="certificate__signature-info">
+                          <p class="certificate__value">
+                            <span>OpenSig Demo Identity</span>
+                            <span class="certificate__id" data-field="certificateSignerDid">(did:opensig:demo)</span>
+                          </p>
+                          <p class="certificate__value">
+                            <span class="certificate__label">Email:</span>
+                            <span>demo@opensig.net</span>
+                          </p>
+                          <p class="certificate__value">
+                            <span class="certificate__label">Date/Time:</span>
+                            <span data-field="certificateSignatureDate">—</span>
+                          </p>
+                          <p class="certificate__value">
+                            <span class="certificate__label">Message:</span>
+                            <span data-field="certificateMessage" class="certificate__message">Drop a file to simulate a signature receipt.</span>
+                          </p>
+                          <p class="certificate__value">
+                            <span class="certificate__label">Public Record Link:</span>
+                            <span class="certificate__tx" data-field="certificateTxText">demo</span>
+                          </p>
+                        </div>
+                        <img
+                          class="certificate__qr"
+                          data-field="certificateQr"
+                          src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&amp;data=OpenSig%20Demo"
+                          data-default-src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&amp;data=OpenSig%20Demo"
+                          alt="QR code placeholder"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="certificate__section">
+                      <p class="certificate__label">Document verified</p>
+                      <p class="certificate__value certificate__message">
+                        This certificate confirms that the listed signer was in possession of the document on the stated date using a cryptographically secure OpenSig identity. It proves the document existed at that moment and has remained unchanged since.
+                      </p>
+                      <p class="certificate__label">Verification instructions</p>
+                      <ol class="certificate__list">
+                        <li>Open the original file in the OpenSig app.</li>
+                        <li>The app recomputes the file's public ID and finds matching proofs on the permanent public record.</li>
+                        <li>If the file is unchanged, the signatures above will be discovered and this certificate regenerates.</li>
+                      </ol>
+                      <p class="certificate__value">
+                        Alternatively, visit
+                        <a href="https://opensig.net/verify" target="_blank" rel="noreferrer noopener">opensig.net/verify</a>
+                        to regenerate the certificate instantly.
+                      </p>
+                    </div>
+
+                    <div class="certificate__rosette">
+                      <img src="assets/certificate-rosette.png" alt="OpenSig rosette" loading="lazy" style="width: 64px" />
+                    </div>
+                      <p class="certificate__footer">
+                        Issued by <strong>opensig.net</strong> &mdash; Secure digital signatures on the blockchain.<br />
+                        This preview matches the certificate inside the OpenSig mobile app.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="certificate-preview__hint">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 3v2H6v12h12v-4h2v6H4V3h6zm9-2 4 4h-3v8h-2V5h-3l4-4z"/></svg>
+                  Click to enlarge
+                </div>
+              </div>
+              <div class="cta-group certificate__actions">
                 <button class="btn btn--secondary" type="button" id="resetDemoBtn">Reset demo</button>
               </div>
             </div>
@@ -510,7 +933,7 @@
         <div class="container">
           <h2 class="section__heading">Pricing</h2>
           <p class="section__subhead">No complex workflows. Simply top up credits to pay as you go.</p>
-          <div class="card-grid card-grid--steps">
+          <div class="card-grid card-grid--steps-4">
             <article class="card">
               <h3>Sign-Up</h3>
               <p class="pricing-card__count">3 free</p>
@@ -626,6 +1049,93 @@
     </div>
   </div>
 
+  <div class="modal" id="certificateModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="certificateModalTitle">
+    <div class="modal__content modal__content--certificate">
+      <button class="modal__close" type="button" data-close-modal aria-label="Close certificate view"><span aria-hidden="true">&times;</span></button>
+      <div class="certificate certificate--modal" role="document" aria-labelledby="certificateModalTitle">
+        <div class="certificate__watermark" aria-hidden="true">OpenSig</div>
+        <img class="certificate__logo" src="assets/certificate-stamp.png" alt="OpenSig stamp" loading="lazy" />
+        <div class="certificate__title" id="certificateModalTitle">OpenSig Signature Certificate</div>
+
+        <div class="certificate__section">
+          <p class="certificate__label">Date of certificate</p>
+          <p class="certificate__value" data-field="certificateDate">Waiting for a file...</p>
+
+          <p class="certificate__label">Document</p>
+          <p class="certificate__value">
+            <span data-field="certificateDocument">—</span>
+            <span class="certificate__file-info" data-field="certificateFileInfo"></span>
+          </p>
+
+          <p class="certificate__label">Public document ID</p>
+          <p class="certificate__id" data-field="certificateDocumentId">—</p>
+        </div>
+
+        <div class="certificate__section">
+          <p class="certificate__label">Signatures</p>
+          <div class="certificate__signature">
+            <div class="certificate__signature-info">
+              <p class="certificate__value">
+                <span>OpenSig Demo Identity</span>
+                <span class="certificate__id" data-field="certificateSignerDid">(did:opensig:demo)</span>
+              </p>
+              <p class="certificate__value">
+                <span class="certificate__label">Email:</span>
+                <span>demo@opensig.net</span>
+              </p>
+              <p class="certificate__value">
+                <span class="certificate__label">Date/Time:</span>
+                <span data-field="certificateSignatureDate">—</span>
+              </p>
+              <p class="certificate__value">
+                <span class="certificate__label">Message:</span>
+                <span data-field="certificateMessage" class="certificate__message">Drop a file to simulate a signature receipt.</span>
+              </p>
+              <p class="certificate__value">
+                <span class="certificate__label">Public Record Link:</span>
+                <a class="certificate__tx" data-field="certificateTxLink" href="https://polygonscan.com/tx/0x6ef9b57aaa155e6a42f8ae9ab8a8bc01b82fd3f192feb7955eb651c3bb449396" target="_blank" rel="noreferrer noopener">0x6ef9b57aaa155e6a42f8ae9ab8a8bc01b82fd3f192feb7955eb651c3bb449396</a>
+              </p>
+            </div>
+            <img
+              class="certificate__qr"
+              data-field="certificateQr"
+              src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&amp;data=OpenSig%20Demo"
+              data-default-src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&amp;data=OpenSig%20Demo"
+              alt="QR code placeholder"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="certificate__section">
+          <p class="certificate__label">Document verified</p>
+          <p class="certificate__value certificate__message">
+            This certificate confirms that the listed signer was in possession of the document on the stated date using a cryptographically secure OpenSig identity. It proves the document existed at that moment and has remained unchanged since.
+          </p>
+          <p class="certificate__label">Verification instructions</p>
+          <ol class="certificate__list">
+            <li>Open the original file in the OpenSig app.</li>
+            <li>The app recomputes the file's public ID and finds matching proofs on the permanent public record.</li>
+            <li>If the file is unchanged, the signatures above will be discovered and this certificate regenerates.</li>
+          </ol>
+          <p class="certificate__value">
+            Alternatively, visit
+            <a href="https://opensig.net/verify" target="_blank" rel="noreferrer noopener">opensig.net/verify</a>
+            to regenerate the certificate instantly.
+          </p>
+        </div>
+
+        <div class="certificate__rosette">
+          <img src="assets/certificate-rosette.png" alt="OpenSig rosette" loading="lazy" />
+        </div>
+        <p class="certificate__footer">
+          Issued by <strong>opensig.net</strong> &mdash; Secure digital signatures on the blockchain.<br />
+          This preview matches the certificate inside the OpenSig mobile app.
+        </p>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="dataModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dataTitle">
     <div class="modal__content">
       <button class="modal__close" type="button" data-close-modal><span aria-hidden="true">&times;</span></button>
@@ -737,12 +1247,14 @@
     const fileInput = document.getElementById('fileInput');
     const chooseFileBtn = document.getElementById('chooseFileBtn');
     const demoResults = document.getElementById('demoResults');
-    const demoFileName = document.getElementById('demoFileName');
-    const demoRecordId = document.getElementById('demoRecordId');
-    const demoTimestamp = document.getElementById('demoTimestamp');
-    const demoReceipt = document.getElementById('demoReceipt');
-    const copyReceiptBtn = document.getElementById('copyReceiptBtn');
     const resetDemoBtn = document.getElementById('resetDemoBtn');
+    const certificatePreview = document.getElementById('certificatePreview');
+    const demoStepOne = document.getElementById('demoStepOne');
+    const demoStepTwo = document.getElementById('demoStepTwo');
+    const demoMessageInput = document.getElementById('demoMessageInput');
+    const demoSelectedFile = document.getElementById('demoSelectedFile');
+    const publishDemoBtn = document.getElementById('publishDemoBtn');
+    const demoBackBtn = document.getElementById('demoBackBtn');
 
     const highlightDrop = (active) => dropZone.classList.toggle('dropzone--active', active);
 
@@ -758,7 +1270,7 @@
         event.preventDefault();
         if (event.type === 'drop') {
           const files = event.dataTransfer ? event.dataTransfer.files : null;
-          if (files && files.length) handleFile(files[0]);
+          if (files && files.length) handleFileSelection(files[0]);
         }
         highlightDrop(false);
       });
@@ -774,66 +1286,221 @@
     chooseFileBtn.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', () => {
       const file = fileInput.files && fileInput.files[0];
-      if (file) handleFile(file);
+      if (file) handleFileSelection(file);
     });
 
     const bufferToHex = (buffer) => Array.from(new Uint8Array(buffer))
       .map((value) => value.toString(16).padStart(2, '0'))
       .join('');
 
-    const fallbackDigest = async (file) => {
-      const text = await file.text();
-      let hash = 0;
-      for (let i = 0; i < text.length; i += 1) {
-        hash = (hash + text.charCodeAt(i) * 31) % 0xffffffff;
+    const formatFileSize = (bytes) => {
+      if (typeof bytes !== 'number' || Number.isNaN(bytes)) return '';
+      const units = ['bytes', 'KB', 'MB', 'GB', 'TB'];
+      let size = bytes;
+      let unit = 0;
+      while (size >= 1024 && unit < units.length - 1) {
+        size /= 1024;
+        unit += 1;
       }
-      return hash.toString(16).padStart(8, '0').repeat(8).slice(0, 64);
+      const precision = unit === 0 ? 0 : 1;
+      return `${size.toFixed(precision)} ${units[unit]}`;
     };
 
-    const handleFile = async (file) => {
-      logEvent('demo_started', { name: file.name, size: file.size });
-      let digestHex = '';
+    const describeFileType = (file) => {
+      if (file.type) return file.type;
+      const parts = file.name.split('.');
+      return parts.length > 1 ? `${parts.pop().toUpperCase()} file` : 'Unknown file type';
+    };
+
+    const toOpenSigDid = (hash) => `did:opensig:${hash.slice(0, 12)}`;
+    const buildDemoTxHash = (hash) => `0x${hash.padEnd(64, '0').slice(0, 64)}`;
+    const certificateFields = (name) => document.querySelectorAll(`[data-field="${name}"]`);
+    const setCertificateText = (name, value) => {
+      certificateFields(name).forEach((el) => {
+        el.textContent = value;
+      });
+    };
+    let pendingFile = null;
+    const defaultTxHash = '0x6ef9b57aaa155e6a42f8ae9ab8a8bc01b82fd3f192feb7955eb651c3bb449396';
+    const defaultTxUrl = `https://polygonscan.com/tx/${defaultTxHash}#eventlog`;
+
+    const resetCertificateResults = () => {
+      setCertificateText('certificateDate', 'Waiting for a file...');
+      setCertificateText('certificateDocument', '—');
+      setCertificateText('certificateFileInfo', '');
+      setCertificateText('certificateDocumentId', '—');
+      setCertificateText('certificateRecordId', '—');
+      setCertificateText('certificateSignerDid', '(did:opensig:demo)');
+      setCertificateText('certificateSignatureDate', '—');
+      setCertificateText('certificateMessage', 'Add a message and publish to see it here.');
+      setCertificateText('certificateTxText', defaultTxHash);
+      certificateFields('certificateTxLink').forEach((link) => {
+        link.textContent = defaultTxHash;
+        link.href = defaultTxUrl;
+        link.setAttribute('aria-label', 'View demo transaction on Polygonscan');
+      });
+      certificateFields('certificateQr').forEach((img) => {
+        const fallback = img.dataset.defaultSrc || `https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${encodeURIComponent(defaultTxUrl)}`;
+        img.src = fallback;
+        img.alt = 'QR code placeholder';
+      });
+      demoResults.classList.remove('demo-results--visible');
+      demoResults.setAttribute('aria-hidden', 'true');
+    };
+
+    const resetMessageStep = () => {
+      pendingFile = null;
+      if (demoMessageInput) demoMessageInput.value = '';
+      if (publishDemoBtn) {
+        publishDemoBtn.textContent = 'Publish demo proof';
+      }
+      if (demoSelectedFile) demoSelectedFile.textContent = 'Choose a file to unlock this step.';
+      if (demoStepTwo) {
+        demoStepTwo.classList.remove('demo-message--active');
+        demoStepTwo.setAttribute('aria-hidden', 'true');
+      }
+      if (demoStepOne) demoStepOne.removeAttribute('hidden');
+    };
+
+    const resetDemoExperience = () => {
+      resetCertificateResults();
+      resetMessageStep();
+    };
+
+    const activateMessageStep = (file) => {
+      if (!file || !demoStepTwo) return;
+      resetCertificateResults();
+      pendingFile = file;
+      demoStepTwo.classList.add('demo-message--active');
+      demoStepTwo.setAttribute('aria-hidden', 'false');
+      demoStepLabel.textContent = 'Step 2: Add a message (optional)';
+      if (demoStepOne) demoStepOne.setAttribute('hidden', 'true');
+      if (demoSelectedFile) demoSelectedFile.textContent = `Ready to publish: ${file.name}`;
+      if (demoMessageInput) demoMessageInput.value = '';
+      if (publishDemoBtn) {
+        publishDemoBtn.disabled = false;
+        publishDemoBtn.textContent = 'Publish demo proof';
+      }
+      if (demoMessageInput) {
+        demoMessageInput.focus();
+        if (typeof demoMessageInput.setSelectionRange === 'function') {
+          const length = demoMessageInput.value.length;
+          demoMessageInput.setSelectionRange(length, length);
+        }
+      }
+    };
+
+    resetDemoExperience();
+
+    function handleFileSelection(file) {
+      if (!file) return;
+      logEvent('demo_file_selected', { name: file.name, size: file.size });
+      activateMessageStep(file);
+    }
+
+    const triggerCertificateModal = () => openModal('certificateModal');
+    if (certificatePreview) {
+      certificatePreview.addEventListener('click', (event) => {
+        if (event.target.closest('a') || event.target.closest('button')) return;
+        triggerCertificateModal();
+      });
+      certificatePreview.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          triggerCertificateModal();
+        }
+      });
+    }
+
+    if (publishDemoBtn) {
+      publishDemoBtn.addEventListener('click', async () => {
+        if (!pendingFile || publishDemoBtn.disabled) return;
+        const publishingFile = pendingFile;
+        const message = demoMessageInput ? demoMessageInput.value.trim() : '';
+        publishDemoBtn.disabled = true;
+        const originalLabel = publishDemoBtn.textContent;
+        publishDemoBtn.textContent = 'Publishing...';
+        try {
+          await generateDemoProof(publishingFile, message);
+          if (pendingFile === publishingFile) {
+            publishDemoBtn.textContent = 'Publish again';
+          }
+        } catch (error) {
+          console.warn('Demo publish failed', error);
+          publishDemoBtn.textContent = 'Try again';
+          setTimeout(() => { publishDemoBtn.textContent = originalLabel; }, 2000);
+        } finally {
+          publishDemoBtn.disabled = false;
+        }
+      });
+    }
+
+    if (demoBackBtn) {
+      demoBackBtn.addEventListener('click', () => {
+        pendingFile = null;
+        resetMessageStep();
+        if (demoSelectedFile) demoSelectedFile.textContent = 'Choose a file to unlock this step.';
+      });
+    }
+
+    async function generateDemoProof(file, message) {
+      logEvent('demo_started', { name: file.name, size: file.size, hasMessage: Boolean(message) });
+      let digestHex = '0x1b479f7e1fdc528c9bf5e835382bbbeca5e69e5003a41ab6cea2bb89394f65e3';
       try {
         if (window.crypto && window.crypto.subtle) {
           const buffer = await file.arrayBuffer();
-          const digest = await window.crypto.subtle.digest('SHA-256', buffer);
-          digestHex = bufferToHex(digest);
-        } else {
-          digestHex = await fallbackDigest(file);
+          const H0 = await window.crypto.subtle.digest('SHA-256', buffer);
+          const H_pub = await window.crypto.subtle.digest('SHA-256', H0);
+          digestHex = `0x${bufferToHex(H_pub)}`;
         }
       } catch (error) {
         console.error('Digest failed', error);
-        digestHex = await fallbackDigest(file);
       }
       const recordId = digestHex.slice(0, 12) + '...(demo)';
-      const receipt = digestHex.slice(-8).toUpperCase();
-      demoFileName.textContent = 'File: ' + file.name;
-      demoRecordId.textContent = recordId;
-      demoTimestamp.textContent = new Date().toLocaleString();
-      demoReceipt.textContent = receipt;
-      demoResults.classList.add('demo-results--visible');
-      logEvent('demo_completed', { recordId, receipt });
-    };
+      const timestamp = new Date();
+      const prettyDate = timestamp.toLocaleString('en-US', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+      const fileInfoParts = [describeFileType(file)];
+      const sizeLabel = formatFileSize(file.size);
+      if (sizeLabel) fileInfoParts.push(sizeLabel);
 
-    copyReceiptBtn.addEventListener('click', async () => {
-      const text = demoReceipt.textContent;
-      if (!text) return;
-      try {
-        await navigator.clipboard.writeText(text);
-        copyReceiptBtn.textContent = 'Copied!';
-        setTimeout(() => { copyReceiptBtn.textContent = 'Copy receipt'; }, 2000);
-      } catch (error) {
-        console.warn('Clipboard not available', error);
-      }
-    });
+      setCertificateText('certificateDate', prettyDate);
+      setCertificateText('certificateDocument', file.name);
+      setCertificateText('certificateFileInfo', fileInfoParts.filter(Boolean).join(', '));
+      setCertificateText('certificateDocumentId', digestHex);
+      setCertificateText('certificateRecordId', recordId);
+      setCertificateText('certificateSignerDid', '(did:os:23cUvcGLyRgbTZ217wCHoCCHSWZN)');
+      setCertificateText('certificateSignatureDate', prettyDate);
+      const userMessage = message && message.length ? message : 'None.';
+      setCertificateText('certificateMessage', userMessage);
+
+      const txHash = '0x6ef9b57aaa155e6a42f8ae9ab8a8bc01b82fd3f192feb7955eb651c3bb449396';
+      const txUrl = `https://polygonscan.com/tx/${txHash}#eventlog`;
+      setCertificateText('certificateTxText', txHash);
+      certificateFields('certificateTxLink').forEach((link) => {
+        link.textContent = txHash;
+        link.href = txUrl;
+        link.setAttribute('aria-label', `View ${txHash} on Polygonscan`);
+      });
+      certificateFields('certificateQr').forEach((img) => {
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${encodeURIComponent(txUrl)}`;
+        img.alt = 'QR code for simulated transaction';
+      });
+
+      demoResults.classList.add('demo-results--visible');
+      demoResults.setAttribute('aria-hidden', 'false');
+      logEvent('demo_completed', { recordId, hasMessage: Boolean(message) });
+    }
 
     resetDemoBtn.addEventListener('click', () => {
       fileInput.value = '';
-      demoResults.classList.remove('demo-results--visible');
-      demoFileName.textContent = '';
-      demoRecordId.textContent = '';
-      demoTimestamp.textContent = '';
-      demoReceipt.textContent = '';
+      resetDemoExperience();
     });
     const emailForm = document.getElementById('updatesForm');
     const emailSuccess = document.getElementById('emailSuccess');
