@@ -14,6 +14,8 @@
   <meta name="description" content="OpenSig Certify lets you create permanent public timestamps and receipts for files without accounts or uploads." />
   <link href="https://fonts.googleapis.com/css2?family=Manrope" rel="stylesheet">
   <script src="https://www.google.com/recaptcha/api.js?render=6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws" defer></script>
+  <script src="lead-form.js" defer></script>
+  <link href="lead-form.css" rel="stylesheet" />
   <style>
     :root {
       color-scheme: light;
@@ -672,7 +674,7 @@
           <a class="nav__link" href="#how-it-works">How it works</a>
           <a class="nav__link" href="#pricing">Pricing</a>
           <a class="nav__link" href="#faq">FAQ</a>
-          <button class="nav__link" type="button" data-open-modal="updatesModal" data-cta="nav_get_updates">Get updates</button>
+          <button type="button" class="nav__link lead-form-trigger" data-intent="earlyAccess">Get updates</button>
           <div class="variant-control" style="display:none">
             <label for="variantSelect" class="visually-hidden">Headline variant</label>
             <select id="variantSelect" class="variant-select" aria-label="Select headline variant">
@@ -695,7 +697,7 @@
             <p class="hero__subhead">Protect your IP. Record a permanent public timestamp and certificate for any file &mdash; privately, from your device.</p>
             <div class="cta-group">
               <button class="btn btn--primary" data-scroll="#demo" data-cta="try_demo">Try the demo</button>
-              <button class="btn btn--secondary" type="button" data-open-modal="updatesModal" data-cta="hero_get_updates">Get updates</button>
+              <button type="button" class="btn btn--secondary lead-form-trigger" data-intent="earlyAccess">Get updates</button>
             </div>
             <div class="trust-row" aria-label="Trust statements">
               <span><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.6 16.2 5.4 12l-1.4 1.4 5.6 5.6L20 8.6 18.6 7.2z"/></svg>No account required</span>
@@ -1012,38 +1014,43 @@
     </footer>
   </div>
 
-  <div class="modal" id="updatesModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="updatesTitle">
-    <div class="modal__content">
-      <button class="modal__close" type="button" data-close-modal><span aria-hidden="true">&times;</span></button>
-      <h2 id="updatesTitle">Get updates</h2>
-      <p>We will only use this to contact you about OpenSig Certify.</p>
-      <form id="updatesForm" data-endpoint="https://vault.bubbleprotocol.com:8128/leads">
-        <input type="hidden" name="intent" value="Certify Updates">
-        <input type="hidden" name="recaptchaToken" id="updates-recaptcha-token">
-        <div class="form-group">
-          <label for="nameInput">Name</label>
-          <input type="text" id="nameInput" name="name" required />
+  <div class="lead-form-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lead-form-title">
+    <div class="lead-form-modal">
+      <button type="button" class="lead-form-close" aria-label="Close form">&#10005;</button>
+      <h2 class="lead-form-title" id="lead-form-title">Book a walkthrough</h2>
+      <p class="lead-form-subtitle" id="lead-form-subtitle">Tell us how you'd like to use OpenSig and we'll be in touch shortly.</p>
+      <form id="lead-form" class="lead-form" data-endpoint="https://vault.bubbleprotocol.com:8128/leads" novalidate>
+        <input type="hidden" name="intent" id="lead-intent" value="Walkthrough">
+        <input type="hidden" name="recaptchaToken" id="lead-recaptcha-token">
+        <div class="lead-form-fields">
+          <label for="lead-name">Name
+            <input id="lead-name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" required>
+          </label>
+          <label for="lead-email">Email
+            <input id="lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+          </label>
+          <label for="lead-use-case">Role
+            <select id="lead-use-case" name="useCase" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="IP Protection">Creator</option>
+              <option value="Agreements">Entrepreneur</option>
+              <option value="Both">Academic/Researcher</option>
+              <option value="Other">Engineer</option>
+              <option value="Other">Individual</option>
+              <option value="Other">Small Business</option>
+              <option value="Other">Enterprise</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label for="lead-details">What would you use this for?
+            <textarea id="lead-details" name="details" placeholder="Share context, goals, or links."></textarea>
+          </label>
         </div>
-        <div class="form-group">
-          <label for="emailInput">Email</label>
-          <input type="email" id="emailInput" name="email" required />
-        </div>
-        <div class="form-group">
-          <label for="roleSelect">Role</label>
-          <select id="roleSelect" name="useCase">
-            <option value="Creator">Creator</option>
-            <option value="Entrepreneur/SME">Entrepreneur/SME</option>
-            <option value="Academic/Research">Academic/Research</option>
-            <option value="Engineer">Engineer</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="useCaseInput">What would you use this for?</label>
-          <textarea id="useCaseInput" name="details" placeholder="Optional"></textarea>
-        </div>
-        <button class="btn btn--primary" type="submit" data-cta="email_submit">Get updates</button>
-        <p class="success-message" id="emailSuccess" role="status" aria-live="polite">Thanks! You're on the list.</p>
+        <div class="lead-form-status" id="lead-form-status" aria-live="polite"></div>
+        <button type="submit" class="btn btn--primary lead-form-submit">Send request</button>
+        <p class="lead-form-footnote">
+          Protected by reCAPTCHA. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms</a>
+        </p>
       </form>
     </div>
   </div>
@@ -1467,148 +1474,8 @@
       fileInput.value = '';
       resetDemoExperience();
     });
-    const emailForm = document.getElementById('updatesForm');
-    const emailStatus = document.getElementById('emailSuccess');
-    const emailSubmitBtn = emailForm ? emailForm.querySelector('button[type="submit"]') : null;
-    const recaptchaInput = document.getElementById('updates-recaptcha-token');
-    let emailStatusTimer = null;
 
-    const resolveLeadEndpoint = (form) => {
-      const override = typeof window.OPEN_SIG_LEAD_ENDPOINT === 'string' ? window.OPEN_SIG_LEAD_ENDPOINT.trim() : '';
-      if (override) return override;
-      if (!form) return '';
-      const attr = form.getAttribute('data-endpoint') || '';
-      return attr.trim();
-    };
 
-    const clearRecaptchaToken = () => {
-      if (recaptchaInput) {
-        recaptchaInput.value = '';
-      }
-    };
-
-    const executeRecaptcha = () => new Promise((resolve) => {
-      if (!RECAPTCHA_SITE_KEY || typeof window === 'undefined' || !window.grecaptcha || typeof window.grecaptcha.execute !== 'function') {
-        resolve('');
-        return;
-      }
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'leadForm' })
-          .then((token) => resolve(token || ''))
-          .catch(() => resolve(''));
-      });
-    });
-
-    const setEmailSubmitState = (isSubmitting) => {
-      if (!emailSubmitBtn) return;
-      if (!emailSubmitBtn.dataset.defaultText) {
-        emailSubmitBtn.dataset.defaultText = emailSubmitBtn.textContent || '';
-      }
-      emailSubmitBtn.disabled = Boolean(isSubmitting);
-      emailSubmitBtn.textContent = isSubmitting
-        ? 'Sending...'
-        : (emailSubmitBtn.dataset.defaultText || 'Submit');
-    };
-
-    const setEmailStatus = (message, type) => {
-      if (!emailStatus) return;
-      if (emailStatusTimer) {
-        clearTimeout(emailStatusTimer);
-        emailStatusTimer = null;
-      }
-      emailStatus.textContent = message || '';
-      emailStatus.classList.remove('success-message--error');
-      if (type === 'error') {
-        emailStatus.classList.add('success-message--error');
-      }
-      emailStatus.classList.toggle('success-message--visible', Boolean(message));
-      if (message && type !== 'error') {
-        emailStatusTimer = window.setTimeout(() => {
-          emailStatus.classList.remove('success-message--visible');
-        }, 4000);
-      }
-    };
-
-    const submitEmailForm = () => {
-      if (!emailForm) return;
-      if (!emailForm.checkValidity()) {
-        emailForm.reportValidity();
-        return;
-      }
-
-      const endpoint = resolveLeadEndpoint(emailForm);
-      if (!endpoint) {
-        setEmailStatus('Form endpoint is not configured.', 'error');
-        return;
-      }
-
-      setEmailSubmitState(true);
-      setEmailStatus('');
-
-      const formData = new FormData(emailForm);
-      const payload = {};
-      formData.forEach((value, key) => {
-        payload[key] = value;
-      });
-
-      const sendPayload = () => fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Request failed');
-          }
-          return response.text().catch(() => '');
-        })
-        .then(() => {
-          logEvent('email_submitted', { role: payload.role });
-          setEmailStatus('Thanks! You are on the list.', 'success');
-          emailForm.reset();
-          clearRecaptchaToken();
-        })
-        .catch(() => {
-          setEmailStatus('Something went wrong. Please try again or email info@opensig.net.', 'error');
-        })
-        .finally(() => {
-          setEmailSubmitState(false);
-        });
-
-      clearRecaptchaToken();
-      executeRecaptcha()
-        .then((token) => {
-          if (token && recaptchaInput) {
-            recaptchaInput.value = token;
-          }
-        })
-        .catch(() => {})
-        .finally(() => {
-          sendPayload();
-        });
-    };
-
-    if (emailForm) {
-      emailForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        submitEmailForm();
-      });
-    }
-
-    let pricingLogged = false;
-    const pricingSection = document.getElementById('pricing');
-    if ('IntersectionObserver' in window && pricingSection) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !pricingLogged) {
-            logEvent('pricing_viewed');
-            pricingLogged = true;
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.4 });
-      observer.observe(pricingSection);
-    }
 
     document.querySelectorAll('.faq-item').forEach((item, index) => {
       const question = item.querySelector('.faq-question');

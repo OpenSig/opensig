@@ -1,0 +1,148 @@
+.lead-form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 13, 45, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.lead-form-overlay.open {
+  display: flex;
+}
+
+.lead-form-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 560px;
+  width: min(100%, 520px);
+  padding: 34px;
+  position: relative;
+  box-shadow: 0 35px 85px rgba(17, 22, 61, 0.28);
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.lead-form-title {
+  margin: 0;
+  font-size: 1.9em;
+}
+
+.lead-form-subtitle {
+  margin: 6px 0 28px;
+  color: var(--ink-soft);
+}
+
+.lead-form-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: rgba(244, 245, 255, 0.9);
+  color: var(--ink-soft);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1em;
+  line-height: 1;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.lead-form-close:hover {
+  background: rgba(47, 63, 236, 0.12);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.lead-form-fields {
+  display: grid;
+  gap: 18px;
+}
+
+.lead-form-fields label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.95em;
+}
+
+.lead-form-fields input,
+.lead-form-fields select,
+.lead-form-fields textarea {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d8dcff;
+  background: #ffffff;
+  font: inherit;
+  color: var(--ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lead-form-fields input:focus,
+.lead-form-fields select:focus,
+.lead-form-fields textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(47, 63, 236, 0.16);
+}
+
+.lead-form-fields textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.lead-form-status {
+  font-size: 0.9em;
+  min-height: 1.2em;
+  margin-top: 12px;
+  color: var(--ink-soft);
+}
+
+.lead-form-status.success {
+  color: #1f7a44;
+}
+
+.lead-form-status.error {
+  color: #bd2f2f;
+}
+
+.lead-form-submit {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.lead-form-submit[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.lead-form-footnote {
+  font-size: 0.8em;
+  color: var(--ink-soft);
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .lead-form-modal {
+    padding: 28px 20px;
+    border-radius: 16px;
+    width: 100%;
+    max-height: calc(100vh - 48px);
+  }
+
+  .lead-form-title {
+    font-size: 1.7em;
+  }
+
+  .lead-form-overlay {
+    align-items: flex-start;
+    padding: 24px 12px;
+  }
+}
