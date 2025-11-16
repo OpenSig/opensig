@@ -35,6 +35,7 @@
       --surface: #ffffff;
       --surface-alt: #f5f6ff;
       --surface-light: #f8faff;
+      --border: #e5e7eb;
     }
 
     * { box-sizing: border-box; }
@@ -55,6 +56,8 @@
       color: var(--ink);
       line-height: 1.7;
     }
+
+    .grecaptcha-badge { visibility: hidden; }
 
     h1, h2, h3 {
       margin-top: 0;
@@ -764,27 +767,30 @@
     }
 
     .faq {
-      background: #eff1ff;
-      border: 1px solid #dce0ff;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 60px 0;
     }
     .faq-content p {
       margin-bottom: 20px;
     }
     .faq-list { display: flex; flex-direction: column; gap: 12px; }
-    .faq-item { border: 1px solid var(--border); border-radius: 16px; background: var(--surface-light); }
+    .faq-item { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
     .faq-question {
       width: 100%;
       background: none;
       border: none;
       text-align: left;
-      padding: 20px 24px;
+      padding: 24px 24px;
       font-weight: 600;
       font-size: 1rem;
+      color: var(--ink);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .faq-answer { padding: 0 24px 24px; color: var(--text-muted); display: none; }
+    .faq-answer { padding: 0 24px 24px; color: var(--ink-soft); display: none; }
     .faq-item[aria-expanded="true"] .faq-answer { display: block; }
 
     @media (min-width: 1024px) {
@@ -795,6 +801,9 @@
 
     @media (max-width: 900px) {
       section {
+        padding: 50px 24px;
+      }
+      .faq {
         padding: 50px 24px;
       }
     }
@@ -1113,7 +1122,7 @@
   <p class="quote-caption">— Creative studio &amp; early access partner</p>
 </section>
 
-<section class="faq panel" id="faq">
+<section class="panel faq" id="faq">
   <div class="faq-content">
     <h2>FAQ</h2>
     <div class="faq-list">
