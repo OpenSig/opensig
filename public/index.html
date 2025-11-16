@@ -39,6 +39,15 @@
 
     * { box-sizing: border-box; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -111,6 +120,7 @@
     .primary-nav a:hover {
       color: var(--primary);
       border-color: var(--primary);
+      text-decoration: none;
     }
 
     .cta-group {
@@ -189,7 +199,7 @@
       position: relative;
       overflow: hidden;
       background-image: url('assets/hero-pen.png');
-      background-size: auto 115%;
+      background-size: auto 100%;
       background-position: calc(max(50% - 420px, 8%)) 42%;
       background-repeat: no-repeat;
     }
@@ -694,7 +704,7 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
     .card-grid--steps-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     }
     .card__align-bottom {
       flex: 1;
@@ -776,6 +786,12 @@
     .faq-answer { padding: 0 24px 24px; color: var(--text-muted); display: none; }
     .faq-item[aria-expanded="true"] .faq-answer { display: block; }
 
+    @media (min-width: 1024px) {
+      .card-grid--steps-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 900px) {
       section {
         padding: 50px 24px;
@@ -834,27 +850,27 @@
         align-items: center;
       }
 
-    .screenshots,
-    .certificate-samples {
-      flex-direction: column;
-      align-items: center;
-    }
+      .screenshots,
+      .certificate-samples {
+        flex-direction: column;
+        align-items: center;
+      }
 
-    .lead-form-modal {
-      padding: 28px 20px;
-      border-radius: 16px;
-      width: 100%;
-      max-height: calc(100vh - 48px);
-    }
+      .lead-form-modal {
+        padding: 28px 20px;
+        border-radius: 16px;
+        width: 100%;
+        max-height: calc(100vh - 48px);
+      }
 
-    .lead-form-title {
-      font-size: 1.7em;
-    }
+      .lead-form-title {
+        font-size: 1.7em;
+      }
 
-    .lead-form-overlay {
-      align-items: flex-start;
-      padding: 24px 12px;
-    }
+      .lead-form-overlay {
+        align-items: flex-start;
+        padding: 24px 12px;
+      }
     }
   </style>
 </head>
@@ -873,7 +889,8 @@
       <a href="#product">Product</a>
       <a href="#use-cases">Use Cases</a>
       <a href="#who">Who Uses It</a>
-      <a href="#trust">Trust</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="cta-group">
@@ -936,7 +953,7 @@
     </div>
     <div class="stat">
       <span class="stat-number">Verify free</span>
-      <span class="stat-label">Forever, by anyone, anywhere online</span>
+      <span class="stat-label">Forever, by anyone, anywhere</span>
     </div>
   </div>
 </section>
