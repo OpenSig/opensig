@@ -34,6 +34,7 @@
       --ink-soft: #363c61;
       --surface: #ffffff;
       --surface-alt: #f5f6ff;
+      --surface-light: #f8faff;
     }
 
     * { box-sizing: border-box; }
@@ -292,6 +293,8 @@
       border-radius: 16px;
       padding: 28px;
       box-shadow: 0 12px 35px rgba(32, 36, 88, 0.08);
+      display: flex;
+      flex-direction: column;
     }
 
     .card p {
@@ -486,13 +489,9 @@
       font-weight: 500;
     }
 
-    .faq {
-      background: #eff1ff;
+    .how-it-works {
+      background: var(--background-alt);
       border: 1px solid #dce0ff;
-    }
-
-    .faq-content p {
-      margin-bottom: 20px;
     }
 
     .final-cta {
@@ -690,6 +689,93 @@
       }
     }
 
+    .card-grid { display: grid; gap: 16px; }
+    .card-grid--steps {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .card-grid--steps-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .card__align-bottom {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    .steps__item-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-alt);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .step-tag {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .info-text {
+      flex: 1;
+      color:var(--text-muted);
+      font-size: 0.95rem;
+      font-style: italic;
+    }
+
+    .pricing-card { background: var(--surface-alt); }
+    .pricing-card h3 { margin-bottom: 8px; }
+    .pricing-note { color: var(--text-muted); font-size: 0.9rem; margin-top: 16px; }
+    .pricing-card__count { font-size: 1.6rem; margin: 0; color: var(--primary); }
+    .pricing-card p { margin: 4px 0; }
+    .pricing-pill-container {
+      margin-top: 16px;
+    }
+    .pricing-pill {
+      display: inline-block;
+      border-radius: 999px;
+      background: rgba(76, 96, 255, 0.12);
+      color: var(--primary);
+      padding: 8px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .faq {
+      background: #eff1ff;
+      border: 1px solid #dce0ff;
+    }
+    .faq-content p {
+      margin-bottom: 20px;
+    }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item { border: 1px solid var(--border); border-radius: 16px; background: var(--surface-light); }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 20px 24px;
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer { padding: 0 24px 24px; color: var(--text-muted); display: none; }
+    .faq-item[aria-expanded="true"] .faq-answer { display: block; }
+
     @media (max-width: 900px) {
       section {
         padding: 50px 24px;
@@ -797,43 +883,45 @@
 </div>
 
 <header>
-  <span class="hero-badge">AES compliant signing &amp; IP protection</span>
-  <h1 class="hero-title">Stamp verifiable proof on every original and every agreement</h1>
+  <span class="hero-badge">Protect your IP</span>
+  <h1 class="hero-title">A digital pen on your phone</h1>
   <p class="hero-subtitle">
-    OpenSig gives creators, entrepreneurs and teams digital signatures and timestamped proofs for files of any kind — no account, no uploads, no complex workflows.
+    OpenSig gives creators, entrepreneurs and teams a simple way to sign and timestamp files of any kind — no account, no uploads, no complex workflows.
   </p>
   <div class="cta-row">
     <button type="button" class="cta-button lead-form-trigger" data-intent="earlyAccess">Request early access</button>
     <a href="#product-preview" class="cta-button secondary">See the product</a>
   </div>
-  <p class="hero-footnote">Protect IP. Sign contracts. Share verifiable proof that lives forever.</p>
+  <p class="hero-footnote">Protect your intellectual property. Sign contracts. Share verifiable proof that lives forever.</p>
 </header>
 
 <section id="product" class="panel">
   <h2>Why creators and teams choose OpenSig</h2>
   <p>
-    Think of OpenSig as your digital pen with a built-in notary. You keep your files, your style of working and gain proof-positive receipts every time it matters.
+    Think of OpenSig as your digital pen. Just open the app and sign in seconds. 
+    You retain your files, your workflow, and gain undeniable proof whenever it counts.
   </p>
   <div class="card-grid">
     <div class="card">
-      <h3>Protect originals on repeat</h3>
-      <p>Timestamp versions of your work the moment inspiration hits, no matter the file type.</p>
+      <h3 style="text-align: center">Provenance made easy</h3>
+      <p>Your work is your livelihood. Publishing media and sending documents without proof of authorship puts your creations at risk.</p>
+      <p>OpenSig is so simple and fast that you can timestamp multiple versions of your work the moment inspiration hits, no matter the file type.</p>
       <ul class="card-list">
-        <li>On-device timestamping in seconds</li>
-        <li>Unlimited revisions showing clear provenance</li>
-        <li>Shareable certificates for clients and collaborators</li>
+        <li>Compatible with files of any type and size</li>
+        <li>Affordable enough for daily use</li>
+        <li>Export certificates for your records</li>
       </ul>
     </div>
     <div class="card">
-      <h3>Sign anything with confidence</h3>
-      <p>Create AES-compliant signatures for every contract, approval, or handoff without forcing new workflows.</p>
+      <h3 style="text-align: center">Signatures, simplified</h3>
+      <p>Signing a digital file should be as simple and private as signing on paper. But existing e-signature tools are built for enterprises, with complex workflows, server uploads, subscriptions, and vendor lock-in.</p>
       <ul class="card-list">
-        <li>Works with PDFs, media files, design assets, code, zip files and more</li>
-        <li>Capture signer intent, context and timestamp in one receipt</li>
-        <li>Portable proofs your partners can verify independently</li>
+        <li>Private, on-device signing in seconds</li>
+        <li>Capture signer intent, context and timestamp in each signature proof</li>
+        <li>Public proofs your partners can verify independently online</li>
       </ul>
     </div>
-    <div class="card">
+    <!-- <div class="card">
       <h3>Own your record forever</h3>
       <p>Keep control of your identity and proofs across tools, clients and collaborators.</p>
       <ul class="card-list">
@@ -841,23 +929,23 @@
         <li>Email-based recovery plus upcoming hardware &amp; SSO options</li>
         <li>Credit-based pricing that scales with your volume</li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </section>
 
 <section class="stats">
   <div class="stats-inner">
     <div class="stat">
-      <span class="stat-number">3 min</span>
-      <span class="stat-label">to create your first proof</span>
+      <span class="stat-number">20 seconds</span>
+      <span class="stat-label">to create a proof</span>
     </div>
     <div class="stat">
-      <span class="stat-number">0 uploads</span>
-      <span class="stat-label">needed to protect your work</span>
+      <span class="stat-number">100% private</span>
+      <span class="stat-label">Files never leave your device</span>
     </div>
     <div class="stat">
-      <span class="stat-number">100%</span>
-      <span class="stat-label">verifiable by clients &amp; fans</span>
+      <span class="stat-number">Verify free</span>
+      <span class="stat-label">Forever, by anyone, anywhere online</span>
     </div>
   </div>
 </section>
@@ -872,7 +960,7 @@
       <ul>
         <li>Content creators, artists and designers stamping every version</li>
         <li>Entrepreneurs documenting product roadmaps, pitch decks and investor updates</li>
-        <li>Journalists timestamping research, drafts, photographs and interview notes</li>
+        <li>Journalists verifying the integrity of research, photographs and interview recordings</li>
       </ul>
     </article>
     <article class="use-case">
@@ -892,33 +980,59 @@
   <p>We're co-designing OpenSig with a diverse early access cohort to make sure it works for solo creators and scaling teams alike.</p>
   <div class="audience-grid">
     <div class="audience-card">
-      <h3>Content creators &amp; artists</h3>
-      <p>Stamp portfolio updates, music drops and campaign concepts before they ship.</p>
+      <h3>Creators &amp; designers</h3>
+      <p>Protect art, designs, and media before they ship.</p>
     </div>
     <div class="audience-card">
-      <h3>Startups &amp; SMEs</h3>
-      <p>Replace scattered signing tools with a single verifiable receipt per lifecycle milestone.</p>
+      <h3>Entrepreneurs &amp; SMEs</h3>
+      <p>Replace complex signing tools with a single verifiable receipt for pitch decks, plans, and IP documents.</p>
     </div>
     <div class="audience-card">
-      <h3>Studios &amp; agencies</h3>
-      <p>Prove ownership of creative work and lock in approvals with clients worldwide.</p>
+      <h3>Academia &amp; Research</h3>
+      <p>Timestamp results, protect papers, and keep an auditable trail of research.</p>
     </div>
     <div class="audience-card">
       <h3>Journalists &amp; researchers</h3>
-      <p>Preserve source material, drafts and data integrity before stories break.</p>
+      <p>Preserve source material, drafts and media integrity before stories break.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Legal Professionals</h3>
+      <p>Preserve contracts, agreements, and legal documents with proof of authenticity.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Healthcare Professionals</h3>
+      <p>Ensure the integrity of medical records, research data, and compliance documents.</p>
     </div>
   </div>
 </section>
 
-<section id="workflow" class="panel">
+<section class="how-it-works panel" id="how-it-works">
   <h2>How OpenSig works</h2>
-  <ol>
-    <li><strong>Verify your email.</strong> OpenSig generates your standalone, verified digital identity and links your device.</li>
-    <li><strong>Open your file.</strong> Your device calculates your file's unique digital fingerprint — no uploads, ever.</li>
-    <li><strong>Establish your intent.</strong> Add purpose or copyright to contextualize your signature.</li>
-    <li><strong>Sign your file.</strong> Your digital identity publishes the signature proof to a permanent public record.</li>
-    <li><strong>Share with confidence.</strong> Anyone holding the file can decrypt the proof and confirm authenticity instantly — forever.</li>
-  </ol>
+  <p>Three quick steps to capture proof of existence and possession.</p>
+  <div class="card-grid card-grid--steps">
+    <article class="card steps__item">
+      <div class="steps__item-number" aria-hidden="true">1</div>
+      <h3>Choose your file</h3>
+      <p>We process your file privately on your device to calculate it's unique fingerprint.</p>
+      <p class="info-text">No uploads, ever. Privacy is paramount.</p>
+      <span class="step-tag">Proof creation begins here</span>
+    </article>
+    <article class="card steps__item">
+      <div class="steps__item-number" aria-hidden="true">2</div>
+      <h3>Create your proof</h3>
+      <p>Add an optional message then publish an encrypted proof, like a digital timestamp, directly from your device to a permanent public record.</p>
+      <p class="info-text">No middleman. No account.</p>
+      <span class="step-tag">Proof of existence</span>
+    </article>
+    <article class="card steps__item">
+      <div class="steps__item-number" aria-hidden="true">3</div>
+      <h3>Share your file</h3>
+      <p>Anyone with your file can verify the proof and read your encrypted message.</p>
+      <p>Anyone with your contact details can verify you created it.</p>
+      <p class="info-text">Without the file, the proof reveals nothing.</p>
+      <span class="step-tag">Proof of possession confirmed</span>
+    </article>
+  </div>
 </section>
 
 <section id="product-preview" class="product-preview panel">
@@ -942,22 +1056,45 @@
   </div>
 </section>
 
-<section id="trust" class="panel">
-  <h2>Trust, security and independence</h2>
-  <p>
-    OpenSig is engineered for long-term proof value, so your records stay verifiable long after projects end or tools change.
-  </p>
-  <ul class="checklist">
-    <li><strong>Independent proof registry:</strong> Each signature and timestamp is anchored to a public, tamper-proof record that anyone can verify.</li>
-    <li><strong>Fully private by design:</strong> Files never leave your device — only a fingerprint of the original is used to create your proof.</li>
-    <li><strong>Self-custody first:</strong> Your identity and proofs are yours, not OpenSig's — stay portable across devices, collaborators and future platforms.</li>
-    <li><strong>Zero maintenance:</strong> OpenSig handles the record costs and verification layer automatically — no tokens or wallets required.</li>
-    <li><strong>Transparent and open:</strong> The OpenSig protocol and proof registry are open-source, so you can audit, verify, or integrate freely.</li>
-  </ul>
-  <p>
-    <!-- 🔗 <a href="registry.html" target="_blank">Learn about the OpenSig proof registry</a><br> -->
-    🛠️ <a href="https://github.com/opensig" target="_blank">Explore the OpenSig repositories</a>
-  </p>
+<section class="panel" id="pricing">
+  <h2>Pricing</h2>
+  <p>Only pay for signing — verification is always free and doesn't require the OpenSig app.</p>
+  <p>No complex workflows. Simply top up credits in the app to pay as you go. One credit per signature.</p>
+  <div class="card-grid card-grid--steps-4">
+    <article class="card pricing-card">
+      <h3>Get Started</h3>
+      <p class="pricing-card__count">3 free</p>
+      <p>Your first 3 proofs are free.</p>
+      <div class="card__align-bottom pricing-pill-container">
+        <div class="pricing-pill" type="button" style="text-decoration: line-through">£2.99</div>
+      </div>
+    </article>
+    <article class="card pricing-card">
+      <h3>Individual</h3>
+      <p class="pricing-card__count">5 proofs</p>
+      <p>Occasional proofs for personal creations and documents.</p>
+      <div class="card__align-bottom pricing-pill-container">
+        <div class="pricing-pill" type="button">£3.99</div>
+      </div>
+    </article>
+    <article class="card pricing-card">
+      <h3>Pro</h3>
+      <p class="pricing-card__count">25 proofs</p>
+      <p>Regular proofs for professionals and small teams.</p>
+      <div class="card__align-bottom pricing-pill-container">
+        <div class="pricing-pill" type="button">£12.99</div>
+      </div>
+    </article>
+    <article class="card pricing-card">
+      <h3>Creator</h3>
+      <p class="pricing-card__count">100 proofs</p>
+      <p>Frequent proofs for creators and professionals.</p>
+      <div class="card__align-bottom pricing-pill-container">
+        <div class="pricing-pill" type="button">£39.99</div>
+      </div>
+    </article>
+  </div>
+  <p class="pricing-note">Contact us for custom plans and enterprise options.</p>
 </section>
 
 <section class="quote panel">
@@ -967,34 +1104,67 @@
   <p class="quote-caption">— Creative studio &amp; early access partner</p>
 </section>
 
-<section id="faq" class="faq panel">
+<section class="faq panel" id="faq">
   <div class="faq-content">
     <h2>FAQ</h2>
-
-    <p><strong>How are files handled?</strong><br>
-    Files never leave your device. OpenSig works from a cryptographic fingerprint of each file, not from uploads or shared copies.</p>
-
-    <p><strong>What proof do stakeholders receive?</strong><br>
-    Every signing action or timestamp produces a shareable certificate that includes signer identity, intent and a verifiable record reference. Anyone with the original file can confirm authenticity instantly.</p>
-
-    <p><strong>Is my data secure?</strong><br>
-    Yes - completely. OpenSig is designed around privacy-first principles. Your files never leave your device and your proofs reveal nothing about their contents.
-    The only data published outside your device is a short, encrypted proof receipt — not the file itself, nor any of your personal information.
-
-    <p><strong>Can I export or move my proofs?</strong><br>
-    Yes. OpenSig follows open formats and standards, so your records remain portable and verifiable even outside our platform.</p>
-
-    <p><strong>What is the public record?</strong><br>
-    OpenSig anchors proofs to a public, tamper-proof blockchain ledger — <a href="https://polygon.technology" target="_blank">Polygon</a>, a layer 2 blockchain built on <a href="https://ethereum.org" target="_blank">Ethereum</a> — that anyone can verify independently. No personal data is stored on the ledger—only cryptographic fingerprints of your files signed by your digital identity.</p>
-
-    <p><strong>No account — really?</strong><br>
-    Yes, really. OpenSig does not require an account to use. 
-    With OpenSig, you sign documents directly from your device using your private digital identity.
-    The only personal information needed is your email for identity verification and recovery.
-    </p>
-
-    <p><strong>What does early access include?</strong><br>
-    Access to the beta app, guided onboarding, tailored playbooks for IP protection and signing and early pricing aligned with your team's usage pattern.</p>
+    <div class="faq-list">
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">What do I get when I sign a file?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">A timestamped public record that exists forever and a certificate you can keep and share.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Are OpenSig proofs legally binding?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">
+          OpenSig proofs are AES (Advanced Electronic Signature) compliant with standards such as eIDAS, ESIGN and UETA, provably linking your digital identity and email address to the signed file.
+          Our plans for future identity verification methods such as government ID and KYC will support QES (Qualified Electronic Signature) compliance.
+        </div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Is my data secure?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">
+          Yes - completely. OpenSig is designed around privacy-first principles. 
+          Your files never leave your device and your proofs reveal nothing about their contents or you. 
+          The only data published outside your device is a short, encrypted proof receipt — not the file itself, nor any of your personal information. 
+          Only people with a copy of your file can decrypt and verify the proof.
+          Only people with your contact details can identify you created it.
+        </div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Do you upload my files?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">No. Your files stay on your device. OpenSig is suitable even for top secret documents.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Do you store my files?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">No. OpenSig is a signing service only. Your files are never stored on our servers or anywhere else. You must keep your files safe and backed up yourself as normal.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Do I need an account?<span aria-hidden="true">+</span></button>
+          <div class="faq-answer">No. OpenSig does not require an account to use. You just need to verify your email address once, so that OpenSig can create you a standalone digital identity fully under your control. When you publish proofs, you are doing so directly from your device and signing with your identity.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Can others verify my proof later?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">Yes, anyone with your file can check the permanent public record. Your proof remains verifiable forever, even if OpenSig ceases to exist.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">What is the public record?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">OpenSig anchors proofs to an independent, public ledger — <a href="https://polygon.technology" target="_blank">Polygon</a>, a layer 2 blockchain ledger secured by <a href="https://ethereum.org" target="_blank">Ethereum</a> — that anyone can access independently. No personal data is stored on the ledger—only encrypted proofs signed by your digital identity.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">What does early access include?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">Access to the beta app, guided onboarding, tailored playbooks for IP protection and signing and early pricing aligned with your team's usage pattern.</div>
+      </article>
+      <article class="faq-item" aria-expanded="false">
+        <button class="faq-question" type="button">Is OpenSig open source?<span aria-hidden="true">+</span></button>
+        <div class="faq-answer">
+          <p>The OpenSig protocol, software libraries and proof registry are open-source, so you can audit, verify, or integrate freely. Explore our repositories on <a href="https://github.com/opensig" target="_blank">GitHub</a>.</p>
+          <p>
+            Your digital identity is built on open standards like ERC-4337, Decentralised Identifiers and Verifiable Credentials, ensuring portability across platforms.
+            We use the excellent Nexus smart wallet implementation from <a href="https://biconomy.io" target="_blank">Biconomy</a>, which allows us to offer seamless upgrades and modular features.
+          </p>
+          <p>The OpenSig mobile app itself is currently closed source while we explore features on top of the open protocol.</p>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -1321,6 +1491,18 @@
         submitForm();
       });
     }
+
+    document.querySelectorAll('.faq-item').forEach((item, index) => {
+      const question = item.querySelector('.faq-question');
+      const indicator = question.querySelector('span[aria-hidden="true"]');
+      question.addEventListener('click', () => {
+        const expanded = item.getAttribute('aria-expanded') === 'true';
+        item.setAttribute('aria-expanded', String(!expanded));
+        if (indicator) indicator.textContent = expanded ? '+' : '-';
+        logEvent('faq_toggled', { index, open: !expanded });
+      });
+    });
+
   })();
 </script>
 
