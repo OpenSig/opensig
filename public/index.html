@@ -338,6 +338,10 @@
       line-height: 1;
     }
 
+    .compact-list li {
+      margin-bottom: 8px;
+    }
+
     .stats {
       margin-top: 60px;
       background: radial-gradient(circle at top right, rgba(47, 63, 236, 0.18), rgba(47, 63, 236, 0.05) 45%, rgba(238, 241, 255, 0) 70%);
@@ -386,8 +390,11 @@
 
     .use-case ul {
       margin: 18px 0 0;
-      padding-left: 20px;
       color: var(--ink-soft);
+    }
+
+    .use-case .checklist {
+      padding-left: 24px;
     }
 
     ol {
@@ -975,19 +982,29 @@
     <article class="use-case">
       <h3>Protect original work</h3>
       <p>Lock in authorship for every file you release, share, or pitch.</p>
-      <ul>
+      <ul class="card-list compact-list">
         <li>Content creators, artists and designers stamping every version</li>
         <li>Entrepreneurs documenting product roadmaps, pitch decks and investor updates</li>
         <li>Journalists verifying the integrity of research, photographs and interview recordings</li>
+      </ul>
+      <ul class="checklist">
+        <li>Protect your IP</li>
+        <li>Reduce disputes</li>
+        <li>Defend your work legally</li>
       </ul>
     </article>
     <article class="use-case">
       <h3>Sign &amp; approve anything</h3>
       <p>Add your e-signature to any document or file — simply and quickly.</p>
-      <ul>
+      <ul class="card-list compact-list">
         <li>Vendors and customers exchanging signed contracts</li>
         <li>Freelancers and studios confirming deliverables and approvals</li>
         <li>Startups and teams signing policies, agreements, handovers and releases</li>
+      </ul>
+      <ul class="checklist">
+        <li>Lock in client approvals</li>
+        <li>Build provable credibility</li>
+        <li>Zero workflow friction</li>
       </ul>
     </article>
   </div>
