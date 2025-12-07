@@ -21,7 +21,7 @@
     <meta name="twitter:image:alt" content="OpenSig - Simply Signatures">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/assets/simple-logo.png" />
+    <link rel="shortcut icon" href="../assets/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="index.css?v=2.1" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,10 +29,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.16.0/web3.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js?render=6Ldgqy4lAAAAAD5QHvrZJxWebQrUXvexxEdsZ4Ws"></script>
-    <script src="https://cdn.jsdelivr.net/npm/opensig-js@0.1.4/dist/opensig-js.js"></script>
-    <script type="application/javascript">fetch('https://vault.bubbleprotocol.com:8125/anonymousCount?page=opensig-index')</script>
-    <script src="js/blockchains.js?v=2.1"></script>
+    <script src="js/opensig-ts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.15.0/ethers.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/main.js?v=2.1"></script>
+    <script type="application/javascript">fetch('https://vault.bubbleprotocol.com:8125/anonymousCount?page=opensig-index')</script>
 </head>
   <body onload="onLoad()">
 
@@ -116,14 +116,13 @@
                     <div id="signatures-label" class="signatures-label-frame">
                         <span class="step-description">This file has <span id="signature-count"></span> verified proof<span id="proof-plural-suffix"></span>.</span>
                     </div>
+                    <div id="no-signatures-label" class="signatures-label-frame hidden">
+                        <span class="step-description">No existing proofs found for this file.</span>
+                    </div>
                     <div id="reverify-spinner" class="centered hidden">
                         <div class="spinner"><div></div><div></div></div>
                     </div>
                     <div class="signatures">
-                        <div id="no-signatures-label" class="signatures-label-frame hidden">
-                            <span class="label">This file has never been signed with OpenSig.</span>
-                            <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
-                        </div>
                         <div id="signature-box" class="signature-box">
                             <div id="signature-list" class="signature-list"></div>
                         </div>
@@ -138,6 +137,61 @@
         <div class="content-row-responsive">
             <div class="center-footer">
                 <span class="footer-text">©2025 OpenSig · Built for privacy</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="signature-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="proof-modal-title">
+        <div class="modal-scrim"></div>
+        <div class="modal-shell">
+            <div class="modal-header">
+                <button id="modal-close" class="modal-close" aria-label="Close proof details">×</button>
+            </div>
+            <div class="modal-body">
+                <h2 id="proof-modal-title" class="modal-title">Permanent Proof Receipt</h2>
+                <div class="modal-status-pill" id="modal-status-pill">
+                    <span id="modal-status-icon" class="modal-status-icon" aria-hidden="true">✓</span>
+                    <span id="modal-status-text" class="modal-status-text">Confirmed on public record</span>
+                </div>
+                <div class="modal-signer-info">
+                    <span id="modal-signer-text" class="modal-signer-text">Published by</span>
+                </div>
+
+                <div class="modal-card">
+                    <div class="modal-row">
+                        <span class="modal-row-label">Timestamp</span>
+                        <span id="modal-timestamp" class="modal-row-value"></span>
+                    </div>
+                    <div class="modal-row">
+                        <span class="modal-row-label">Signer ID</span>
+                        <span id="modal-signer-id" class="modal-row-value modal-row-value-mono">—</span>
+                    </div>
+                    <div class="modal-row">
+                        <span class="modal-row-label">Signer address</span>
+                        <span id="modal-signer-address" class="modal-row-value modal-row-value-mono"></span>
+                    </div>
+                    <div class="modal-row">
+                        <span class="modal-row-label">Signature (technical)</span>
+                        <span id="modal-signature" class="modal-row-value modal-row-value-mono"></span>
+                    </div>
+                    <div class="modal-row" id="modal-tx-row">
+                        <span class="modal-row-label">Public record ID</span>
+                        <span id="modal-tx" class="modal-row-value modal-row-value-mono"></span>
+                    </div>
+                    <p class="modal-helper-text">This proof is written to the public record and cannot be edited or removed. Anyone with the original file can independently verify it.</p>
+                </div>
+
+                <div class="modal-card">
+                    <div class="modal-card-header">
+                        <span id="modal-message-title" class="modal-section-title">Signer's message</span>
+                    </div>
+                    <p id="modal-message" class="modal-message"></p>
+                    <p id="modal-message-helper" class="modal-helper-text hidden">Only someone with the original file can decrypt and read this message.</p>
+                </div>
+
+                <div class="modal-actions">
+                    <a id="modal-proof-link" class="modal-link-button" href="#" target="_blank" rel="noopener noreferrer">View proof on public record</a>
+                </div>
             </div>
         </div>
     </div>

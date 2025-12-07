@@ -818,6 +818,7 @@ img {
   margin-bottom: 16px;
   background-color: var(--surface);
   gap: 10px;
+  cursor: pointer;
 }
 
 .signature-content-row {
@@ -1041,6 +1042,197 @@ ul {
 
 .refresh-icon {
   background-image: url(../assets/icon-refresh.svg);
+}
+
+
+/* Proof detail modal */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.modal-shell {
+  position: relative;
+  width: min(860px, 95vw);
+  max-height: 90vh;
+  background: var(--background);
+  border: 1px solid var(--surfaceBorder);
+  border-radius: 12px;
+  padding: 12px 16px 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.modal-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  gap: 6px;
+}
+
+.modal-status-icon {
+  font-size: 14px;
+}
+
+.modal-status-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #119331;
+}
+
+.modal-status-pending {
+  color: var(--onSurfaceSecondary);
+}
+
+.modal-signer-info {
+  padding: 8px 10px;
+}
+
+.modal-signer-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--onBackground);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 720px;
+  border: 1px solid var(--surfaceBorder);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.modal-row-label {
+  width: 140px;
+  font-size: 12px;
+  color: var(--onSurfaceSecondary);
+  flex-shrink: 0;
+}
+
+.modal-row-value {
+  flex: 1;
+  font-size: 12px;
+  color: var(--onSurface);
+  word-break: break-word;
+}
+
+.modal-row-value-mono {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.modal-section-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.modal-message {
+  font-size: 14px;
+  font-style: italic;
+  margin: 0;
+  align-self: flex-start;
+}
+
+.modal-helper-text {
+  font-size: 11px;
+  color: var(--onSurfaceSecondary);
+  margin: 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.modal-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  font-weight: 400;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.modal-link-button:hover {
+  border-color: var(--surfaceBorder);
+  background: var(--surface);
+}
+
+.modal-link-button.disabled {
+  color: var(--onSurfaceSecondary);
+  pointer-events: none;
+}
+
+.modal-section-muted {
+  color: var(--onSurfaceSecondary);
+}
+
+@media only screen and (max-width: 520px) {
+  .modal-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-row-label {
+    width: 100%;
+  }
 }
 
 

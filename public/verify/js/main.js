@@ -8,7 +8,32 @@ const DEBUG_ON = true;
 console.trace = TRACE_ON ? Function.prototype.bind.call(console.info, console, "[trace]") : function() {};
 console.debug = DEBUG_ON ? Function.prototype.bind.call(console.info, console, "[debug]") : function() {};
 
-const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+//
+// Setup OpenSig for Polygon Mainnet
+//
+
+const registryContract = {
+  address: "0x4037E81D79aD0E917De012dE009ff41c740BB453",
+  creationBlock: 40031474
+};
+
+const signer = new ethers.Wallet(
+  "0xc02b59f772cb23a75b6ffb9f7602ba25fdd5d8e75ad88efcc013fec2c63b0895",  // dummy private key
+  new ethers.JsonRpcProvider("https://polygon-rpc.com")  // provider used for publishing signatures
+);
+
+const POLYGON_MAINNET = new opensig.EthersProvider(
+  137,
+  registryContract, 
+  signer, 
+  new ethers.InfuraProvider("matic", "def9d47e2d744b90b2b68cf690db503a")
+);
+
+const EXPLORER_URL = "https://polygonscan.com/tx/";
+
+console.debug(opensig);
+
+const os = new opensig.OpenSig(POLYGON_MAINNET);
 
 
 //
@@ -16,9 +41,11 @@ const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 //
 
 let currentFile = undefined;
+let currentNetwork = undefined;
 
 function onLoad() {
   initialiseDndBox();
+  initialiseModal();
   const urlParams = new URLSearchParams(window.location.search);
   const urlFile = urlParams.get('file');
   if (urlFile) verifyUrl(urlFile);
@@ -34,25 +61,21 @@ function verifyUrl(url) {
     .catch(displayError);
 }
 
-function verify(fileOrBlob) {
+async function verify(fileOrBlob) {
   clearError();
-  const network = getBlockchain(137);
-  if (!network) displayError("Blockchain not supported")
-  else {
-    $("#filename").text(fileOrBlob.name || fileOrBlob.url || 'Unnamed file');
-    $("#filetype").text(fileOrBlob.type ? mimetypeToHumanReadable(fileOrBlob.type) : 'Binary');
-    $("#filesize").text(fileOrBlob.size ? formatBytes(fileOrBlob.size) : 'Unknown size');
-    hide("#dnd-box");
-    show("#dnd-box-spinner");
-    currentFile = new opensig.File(network, fileOrBlob);
-    currentFile.verify()
-      .then(_updateSignatureContent)
-      .catch(displayError)
-      .finally(() => {
-        show("#dnd-box");
-        hide("#dnd-box-spinner");
-      });
-  }
+  $("#filename").text(fileOrBlob.name || fileOrBlob.url || 'Unnamed file');
+  $("#filetype").text(fileOrBlob.type ? mimetypeToHumanReadable(fileOrBlob.type) : 'Binary');
+  $("#filesize").text(fileOrBlob.size ? formatBytes(fileOrBlob.size) : 'Unknown size');
+  hide("#dnd-box");
+  show("#dnd-box-spinner");
+  currentFile = await os.createDocument(fileOrBlob);
+  currentFile.verify()
+    .then(_updateSignatureContent)
+    .catch(displayError)
+    .finally(() => {
+      show("#dnd-box");
+      hide("#dnd-box-spinner");
+    });
 }
 
 function reverify() {
@@ -182,7 +205,9 @@ function _updateSignatureContent(signatures) {
       signatoryRow.appendChild(createElement('span', 'sigTime', new Date(signatureDate * 1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
       element.appendChild(signatoryRow);
       element.appendChild(createElement('span', 'statusText', 'Verified proof'));
-      element.appendChild(createElement('span', 'sigMessage', sig.data.encrypted ? `🔒 ${sig.data.content}` : sig.data.content)); // TODO support different data types
+      const sigMessage = renderSignatureMessage(sig);
+      element.appendChild(createElement('span', 'sigMessage', sig.data?.encrypted && sigMessage ? `🔒 ${sigMessage}` : sigMessage || ''));
+      element.addEventListener('click', () => showSignatureModal(sig));
       sigList.append(element);
     })
   }
@@ -203,6 +228,74 @@ function displayError(error) {
 function clearError() {
   $("#connected-content-error-message").text('');
   $("#signature-content-error-message").text('');
+}
+
+
+function formatProofTimestamp(time) {
+  if (time === undefined || time === null) return 'Publishing…';
+  const numericTime = typeof time === 'bigint' ? Number(time) : time;
+  if (Number.isNaN(numericTime)) return 'Publishing…';
+  const date = new Date(numericTime * 1000);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = date.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' });
+  const year = date.getUTCFullYear();
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds} (UTC)`;
+}
+
+function renderSignatureMessage(sig) {
+  if (!sig?.data) return '';
+  if (sig.data.type === 'string' && typeof sig.data.content === 'string') return sig.data.content || '';
+  if (sig.data.type === 'object' && sig.data.content && sig.data.content.m) return sig.data.content.m;
+  if (typeof sig.data.content === 'string') return sig.data.content;
+  return '';
+}
+
+function initialiseModal() {
+  $("#modal-close").on('click', hideSignatureModal);
+  $(".modal-scrim").on('click', hideSignatureModal);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hideSignatureModal();
+  });
+}
+
+function hideSignatureModal() {
+  $("#signature-modal").addClass('hidden');
+}
+
+function showSignatureModal(sig) {
+  const hasTimestamp = sig.time !== undefined && sig.time !== null;
+  $("#modal-status-text").text(hasTimestamp ? 'Confirmed on public record' : 'Publishing…');
+  $("#modal-status-text").toggleClass('modal-status-pending', !hasTimestamp);
+  $("#modal-status-icon").text(hasTimestamp ? '✓' : '⏳');
+
+  $("#modal-signer-text").text(`Published by ${sig.signatory}`);
+  $("#modal-timestamp").text(formatProofTimestamp(sig.time));
+  $("#modal-signer-id").text(opensig.toOpenSigId(sig.signatory));
+  $("#modal-signer-address").text(sig.signatory || '—');
+  $("#modal-signature").text(sig.signature || '—');
+
+  if (sig.txHash) {
+    $("#modal-tx-row").removeClass('hidden');
+    $("#modal-tx").text(sig.txHash);
+  }
+  else {
+    $("#modal-tx-row").addClass('hidden');
+    $("#modal-tx").text('');
+  }
+
+  const message = renderSignatureMessage(sig);
+  const isEncrypted = Boolean(sig.data?.encrypted);
+  const messageTitleSuffix = message ? (isEncrypted ? ' (encrypted)' : ' (public)') : '';
+  $("#modal-message-title").text(`Signer's message${messageTitleSuffix}`);
+  $("#modal-message").text(message || 'None');
+  $("#modal-message").toggleClass('modal-section-muted', !message);
+  $("#modal-message-helper").toggleClass('hidden', !(message && isEncrypted));
+  $("#modal-proof-link").removeClass('disabled');
+  $("#modal-proof-link").attr('href', EXPLORER_URL + sig.txHash + '#eventlog');
+  $("#signature-modal").removeClass('hidden');
 }
 
 
