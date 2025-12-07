@@ -294,9 +294,10 @@ function showSignatureModal(sig) {
   $("#modal-status-text").toggleClass('modal-status-pending', !hasTimestamp);
   $("#modal-status-icon").text(hasTimestamp ? '✓' : '⏳');
 
-  $("#modal-signer-text").text(`Published by ${sig.signatory}`);
+  const did = opensig.toOpenSigId(sig.signatory);
+  $("#modal-signer-text").text(`Published by ${did}`);
   $("#modal-timestamp").text(formatProofTimestamp(sig.time));
-  $("#modal-signer-id").text(opensig.toOpenSigId(sig.signatory));
+  $("#modal-signer-id").text(did);
   $("#modal-signer-address").text(sig.signatory || '—');
   $("#modal-signature").text(sig.signature || '—');
 
