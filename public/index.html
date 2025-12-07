@@ -183,15 +183,16 @@
     }
 
     .cta-button.secondary {
-      background: transparent;
-      color: #f5f7ff;
-      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: #fff;
+      color: #1b214d;
+      border: 1px solid rgba(27, 33, 77, 1);
       box-shadow: none;
     }
 
     .cta-button.secondary:hover {
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
+      background: #eef;
+      color: #000;
+      border-color: #000;
     }
 
     header {
@@ -516,6 +517,7 @@
     .final-cta {
       text-align: center;
       background: linear-gradient(160deg, rgba(47, 63, 236, 0.12), rgba(47, 63, 236, 0.02));
+      margin-bottom: 60px;
     }
 
     .cta-footnote {
@@ -909,6 +911,7 @@
       <a href="#faq">FAQ</a>
     </nav>
     <div class="cta-group">
+      <button type="button" class="cta-button small secondary" onclick="document.getElementById('final-cta').scrollIntoView({ behavior: 'instant' });">Get the app</button>
       <button type="button" class="cta-button small lead-form-trigger" data-intent="walkthrough">Book a walkthrough</button>
     </div>
   </div>
@@ -921,8 +924,12 @@
     OpenSig gives creators, entrepreneurs and teams a simple way to sign and timestamp files of any kind — no account, no uploads, no complex workflows.
   </p>
   <div class="cta-row">
-    <button type="button" class="cta-button lead-form-trigger" data-intent="earlyAccess">Request early access</button>
-    <a href="#product-preview" class="cta-button secondary">See the product</a>
+    <a href="https://apps.apple.com/us/app/opensig/id6748157353?" target="_blank" rel="noopener">
+      <img src="assets/app-store-badge.png" alt="Download on the App Store" style="height: 50px;">
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=net.opensig.opensig" target="_blank" rel="noopener">
+      <img src="assets/google-play-badge.png" alt="Get it on Google Play" style="height: 50px;">
+    </a>
   </div>
   <p class="hero-footnote">Protect your intellectual property. Sign contracts. Share verifiable proof that lives forever.</p>
 </header>
@@ -1183,10 +1190,6 @@
         <div class="faq-answer">OpenSig anchors proofs to an independent, public ledger — <a href="https://polygon.technology" target="_blank">Polygon</a>, a layer 2 blockchain ledger secured by <a href="https://ethereum.org" target="_blank">Ethereum</a> — that anyone can access independently. No personal data is stored on the ledger—only encrypted proofs signed by your digital identity.</div>
       </article>
       <article class="faq-item" aria-expanded="false">
-        <button class="faq-question" type="button">What does early access include?<span aria-hidden="true">+</span></button>
-        <div class="faq-answer">Access to the beta app, guided onboarding, tailored playbooks for IP protection and signing and early pricing aligned with your team's usage pattern.</div>
-      </article>
-      <article class="faq-item" aria-expanded="false">
         <button class="faq-question" type="button">Is OpenSig open source?<span aria-hidden="true">+</span></button>
         <div class="faq-answer">
           <p>The OpenSig protocol, software libraries and proof registry are open-source, so you can audit, verify, or integrate freely. Explore our repositories on <a href="https://github.com/opensig" target="_blank">GitHub</a>.</p>
@@ -1241,8 +1244,16 @@
   </div>
 </div>
 
-<section class="final-cta panel">
+<section id="final-cta" class="final-cta panel">
   <h2>Ready to put proof behind your next release or agreement?</h2>
+  <div class="cta-row" style="margin-bottom: 30px;">
+    <a href="https://apps.apple.com/us/app/opensig/id6748157353?" target="_blank" rel="noopener">
+      <img src="assets/app-store-badge.png" alt="Download on the App Store" style="height: 50px;">
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=net.opensig.opensig" target="_blank" rel="noopener">
+      <img src="assets/google-play-badge.png" alt="Get it on Google Play" style="height: 50px;">
+    </a>
+  </div>
   <p>Tell us what you're protecting or signing and we'll tailor a walkthrough around your files, collaborators and timeline.</p>
   <button type="button" class="cta-button lead-form-trigger" data-intent="walkthrough">Book a walkthrough</button>
   <!-- <p class="cta-footnote">Prefer to explore first? <a href="mailto:info@opensig.net?subject=OpenSig%20Product%20Deck%20Request">Request the product deck</a>.</p> -->
@@ -1250,7 +1261,8 @@
 
 <footer>
   <p>
-    ©2025 OpenSig · Built for privacy · <a href="mailto:info@opensig.net">info@opensig.net</a> · <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a>
+    ©2025 OpenSig · Built for privacy · <a href="mailto:info@opensig.net">info@opensig.net</a><br/>
+    <a href="https://x.com/opensiglabs" target="_blank">Follow us on X</a> &nbsp; · &nbsp; <a href="https://www.linkedin.com/company/opensig" target="_blank">Join us on LinkedIn</a>
   </p>
 </footer>
 
