@@ -42,10 +42,14 @@ const os = new opensig.OpenSig(POLYGON_MAINNET);
 
 let currentFile = undefined;
 let currentNetwork = undefined;
+let currentDocumentId = undefined;
+let currentFileInfo = undefined;
+let currentSignatures = [];
 
 function onLoad() {
   initialiseDndBox();
   initialiseModal();
+  initialiseCertificateModal();
   const urlParams = new URLSearchParams(window.location.search);
   const urlFile = urlParams.get('file');
   if (urlFile) verifyUrl(urlFile);
@@ -63,12 +67,24 @@ function verifyUrl(url) {
 
 async function verify(fileOrBlob) {
   clearError();
-  $("#filename").text(fileOrBlob.name || fileOrBlob.url || 'Unnamed file');
-  $("#filetype").text(fileOrBlob.type ? mimetypeToHumanReadable(fileOrBlob.type) : 'Binary');
-  $("#filesize").text(fileOrBlob.size ? formatBytes(fileOrBlob.size) : 'Unknown size');
+  currentFileInfo = {
+    name: fileOrBlob.name || fileOrBlob.url || 'Unnamed file',
+    type: fileOrBlob.type,
+    size: fileOrBlob.size
+  };
+  $("#filename").text(currentFileInfo.name);
+  $("#filetype").text(currentFileInfo.type ? mimetypeToHumanReadable(currentFileInfo.type) : 'Binary');
+  $("#filesize").text(currentFileInfo.size ? formatBytes(currentFileInfo.size) : 'Unknown size');
   hide("#dnd-box");
   show("#dnd-box-spinner");
   currentFile = await os.createDocument(fileOrBlob);
+  try {
+    currentDocumentId = await currentFile.getPublicIdentifier();
+  }
+  catch (error) {
+    console.warn('Unable to compute document identifier', error);
+    currentDocumentId = undefined;
+  }
   currentFile.verify()
     .then(_updateSignatureContent)
     .catch(displayError)
@@ -182,8 +198,9 @@ function clearSignatureContent() {
   hide("#signatures-label", "#signature-box");
 }
 
-function _updateSignatureContent(signatures) {
+async function _updateSignatureContent(signatures) {
   console.trace("found signatures: ", signatures);
+  currentSignatures = signatures;
   $("#signature-count").text(signatures.length);
   $("#proof-plural-suffix").text(signatures.length === 1 ? '' : 's');
   setContent("#signature-content");
@@ -196,6 +213,7 @@ function _updateSignatureContent(signatures) {
   else {
     show("#signatures-label", "#signature-box")
     hide("#no-signatures-label");
+    toggleCertificateAvailability(true);
     signatures.sort((a,b) => Number(b.time) - Number(a.time)).forEach(sig => {
       const element = createElement('div', 'signature');
       const signatoryRow = createElement('div', 'signature-content-row');
@@ -210,7 +228,9 @@ function _updateSignatureContent(signatures) {
       element.addEventListener('click', () => showSignatureModal(sig));
       sigList.append(element);
     })
+    await renderCertificate(signatures);
   }
+  if (signatures.length === 0) toggleCertificateAvailability(false);
 }
 
 function createElement(type, classes, innerHTML) {
@@ -257,7 +277,10 @@ function initialiseModal() {
   $("#modal-close").on('click', hideSignatureModal);
   $(".modal-scrim").on('click', hideSignatureModal);
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') hideSignatureModal();
+    if (event.key === 'Escape') {
+      hideSignatureModal();
+      hideCertificateModal();
+    }
   });
 }
 
@@ -296,6 +319,161 @@ function showSignatureModal(sig) {
   $("#modal-proof-link").removeClass('disabled');
   $("#modal-proof-link").attr('href', EXPLORER_URL + sig.txHash + '#eventlog');
   $("#signature-modal").removeClass('hidden');
+}
+
+
+//
+// Certificate modal
+//
+
+function initialiseCertificateModal() {
+  $("#certificate-modal-close").on('click', hideCertificateModal);
+  $("#certificate-modal .modal-scrim").on('click', hideCertificateModal);
+  $("#certificate-print").on('click', () => {
+    if (document.getElementById('certificate-modal').classList.contains('hidden')) return;
+    window.print();
+  });
+  $("#certificate-open-button").on('click', () => {
+    if (!currentSignatures || currentSignatures.length === 0) return;
+    renderCertificate(currentSignatures).then(() => showCertificateModal());
+  });
+}
+
+function toggleCertificateAvailability(isAvailable) {
+  if (isAvailable) show('#certificate-open-button');
+  else hide('#certificate-open-button');
+}
+
+function hideCertificateModal() {
+  $("#certificate-modal").addClass('hidden');
+}
+
+function showCertificateModal() {
+  $("#certificate-modal").removeClass('hidden');
+}
+
+function setCertificateText(fieldName, value) {
+  document.querySelectorAll(`[data-certificate-field="${fieldName}"]`).forEach((el) => {
+    el.textContent = value;
+  });
+}
+
+function clearCertificateSignatures() {
+  const list = document.getElementById('certificate-signature-list');
+  if (list) list.innerHTML = '';
+}
+
+function formatCertificateDate(date) {
+  return date.toLocaleString([], { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+}
+
+async function renderCertificate(signatures) {
+  if (!currentFileInfo) return;
+  const certificateDate = new Date();
+  setCertificateText('certificateDate', formatCertificateDate(certificateDate));
+  setCertificateText('certificateDocument', currentFileInfo.name || '—');
+  const fileInfoParts = [
+    currentFileInfo.type ? mimetypeToHumanReadable(currentFileInfo.type) : undefined,
+    currentFileInfo.size ? formatBytes(currentFileInfo.size) : undefined
+  ].filter(Boolean);
+  setCertificateText('certificateFileInfo', fileInfoParts.join(', '));
+
+  if (!currentDocumentId && currentFile?.getPublicIdentifier) {
+    try {
+      currentDocumentId = await currentFile.getPublicIdentifier();
+    }
+    catch (error) {
+      console.warn('Unable to recompute document identifier', error);
+    }
+  }
+
+  setCertificateText('certificateDocumentId', currentDocumentId || 'Unavailable');
+  clearCertificateSignatures();
+  const sigList = document.getElementById('certificate-signature-list');
+  if (!sigList) return;
+
+  signatures.sort((a,b) => Number(b.time) - Number(a.time)).forEach((sig) => {
+    const signatureRow = document.createElement('div');
+    signatureRow.className = 'certificate__signature';
+
+    const info = document.createElement('div');
+    info.className = 'certificate__signature-info';
+
+    const signerLine = document.createElement('p');
+    signerLine.className = 'certificate__value';
+    const signerLabel = document.createElement('span');
+    signerLabel.className = 'certificate__label';
+    signerLabel.textContent = 'Signer:';
+    signerLine.appendChild(signerLabel);
+
+    const signerName = document.createElement('span');
+    signerName.textContent = sig.signatory || 'Unknown signer';
+    signerLine.appendChild(signerName);
+
+    const signerDid = document.createElement('span');
+    signerDid.className = 'certificate__id';
+    signerDid.textContent = ` (${opensig.toOpenSigId(sig.signatory || '')})`;
+    signerLine.appendChild(signerDid);
+    info.appendChild(signerLine);
+
+    const timestampRow = document.createElement('p');
+    timestampRow.className = 'certificate__value';
+    const timestampLabel = document.createElement('span');
+    timestampLabel.className = 'certificate__label';
+    timestampLabel.textContent = 'Date/Time:';
+    timestampRow.appendChild(timestampLabel);
+    const signatureTime = typeof sig.time === 'bigint' ? Number(sig.time) : sig.time;
+    const readableTime = Number.isFinite(signatureTime) ? formatCertificateDate(new Date(signatureTime * 1000)) : 'Publishing…';
+    const timestampValue = document.createElement('span');
+    timestampValue.textContent = readableTime;
+    timestampRow.appendChild(timestampValue);
+    info.appendChild(timestampRow);
+
+    const messageRow = document.createElement('p');
+    const message = renderSignatureMessage(sig);
+    messageRow.className = message ? 'certificate__value' : 'certificate__value certificate__message';
+    const messageLabel = document.createElement('span');
+    messageLabel.className = 'certificate__label';
+    messageLabel.textContent = 'Message:';
+    messageRow.appendChild(messageLabel);
+    const messageValue = document.createElement('span');
+    messageValue.textContent = message ? (sig.data?.encrypted ? `🔒 ${message}` : message) : 'No message';
+    messageRow.appendChild(messageValue);
+    info.appendChild(messageRow);
+
+    const txRow = document.createElement('p');
+    txRow.className = 'certificate__value';
+    const txLabel = document.createElement('span');
+    txLabel.className = 'certificate__label';
+    txLabel.textContent = 'Public record link:';
+    txRow.appendChild(txLabel);
+    const txText = document.createElement('a');
+    txText.className = 'certificate__tx';
+    txText.target = '_blank';
+    txText.rel = 'noreferrer noopener';
+    if (sig.txHash) {
+      txText.href = EXPLORER_URL + sig.txHash + '#eventlog';
+      txText.textContent = sig.txHash;
+    }
+    else {
+      txText.textContent = 'Unavailable';
+      txText.classList.add('certificate__tx--muted');
+    }
+    txRow.appendChild(txText);
+    info.appendChild(txRow);
+
+    signatureRow.appendChild(info);
+
+    if (sig.txHash) {
+      const qr = document.createElement('img');
+      qr.className = 'certificate__qr';
+      qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${encodeURIComponent(EXPLORER_URL + sig.txHash + '#eventlog')}`;
+      qr.alt = 'QR code linking to the public record';
+      signatureRow.appendChild(qr);
+    }
+
+    sigList.appendChild(signatureRow);
+  });
 }
 
 

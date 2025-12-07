@@ -127,6 +127,7 @@
                             <div id="signature-list" class="signature-list"></div>
                         </div>
                     </div>
+                    <button id="certificate-open-button" class="certificate-link__button hidden" type="button">View Certificate</button>
                 </div>
             </div>
         </div>
@@ -191,6 +192,71 @@
 
                 <div class="modal-actions">
                     <a id="modal-proof-link" class="modal-link-button" href="#" target="_blank" rel="noopener noreferrer">View proof on public record</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="certificate-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="certificate-modal-title">
+        <div class="modal-scrim"></div>
+        <div class="modal-shell modal-shell--certificate">
+            <div class="modal-header">
+                <button id="certificate-modal-close" class="modal-close" aria-label="Close certificate view">×</button>
+            </div>
+            <div class="modal-body certificate-modal-body">
+                <h2 id="certificate-modal-title" class="modal-title">Signature Certificate</h2>
+                <p class="certificate-modal__subhead">Save or print a certificate for this verified file.</p>
+                <div class="certificate-actions">
+                  <button id="certificate-print" class="certificate-action-button" type="button">Print certificate</button>
+                </div>
+                <div class="certificate" role="document" aria-labelledby="certificate-modal-title">
+                  <div class="certificate__watermark" aria-hidden="true">OpenSig</div>
+                  <img class="certificate__logo" src="../assets/certificate-stamp.png" alt="OpenSig stamp" loading="lazy" />
+                  <div class="certificate__title">OpenSig Signature Certificate</div>
+
+                  <div class="certificate__section">
+                    <p class="certificate__label">Date of certificate</p>
+                    <p class="certificate__value" data-certificate-field="certificateDate">Waiting for a file...</p>
+
+                    <p class="certificate__label">Document</p>
+                    <p class="certificate__value">
+                      <span data-certificate-field="certificateDocument">—</span>
+                      <span class="certificate__file-info" data-certificate-field="certificateFileInfo"></span>
+                    </p>
+
+                    <p class="certificate__label">Public document ID</p>
+                    <p class="certificate__id" data-certificate-field="certificateDocumentId">—</p>
+                  </div>
+
+                  <div class="certificate__section">
+                    <p class="certificate__label">Signatures</p>
+                    <div id="certificate-signature-list"></div>
+                  </div>
+
+                  <div class="certificate__section">
+                    <p class="certificate__label">Document verified</p>
+                    <p class="certificate__value certificate__message">
+                      This certificate confirms the listed signer(s) were in possession of the document on the stated date using a cryptographically secure OpenSig identity. It proves the document existed at that moment and has remained unchanged since.
+                    </p>
+                    <p class="certificate__label">Verification instructions</p>
+                    <ol class="certificate__list">
+                      <li>Open the original file in the OpenSig app.</li>
+                      <li>The app recomputes the file's public ID and finds matching proofs on the permanent public record.</li>
+                      <li>If the file is unchanged, the signatures above will be discovered and this certificate regenerates.</li>
+                    </ol>
+                    <p class="certificate__value">
+                      Alternatively, visit <a href="https://opensig.net/verify" target="_blank" rel="noreferrer noopener">opensig.net/verify</a> to regenerate the certificate instantly.
+                    </p>
+                  </div>
+
+                  <div class="certificate__rosette-frame">
+                    <img src="../assets/certificate-rosette.png" class="certificate__rosette" alt="OpenSig rosette" loading="lazy" />
+                  </div>
+
+                  <p class="certificate__footer">
+                    Issued by <strong>opensig.net</strong> &mdash; Secure digital signatures on the blockchain.<br />
+                    This preview matches the certificate inside the OpenSig mobile app.
+                  </p>
                 </div>
             </div>
         </div>
