@@ -195,7 +195,7 @@ window.setContent = setContent;
 
 function clearSignatureContent() {
   $("#signature-list").empty();
-  hide("#signatures-label", "#signature-box");
+  hide("#signatures-label", "#signature-box", "#certificate-open-button");
 }
 
 async function _updateSignatureContent(signatures) {
