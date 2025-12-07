@@ -140,27 +140,46 @@ figcaption {
   flex-grow: 0;
 }
 
-.header-button {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 8px 24px;
-  gap: 10px;
-  background: #000000;
-  border-radius: 8px;
-  flex: none;
-  flex-grow: 0;
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 800;
-  font-size: 16px;
-  line-height: 19px;
-  color: #FFFFFF;
+.cta-button {
+  display: inline-block;
+  padding: 12px 28px;
+  background-color: var(--primary);
+  color: #fff;
   text-decoration: none;
+  border-radius: 999px;
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  box-shadow: 0 10px 25px rgba(47, 63, 236, 0.28);
+  border: none;
+  cursor: pointer;
 }
 
-.header-button:hover {
-  cursor: pointer;
+.cta-button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(31, 42, 176, 0.3);
+}
+
+.cta-button.small {
+  padding: 10px 22px;
+  font-size: 0.9em;
+  margin-top: 0;
+  box-shadow: none;
+}
+
+.cta-button.secondary {
+  background: #fff;
+  color: #1b214d;
+  border: 1px solid rgba(27, 33, 77, 1);
+  box-shadow: none;
+}
+
+.cta-button.secondary:hover {
+  background: #eef;
+  color: #000;
+  border-color: #000;
 }
 
 /* Content */
@@ -894,6 +913,24 @@ img {
   gap: 10px;
   flex: none;
   flex-grow: 0;
+}
+
+.cta-text {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 19px;
+  text-align: center;
+  color: var(--onBackground);
+  margin-top: 30px;
+}
+
+.cta-text a, .cta-text a:visited {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.cta-text a:hover {
+  text-decoration: underline;
 }
 
 @media only screen and (max-width: 832px) {
