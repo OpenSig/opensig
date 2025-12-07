@@ -217,7 +217,7 @@ async function _updateSignatureContent(signatures) {
     signatures.sort((a,b) => Number(b.time) - Number(a.time)).forEach(sig => {
       const element = createElement('div', 'signature');
       const signatoryRow = createElement('div', 'signature-content-row');
-      const signatory = createElement('span', 'signatory', sig.signatory);
+      const signatory = createElement('span', 'signatory', opensig.toOpenSigId(sig.signatory));
       signatoryRow.appendChild(signatory);
       const signatureDate = typeof sig.time === 'bigint' ? Number(sig.time) : sig.time;
       signatoryRow.appendChild(createElement('span', 'sigTime', new Date(signatureDate * 1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
