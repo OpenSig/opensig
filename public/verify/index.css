@@ -2,6 +2,23 @@
 /* Distributed under the MIT software license, see the accompanying */
 /* file LICENSE or http://www.opensource.org/licenses/mit-license.php. */
 
+:root {
+  --background: #FFFFFF;
+  --onBackground: #111;
+  --onBackground: '#111';
+  --onBackgroundSecondary: #666;
+  --onBackgroundTertiary: #aaa;
+  --primary: #4F46E5;
+  --onPrimary: #FFFFFF;
+  --surface: #f9f9ff;
+  --surfaceAccent: #e0e8ff;
+  --surfaceBorder: #ddd;
+  --surfaceAccentBorder: #ddd;
+  --onSurface: #111;
+  --onSurfaceSecondary: #666;
+  --onSurfaceTertiary: #aaa;
+}
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -14,7 +31,7 @@ body {
   justify-content: center;
   align-items: stretch;
   padding: 0px;
-  background: #FFFFFF;
+  background: var(--background);
   min-height: 100vh;
 }
 
@@ -89,6 +106,10 @@ figcaption {
   flex-grow: 1;
 }
 
+.left-header:hover {
+  cursor: pointer;
+}
+
 .header-logo {
   width: 38px;
   height: 38px;
@@ -145,6 +166,7 @@ figcaption {
 /* Content */
 
 .content {
+  width: 100%;
   max-width: 800px;
   align-self: center;
   display: flex;
@@ -302,14 +324,13 @@ img {
 }
 
 .small-text-link {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 800;
+  font-weight: 400;
   font-size: 16px;
   line-height: 19px;
-  color: #737373;
+  color: var(--primary);
   flex: none;
   flex-grow: 0;
+  align-self: center;
 }
 
 .small-text-link:hover {
@@ -383,29 +404,31 @@ img {
 /* Connected Content */
 
 .connected-content {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0px 64px;
+  padding: 0px 24px;
   gap: 32px;
-  flex: none;
-  align-self: stretch;
-  flex-grow: 0;
 }
+
 
 .dnd-box {
   box-sizing: border-box;
-  height: 180px;
-  width: 450px;
+  min-height: 180px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 60px 30px;
   gap: 10px;
-  border: 1px solid #7D7D7D;
+  border: 1px dashed #D1D1D1;
+  border-radius: 16px;
+  background: --var(--surface);
   flex: none;
   flex-grow: 0;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 @media only screen and (max-width: 490px) {
@@ -416,10 +439,118 @@ img {
 
 .dnd-box:hover {
   cursor: pointer;
+  border-color: #000000;
 }
 
 .dnd-box-valid-dragover {
   border: 1px dashed #000000;
+  background: var(--surface);
+}
+
+.steps-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 720px;
+  justify-content: stretch;
+}
+
+.steps-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.steps-kicker {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--onBackgroundTertiary);
+  align-self: center;
+}
+
+.steps-subtitle {
+  margin: 0;
+  font-size: 16px;
+  color: var(--onBackground);
+}
+
+.step-card {
+  background: var(--surface);
+  color: var(--onSurface);
+  border: 1px solid var(--surfaceBorder);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.step-card-complete {
+  opacity: 0.9;
+}
+
+.step-card-disabled {
+  background: var(--surfaceAccent);
+  border-color: var(--surfaceAccentBorder);
+}
+
+.step-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background: var(--primary);
+  color: var(--onPrimary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.step-heading-text { display: flex; flex-direction: column; gap: 4px; }
+.step-title { margin: 0; font-size: 16px; font-weight: 700; color: var(--onBackground); }
+.step-description { margin: 0; font-size: 14px; color: var(--onBackground); }
+.step-helper { margin: 0; font-size: 14px; color: var(--onBackgroundSecondary); }
+
+.muted-placeholder {
+  font-size: 14px;
+  color: #7d7d7d;
+}
+
+.dnd-wrapper { width: 100%; }
+
+.selected-file-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.selected-file-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--onSurface);
+  word-break: break-word;
+}
+
+.selected-file-metadata {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--onSurfaceTertiary);
+  word-break: break-word;
 }
 
 .large-hint-text {
@@ -429,7 +560,7 @@ img {
   font-size: 24px;
   line-height: 28px;
   text-align: center;
-  color: #DEDEDE;  
+  color: var(--onBackgroundTertiary);
 }
 
 .small-hint-text {
@@ -439,19 +570,18 @@ img {
   font-size: 16px;
   line-height: 18px;
   text-align: center;
-  color: #DEDEDE;
+  color: var(--onBackgroundTertiary);
 }
 
 /* Signature Content */
 
 .signature-content {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   padding: 0px;
   gap: 48px;
-  flex: none;
-  flex-grow: 0;
 }
 
 .sign-frame {
@@ -486,13 +616,12 @@ img {
 }
 
 .label {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 400;
+  font-size: 18px;
   line-height: 19px;
   flex: none;
   flex-grow: 0;
+  color: var(--onSurfaceSecondary);
 }
 
 .message-label {
@@ -594,7 +723,6 @@ img {
 .signatures-label-frame {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 0px;
   gap: 10px;
   flex: none;
@@ -602,8 +730,11 @@ img {
 }
 
 .signature-refresh-button {
-  width: 16px;
-  height: 16px;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  width: 20px;
+  height: 20px;
   background-size: cover;
   flex: none;
   flex-grow: 0;
@@ -634,89 +765,68 @@ img {
 }
 
 .signature-box {
+  width: 100%;
   box-sizing: border-box;
-  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
   gap: 8px;
-  border: 1px solid #7D7D7D;
-  flex: none;
-  flex-grow: 0;
 }
 
 .signature-list {
+  width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0;
   gap: 8px;
-  flex: none;
-  flex-grow: 0;
+  margin-top: 10px;
+}
+
+.signatory {
+  font-family: 'Courier';
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.sigTime {
+  font-size: 12px;
+  color: var(--onSurfaceSecondary);
+  margin-bottom: 6px;
+}
+
+.statusText {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--onSurfaceSecondary);
+}
+
+.sigMessage {
+  font-size: 14px;
+  font-style: italic;
 }
 
 .signature {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--surfaceBorder);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: var(--surface);
+  gap: 10px;
+}
+
+.signature-content-row {
+  flex: 1;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  justify-content: space-between;
   padding: 0px;
-  gap: 16px;
-  flex: none;
-  align-self: stretch;
-  flex-grow: 0;
-}
-
-.signature-date-field {
-  width: 119px;
-  font-family: 'Arial';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: #000000;
-  flex: none;
-  flex-grow: 0;
-}
-
-.signature-who-field {
-  width: 315px;
-  color: #000000;
-  font-family: 'Courier';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  flex: none;
-  flex-grow: 0;
-  overflow: auto;
-}
-
-.signature-who-field a {
-  color: inherit;
-}
-
-.signature-comment-field {
-  width: 300px;
-  font-family: 'Arial';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: #000000;
-  flex: none;
-  flex-grow: 0;
-  overflow: auto;
-}
-
-.signature-heading {
-  font-family: 'Arial';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  color: #000000;
+  gap: 10px;
 }
 
 .h-line {
@@ -813,6 +923,11 @@ ul {
   font-size: 14x;
   line-height: 22px;
   margin: 4px 0;
+}
+
+.centered {
+  align-self: center;
+  text-align: center;
 }
 
 

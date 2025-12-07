@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/assets/simple-logo.png" />
-    <link rel="stylesheet" type="text/css" href="index.css?v=2.0" />
+    <link rel="stylesheet" type="text/css" href="index.css?v=2.1" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
@@ -38,58 +38,96 @@
 
     <div class="header">
         <div class="content-row">
-            <div class="left-header">
+            <div class="left-header" onclick="window.location.href='https://opensig.net'">
                 <div class="header-logo"></div>
                 <span class="header-logo-text">OpenSig</span>
             </div>
         </div>
     </div>
-    
+
     <div class="content">
-        <div class="title-frame">
-            <span class="title">OPENSIG</span>
-            <span class="subtitle">Verify</span>
-        </div>
 
         <div id="connected-content" class="connected-content">
-            <div class="about-text">Use the box below to verify your document.</div>
-            <span class="about-text">
-                Your file will be processed by your local browser and verified against the blockchain.<br/>
-                Your file will not be uploaded to any server.
-            </span>
-            <div id="dnd-box" class="dnd-box">
-                <span class="large-hint-text">Drag and drop your document here or click to select a file</span>
-           </div>
-            <div id="dnd-box-spinner" class="dnd-box hidden">
-                <div class="spinner"><div></div><div></div></div>
-            </div>
-            <span id="connected-content-error-message" class="error-message"></span>
-            <div class="about-content">
+            <div class="steps-wrapper">
+                <p class="steps-kicker">2 steps to verify a proof</p>
+
+                <div class="step-card">
+                    <div class="step-heading">
+                        <div class="step-badge">1</div>
+                        <div class="step-heading-text">
+                            <p class="step-title">Open a file</p>
+                        </div>
+                    </div>
+                    <p class="step-description">Choose any file from your device. We only read it locally in your browser to calculate its fingerprint.</p>
+                    <p class="step-description" style="font-weight: bold">Files are never uploaded.</p>
+                    <div class="dnd-wrapper">
+                        <div id="dnd-box" class="dnd-box">
+                            <span class="large-hint-text">Drag and drop your document here or click to select a file</span>
+                        </div>
+                        <div id="dnd-box-spinner" class="dnd-box hidden">
+                            <div class="spinner"><div></div><div></div></div>
+                        </div>
+                    </div>
+                    <span id="connected-content-error-message" class="error-message"></span>
+                </div>
+
+                <div class="step-card step-card-disabled">
+                    <div class="step-heading">
+                        <div class="step-badge">2</div>
+                        <div class="step-heading-text">
+                            <p class="step-title">Review existing proofs</p>
+                        </div>
+                    </div>
+                    <div class="muted-placeholder">Review any existing verified proofs for your file.</div>
+                </div>
             </div>
         </div>
 
         <div id="signature-content" class="signature-content hidden">
-            <div class="filename-frame">
-                <div id="filename" class="filename"></div>
-                <span class="small-text-link" onclick="setContent('#connected-content')">(back)</span>
-            </div>
-            <div class="signatures">
-                <div id="no-signatures-label" class="signatures-label-frame hidden">
-		    <span class="label">This file has never been signed with OpenSig.</span>
-                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
-                </div>
-                <div id="signatures-label" class="signatures-label-frame">
-                    <span class="label">Signatures</span>
-                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
-                </div>
-                <div id="signature-box" class="signature-box">
-                    <div class="signature">
-                        <span class="signature-heading signature-date-field">Date</span>
-                        <span class="signature-heading signature-who-field">Signatory</span>
-                        <span class="signature-heading signature-comment-field">Message</span>
+            <div class="steps-wrapper">
+                <p class="steps-kicker">2 steps to verify a proof</p>
+
+                <div class="step-card step-card-complete">
+                    <div class="step-heading">
+                        <div class="step-badge" style="opacity: 50%">1</div>
+                        <div class="step-heading-text" style="opacity: 50%">
+                            <p class="step-title">Open a file</p>
+                        </div>
                     </div>
-                    <span class="h-line"></span>
-                    <div id="signature-list" class="signature-list"></div>
+                    <div class="selected-file-row">
+                        <div class="selected-file-name" id="filename"></div>
+                        <div class="selected-file-metadata">
+                            <span id="filetype"></span> · <span id="filesize"></span>
+                        </div>
+                    </div>
+                    <span class="small-text-link" onclick="setContent('#connected-content')">Choose another file</span>
+                </div>
+
+                <div class="step-card">
+                    <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
+                    <div class="step-heading">
+                        <div class="step-badge">2</div>
+                        <div class="step-heading-text">
+                            <p class="step-title">Review existing proofs</p>
+                        </div>
+                    </div>
+                    <p class="step-helper">Review any existing verified proofs for this file.</p>
+                    <span id="signature-content-error-message" class="error-message"></span>
+                    <div id="signatures-label" class="signatures-label-frame">
+                        <span class="step-description">This file has <span id="signature-count"></span> verified proof<span id="proof-plural-suffix"></span>.</span>
+                    </div>
+                    <div id="reverify-spinner" class="centered hidden">
+                        <div class="spinner"><div></div><div></div></div>
+                    </div>
+                    <div class="signatures">
+                        <div id="no-signatures-label" class="signatures-label-frame hidden">
+                            <span class="label">This file has never been signed with OpenSig.</span>
+                            <div class="signature-refresh-button refresh-icon" onclick="reverify()"></div>
+                        </div>
+                        <div id="signature-box" class="signature-box">
+                            <div id="signature-list" class="signature-list"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,15 +137,10 @@
     <div class="footer">
         <div class="content-row-responsive">
             <div class="center-footer">
-                <div class="footer-icons">
-                    <a class="footer-icon twitter-icon" target="_blank" href="https://x.com/opensiglabs"></a>
-                    <a class="footer-icon email-icon" target="_blank" href="mailto:info@opensig.net"></a>
-                </div>
-                <span class="footer-text">©2025 <a target="_blank" href="https://opensig.net">OpenSig</a></span>
+                <span class="footer-text">©2025 OpenSig · Built for privacy</a></span>
             </div>
         </div>
     </div>
 
   </body>
 </html>
-

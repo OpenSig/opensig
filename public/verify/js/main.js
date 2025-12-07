@@ -39,6 +39,9 @@ function verify(fileOrBlob) {
   const network = getBlockchain(137);
   if (!network) displayError("Blockchain not supported")
   else {
+    $("#filename").text(fileOrBlob.name || fileOrBlob.url || 'Unnamed file');
+    $("#filetype").text(fileOrBlob.type ? mimetypeToHumanReadable(fileOrBlob.type) : 'Binary');
+    $("#filesize").text(fileOrBlob.size ? formatBytes(fileOrBlob.size) : 'Unknown size');
     hide("#dnd-box");
     show("#dnd-box-spinner");
     currentFile = new opensig.File(network, fileOrBlob);
@@ -56,12 +59,86 @@ function reverify() {
   if (!currentFile) return;
   clearError();
   clearSignatureContent();
+  show("#reverify-spinner");
   currentFile.verify()
     .then(_updateSignatureContent)
-    .catch(displayError);
+    .catch(displayError)
+    .finally(() => {
+      hide("#reverify-spinner");
+    });
 }
 window.reverify = reverify;
 
+
+//
+// Helper functions
+//
+
+function formatBytes(bytes, decimals = 2) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function mimetypeToHumanReadable(mimeType) {
+  if (mimeType === 'undefined' || !mimeType) return "Unknown";
+  const fallback = mimeType.split("/").pop()?.toUpperCase() || "UNKNOWN";
+  return mimeTypeToHuman[mimeType] || fallback.replace(/[-+]/g, " ").toUpperCase();
+}
+
+const mimeTypeToHuman = {
+  // Documents
+  "application/pdf": "PDF",
+  "application/msword": "Word Document",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "Word Document (DOCX)",
+  "application/vnd.ms-excel": "Excel Spreadsheet",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "Excel Spreadsheet (XLSX)",
+  "application/vnd.ms-powerpoint": "PowerPoint Presentation",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation": "PowerPoint Presentation (PPTX)",
+  "text/plain": "Text File",
+  "text/csv": "CSV File",
+  "application/rtf": "Rich Text Format",
+  "application/json": "JSON File",
+  "application/xml": "XML File",
+  "text/html": "HTML File",
+  
+  // Images
+  "image/jpeg": "JPEG Image",
+  "image/png": "PNG Image",
+  "image/gif": "GIF Image",
+  "image/bmp": "Bitmap Image",
+  "image/webp": "WebP Image",
+  "image/svg+xml": "SVG Image",
+  "image/heif": "HEIF Image",
+  
+  // Audio
+  "audio/mpeg": "MP3 Audio",
+  "audio/wav": "WAV Audio",
+  "audio/ogg": "OGG Audio",
+  "audio/webm": "WebM Audio",
+
+  // Video
+  "video/mp4": "MP4 Video",
+  "video/x-msvideo": "AVI Video",
+  "video/webm": "WebM Video",
+  "video/quicktime": "QuickTime Video",
+  "video/x-matroska": "MKV Video",
+
+  // Compressed
+  "application/zip": "ZIP Archive",
+  "application/x-7z-compressed": "7-Zip Archive",
+  "application/x-rar-compressed": "RAR Archive",
+  "application/gzip": "GZIP Archive",
+  "application/x-tar": "TAR Archive",
+
+  // Misc
+  "application/octet-stream": "Binary File",
+  "application/x-sh": "Shell Script",
+  "application/x-bash": "Bash Script",
+};
 
 //
 // UI update functions
@@ -79,12 +156,14 @@ window.setContent = setContent;
 
 function clearSignatureContent() {
   $("#signature-list").empty();
+  hide("#signatures-label", "#signature-box");
 }
 
 function _updateSignatureContent(signatures) {
   console.trace("found signatures: ", signatures);
+  $("#signature-count").text(signatures.length);
+  $("#proof-plural-suffix").text(signatures.length === 1 ? '' : 's');
   setContent("#signature-content");
-  $("#filename").text(currentFile.file.name);
   const sigList = $("#signature-list");
   sigList.empty();
   if (signatures.length === 0) {
@@ -96,33 +175,17 @@ function _updateSignatureContent(signatures) {
     hide("#no-signatures-label");
     signatures.sort((a,b) => Number(b.time) - Number(a.time)).forEach(sig => {
       const element = createElement('div', 'signature');
+      const signatoryRow = createElement('div', 'signature-content-row');
+      const signatory = createElement('span', 'signatory', sig.signatory);
+      signatoryRow.appendChild(signatory);
       const signatureDate = typeof sig.time === 'bigint' ? Number(sig.time) : sig.time;
-      element.appendChild(createElement('span', 'signature-date-field', new Date(signatureDate * 1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
-      const signatory = createElement('span', 'signature-who-field', sig.signatory);
-      const txLink = createElement('a', 'signature-who-field');
-      txLink.appendChild(signatory);
-      txLink.title = "Click to view this signature's blockchain transaction";
-      txLink.href = currentFile.network.params.explorerUrl + sig.event.transactionHash;
-      txLink.target = "_blank";
-      element.appendChild(txLink);
-      element.appendChild(createElement('span', 'signature-comment-field', sig.data.content)); // TODO support different data types
+      signatoryRow.appendChild(createElement('span', 'sigTime', new Date(signatureDate * 1000).toLocaleString([], DATE_FORMAT_OPTIONS)));
+      element.appendChild(signatoryRow);
+      element.appendChild(createElement('span', 'statusText', 'Verified proof'));
+      element.appendChild(createElement('span', 'sigMessage', sig.data.encrypted ? `🔒 ${sig.data.content}` : sig.data.content)); // TODO support different data types
       sigList.append(element);
     })
   }
-}
-
-function _appendUnconfirmedSignature(signatory, data) {
-  const element = createElement('div', 'signature');
-  const spinnerFrame = createElement('div', 'signature-spinner-frame');
-  const spinner = createElement('div', "spinner");
-  spinner.appendChild(createElement('div', ''));
-  spinner.appendChild(createElement('div', ''));
-  spinnerFrame.appendChild(spinner);
-  element.appendChild(spinnerFrame);
-  element.appendChild(createElement('span', 'signature-who-field', signatory));
-  element.appendChild(createElement('span', 'signature-comment-field', data)); // TODO support different data types
-  const sigList = $("#signature-list");
-  sigList.append(element);
 }
 
 function createElement(type, classes, innerHTML) {
