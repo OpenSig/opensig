@@ -58,7 +58,7 @@ window.onLoad = onLoad;
 
 
 function verifyUrl(url) {
-  fetch(url)
+  fetch(`https://vault.bubbleprotocol.com:8125/proxy?url=${url}`)
     .then(result => result.blob())
     .then(blob => { blob.name = url; return blob })
     .then(verify)
