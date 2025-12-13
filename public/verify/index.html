@@ -63,14 +63,64 @@
                     </div>
                     <p class="step-description">Choose any file from your device. We only read it locally in your browser to calculate its fingerprint.</p>
                     <p class="step-description" style="font-weight: bold">Files are never uploaded.</p>
+
                     <div class="dnd-wrapper">
                         <div id="dnd-box" class="dnd-box">
                             <span class="large-hint-text">Drag and drop your document here or click to select a file</span>
                         </div>
-                        <div id="dnd-box-spinner" class="dnd-box hidden">
-                            <div class="spinner"><div></div><div></div></div>
+                    </div>
+
+                    <div id="progress-card" class="progress-card hidden">
+                        <div class="progress-header">
+                            <div class="progress-title">Working...</div>
+                            <div class="progress-percent">0%</div>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+
+                        <div class="progress-steps">
+                            <!-- Step 1 -->
+                            <div class="step" data-step="1">
+                                <div class="step-timeline">
+                                    <div class="step-line step-line-top"></div>
+                                    <div class="step-circle">
+                                        <span class="step-check">✓</span>
+                                        <div class="spinner step-spinner"><div></div><div></div></div>
+                                        <div class="step-connector"></div>
+                                    </div>
+                                    <div class="step-line step-line-bottom"></div>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-title">Calculating fingerprint</div>
+                                    <div class="step-text">
+                                        Generating your file's unique fingerprint.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="step" data-step="2">
+                                <div class="step-timeline">
+                                    <div class="step-line step-line-top"></div>
+                                    <div class="step-circle">
+                                        <span class="step-check">✓</span>
+                                        <img src="../assets/search-outline.svg" class="step-icon" />
+                                        <div class="spinner step-spinner"><div></div><div></div></div>
+                                    </div>
+                                    <div class="step-line step-line-bottom"></div>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-title">Searching for existing proofs</div>
+                                    <div class="step-text">
+                                    Checking the public record for any existing proofs.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <span id="connected-content-error-message" class="error-message"></span>
                 </div>
 

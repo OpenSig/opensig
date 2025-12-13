@@ -31,8 +31,6 @@ const POLYGON_MAINNET = new opensig.EthersProvider(
 
 const EXPLORER_URL = "https://polygonscan.com/tx/";
 
-console.debug(opensig);
-
 const os = new opensig.OpenSig(POLYGON_MAINNET);
 
 
@@ -58,6 +56,7 @@ window.onLoad = onLoad;
 
 
 function verifyUrl(url) {
+  showProgressCard();
   fetch(`https://vault.bubbleprotocol.com:8125/proxy?url=${url}`)
     .then(result => result.blob())
     .then(blob => { blob.name = url; return blob })
@@ -67,6 +66,7 @@ function verifyUrl(url) {
 
 async function verify(fileOrBlob) {
   clearError();
+  showProgressCard();
   currentFileInfo = {
     name: fileOrBlob.name || fileOrBlob.url || 'Unnamed file',
     type: fileOrBlob.type,
@@ -76,8 +76,9 @@ async function verify(fileOrBlob) {
   $("#filetype").text(currentFileInfo.type ? mimetypeToHumanReadable(currentFileInfo.type) : 'Binary');
   $("#filesize").text(currentFileInfo.size ? formatBytes(currentFileInfo.size) : 'Unknown size');
   hide("#dnd-box");
-  show("#dnd-box-spinner");
-  currentFile = await os.createDocument(fileOrBlob);
+  currentFile = await os.createDocument(fileOrBlob, (progress) => {
+    setProgress(Math.floor(progress*99));
+  });
   try {
     currentDocumentId = await currentFile.getPublicIdentifier();
   }
@@ -87,10 +88,15 @@ async function verify(fileOrBlob) {
   }
   currentFile.verify()
     .then(_updateSignatureContent)
+    .then(async () => {
+      setProgress(100);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setContent("#signature-content");
+    })
     .catch(displayError)
     .finally(() => {
+      hideProgressCard();
       show("#dnd-box");
-      hide("#dnd-box-spinner");
     });
 }
 
@@ -203,7 +209,6 @@ async function _updateSignatureContent(signatures) {
   currentSignatures = signatures;
   $("#signature-count").text(signatures.length);
   $("#proof-plural-suffix").text(signatures.length === 1 ? '' : 's');
-  setContent("#signature-content");
   const sigList = $("#signature-list");
   sigList.empty();
   if (signatures.length === 0) {
@@ -548,4 +553,58 @@ function disable(...ids) {
 
 function enable(...ids) {
   ids.forEach(id => { $(id).removeClass('disabled') });
+}
+
+
+//
+// Progress card functions
+//
+
+/* Example usage:
+    showProgressCard(); // sets progress to 0
+    ...
+    setProgress(50);
+    ...
+    setProgress(100);
+    setTimeout(hideProgressCard, 1000);
+*/
+
+function showProgressCard() {
+  document.getElementById("progress-card").classList.remove("hidden");
+  setProgress(0);
+}
+
+function hideProgressCard() {
+  document.getElementById("progress-card").classList.add("hidden");
+}
+
+function setProgress(percent) {
+  const card = document.getElementById("progress-card");
+  if (!card) return;
+
+  // clamp to [0, 100]
+  percent = Math.max(0, Math.min(100, percent));
+
+  const percentLabel = card.querySelector(".progress-percent");
+  const barFill = card.querySelector(".progress-bar-fill");
+  const step1 = card.querySelector('.step[data-step="1"]');
+  const step2 = card.querySelector('.step[data-step="2"]');
+
+  percentLabel.textContent = percent + "%";
+  barFill.style.width = percent + "%";
+
+  // reset classes
+  step1.classList.remove("active", "done");
+  step2.classList.remove("active", "done");
+
+  if (percent < 99) {
+    step1.classList.add("active");
+  } else if (percent < 100) {
+    step1.classList.add("done");
+    step2.classList.add("active");
+  } else {
+    // 100% – both done
+    step1.classList.add("done");
+    step2.classList.add("done");
+  }
 }
